@@ -4,7 +4,7 @@ import subprocess
 
 import flask
 
-PORT = sum(ord(c) for c in "Monitoring Node Dusk")  # 1923
+PORT = sum(ord(c) for c in "Dusk Node Monitoring")  # 1923
 CMD = ["ssh", "-t", "dusk", "source .profile ; blocks"]
 app = flask.Flask(__name__)
 
@@ -13,7 +13,7 @@ app = flask.Flask(__name__)
 def index() -> flask.Response:
     output = subprocess.check_output(CMD, text=True)
     values = [int(value) for value in re.findall(r"m(\d+)", output)]
-    html = f"""
+    html = f"""\
 <html>
 <head>
     <meta content="width=device-width,initial-scale=1.0" name="viewport">
@@ -41,7 +41,7 @@ def index() -> flask.Response:
             border: 1px solid #111;
             border-radius: .1em / 1em;
             text-align: center;
-            font-size: 3.5em;
+            font-size: 3em;
             font-family: "Monaspace Argon";
             color: #ddd;
             text-shadow: 1px 1px 0 #222;
@@ -58,23 +58,45 @@ def index() -> flask.Response:
     </style>
 </head>
 <body>
-    <button id="a" style="background:#635985" title="{values[0]}">{sizeof_fmt(values[0])}</button>
-    <button id="b" style="background:#443c68" title="{values[1]}">{sizeof_fmt(values[1])}</button>
-    <button id="c" style="background:#393053" title="{values[2]}">{sizeof_fmt(values[2])}</button>
-    <button id="d" style="background:#18122b" title="{values[3]}">{sizeof_fmt(values[3])}<br><span style="font-size:.5em">{values[3] / (values[2] or 1):0,.02f}%</span></button>
+    <button id="a" style="background:#635985" title="{values[0]:,}">{sizeof_fmt(values[0])}</button>
+    <button id="b" style="background:#443c68" title="{values[1]:,}">{sizeof_fmt(values[1])}</button>
+    <button id="c" style="background:#393053" title="{values[2]:,}">{sizeof_fmt(values[2])}</button>
+    <button id="d" style="background:#18122b" title="{values[3]:,}">
+        {sizeof_fmt(values[3])}
+        <br>
+        <span style="font-size:.5em" title="Ratio blocks accepted / blocks generated">{values[3] * 100 / (values[2] or 1):0,.02f}%</span>
+        <span style="font-size:.5em">|</span>
+        <span style="font-size:.5em" title="{block_rewards(values[3]):0,.02f}">{sizeof_fmt(block_rewards(values[3]))}$</span>
+    </button>
+    <!-- 2025-01-06 -->
 </body>
-</html>
-    """
+</html>"""
     return flask.Response(html, mimetype="text/html")
 
 
+def block_rewards(count: int, *, reward: float = 19.8574) -> int:
+    """
+    As of 2025-01-06:
+        - There is a 19.8574 block reward.
+        - Deducting 10% for the team rewards.
+        - Block generator gets 80% + voting fractions (not computed here).
+    Source: https://github.com/dusk-network/audits/blob/main/core-audits/2024-09_economic-protocol-design_pol-finance.pdf
+    """
+    return count * (reward * 0.9 * 0.8)
+
+
 def sizeof_fmt(value: int) -> str:
-    for unit in ("", "K", "m", "M"):
-        if abs(value) < 1000:
-            if not unit:
-                return f"{value:,}"
+    if value < 1000:
+        if isinstance(value, float):
+            return f"{value:0.02f}"
+        return f"{value:,}"
+
+    for unit in ("", "K", "m"):
+        if value < 1000:
             return f"{value:3.3f}{unit}"
         value /= 1000
+
+    return f"{value:3,.3f}M"
 
 
 app.run(port=PORT, host="0.0.0.0", debug=True)
