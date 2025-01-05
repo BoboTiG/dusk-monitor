@@ -43,18 +43,18 @@ def index() -> flask.Response:
             font-family: "Monaspace Argon";
             text-shadow: 1px 1px 0 #222;
         }}
-        button::after {{ display: block; font-size: .3em }}
-        #a::after {{ content: "Current block" }}
-        #b::after {{ content: "Latest block" }}
-        #c::after {{ content: "Generated blocks" }}
-        #d::after {{ content: "Accepted blocks" }}
+        button::after {{ display: block; font-size: .3em; opacity: .8 }}
+        #a::after {{ content: "｢Current Block｣" }}
+        #b::after {{ content: "｢Latest Block｣" }}
+        #c::after {{ content: "｢Generated Blocks｣" }}
+        #d::after {{ content: "｢Accepted Blocks｣" }}
     </style>
 </head>
 <body>
-    <button id="a" style="background:#635985;color:#ccc">{sizeof_fmt(values[0])}</button>
-    <button id="b" style="background:#443c68;color:#bbb">{sizeof_fmt(values[1])}</button>
-    <button id="c" style="background:#393053;color:#aaa">{sizeof_fmt(values[2])}</button>
-    <button id="d" style="background:#18122b;color:#999"><b>{sizeof_fmt(values[3])}</b><br>{values[3] / (values[2] or 1):0,.02f}%</button>
+    <button id="a" style="background:#635985;color:#ccc" title="{values[0]}">{sizeof_fmt(values[0])}</button>
+    <button id="b" style="background:#443c68;color:#bbb" title="{values[1]}">{sizeof_fmt(values[1])}</button>
+    <button id="c" style="background:#393053;color:#aaa" title="{values[2]}">{sizeof_fmt(values[2])}</button>
+    <button id="d" style="background:#18122b;color:#999" title="{values[3]}">{sizeof_fmt(values[3])}<br><span style="font-size:.5em">{values[3] / (values[2] or 1):0,.02f}%</span></button>
 </body>
 </html>
     """
