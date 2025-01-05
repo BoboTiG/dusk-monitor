@@ -31,6 +31,7 @@ def index() -> flask.Response:
             height: 100%;
             padding: 0;
             margin: 0;
+            background-color: #000;
             display: flex;
             flex-flow: column wrap;
             justify-content: space-around;
@@ -38,12 +39,18 @@ def index() -> flask.Response:
         button {{
             flex: 1;
             border: 1px solid #111;
+            border-radius: .1em / 1em;
             text-align: center;
-            font-size: 3em;
+            font-size: 3.5em;
             font-family: "Monaspace Argon";
+            color: #ddd;
             text-shadow: 1px 1px 0 #222;
         }}
-        button::after {{ display: block; font-size: .3em; opacity: .8 }}
+        button::after {{
+            display: block;
+            font-size: .3em;
+            color: moccasin;
+        }}
         #a::after {{ content: "｢Current Block｣" }}
         #b::after {{ content: "｢Latest Block｣" }}
         #c::after {{ content: "｢Generated Blocks｣" }}
@@ -51,10 +58,10 @@ def index() -> flask.Response:
     </style>
 </head>
 <body>
-    <button id="a" style="background:#635985;color:#ccc" title="{values[0]}">{sizeof_fmt(values[0])}</button>
-    <button id="b" style="background:#443c68;color:#bbb" title="{values[1]}">{sizeof_fmt(values[1])}</button>
-    <button id="c" style="background:#393053;color:#aaa" title="{values[2]}">{sizeof_fmt(values[2])}</button>
-    <button id="d" style="background:#18122b;color:#999" title="{values[3]}">{sizeof_fmt(values[3])}<br><span style="font-size:.5em">{values[3] / (values[2] or 1):0,.02f}%</span></button>
+    <button id="a" style="background:#635985" title="{values[0]}">{sizeof_fmt(values[0])}</button>
+    <button id="b" style="background:#443c68" title="{values[1]}">{sizeof_fmt(values[1])}</button>
+    <button id="c" style="background:#393053" title="{values[2]}">{sizeof_fmt(values[2])}</button>
+    <button id="d" style="background:#18122b" title="{values[3]}">{sizeof_fmt(values[3])}<br><span style="font-size:.5em">{values[3] / (values[2] or 1):0,.02f}%</span></button>
 </body>
 </html>
     """
