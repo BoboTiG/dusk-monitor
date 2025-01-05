@@ -13,6 +13,7 @@ app = flask.Flask(__name__)
 def index() -> flask.Response:
     output = subprocess.check_output(CMD, text=True)
     values = [int(value) for value in re.findall(r"m(\d+)", output)]
+    reward = block_reward(values[3])
     html = f"""\
 <html>
 <head>
@@ -66,7 +67,7 @@ def index() -> flask.Response:
         <br>
         <span style="font-size:.5em" title="Ratio blocks accepted / blocks generated">{values[3] * 100 / (values[2] or 1):0,.02f}%</span>
         <span style="font-size:.5em">|</span>
-        <span style="font-size:.5em" title="{block_rewards(values[3]):0,.02f}">{sizeof_fmt(block_rewards(values[3]))}$</span>
+        <span style="font-size:.5em" title="{reward:0,.02f}">{sizeof_fmt(reward)}$</span>
     </button>
     <!-- 2025-01-06 -->
 </body>
@@ -74,7 +75,7 @@ def index() -> flask.Response:
     return flask.Response(html, mimetype="text/html")
 
 
-def block_rewards(count: int, *, reward: float = 19.8574) -> int:
+def block_reward(count: int, *, reward: float = 19.8574) -> int:
     """
     As of 2025-01-06:
         - There is a 19.8574 block reward.
