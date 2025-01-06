@@ -63,8 +63,7 @@ def index() -> flask.Response:
     <button id="b" style="background:#443c68" title="{values[1]:,}">{sizeof_fmt(values[1])}</button>
     <button id="c" style="background:#393053" title="{values[2]:,}">{sizeof_fmt(values[2])}</button>
     <button id="d" style="background:#18122b" title="{values[3]:,}">
-        {sizeof_fmt(values[3])}
-        <br>
+        <div style="display:block;margin-bottom:-.4em">{sizeof_fmt(values[3])}</div>
         <span style="font-size:.5em" title="Ratio blocks accepted / blocks generated">{values[3] * 100 / (values[2] or 1):0,.02f}%</span>
         <span style="font-size:.5em">|</span>
         <span style="font-size:.5em" title="{reward:0,.02f}">{sizeof_fmt(reward)}$</span>
