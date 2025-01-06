@@ -1,2 +1,6 @@
-# Folder
+# Files
+db.json
+
+# Folders
+__pycache__/
 venv/

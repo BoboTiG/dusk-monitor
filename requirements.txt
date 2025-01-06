@@ -1,1 +1,2 @@
 flask==3.1.0
+niquests==3.12.1

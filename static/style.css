@@ -1,0 +1,47 @@
+@font-face {
+    /* https://github.com/githubnext/monaspace/blob/v1.000/fonts/webfonts/MonaspaceArgonVarVF%5Bwght%2Cwdth%2Cslnt%5D.woff2 */
+    font-family: "Monaspace Argon";
+    src:
+        local("Monaspace Argon Regular"),
+        url("/static/monaspace-argon.woff2") format("woff2");
+}
+
+body {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    background-color: #000;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-around;
+}
+
+button {
+    flex: 1;
+    border: 1px solid #111;
+    border-radius: .1em / 1em;
+    text-align: center;
+    font-size: 3em;
+    font-family: "Monaspace Argon";
+    color: #ddd;
+    text-shadow: 1px 1px 0 #222;
+}
+button::after {
+    display: block;
+    font-size: .3em;
+    color: moccasin;
+}
+
+#block-current { background: #635985 }
+#block-current::after { content: "｢Current Block｣" }
+
+#block-latest { background: #443c68 }
+#block-latest::after { content: "｢Latest Block｣" }
+
+#blocks-generated { background: #393053 }
+#blocks-generated::after { content: "｢Generated Blocks｣" }
+
+#blocks-accepted { background: #18122b }
+#blocks-accepted::after { content: "｢Accepted Blocks｣" }
+#blocks-accepted div { display: block; margin-bottom: -.4em }
+#blocks-accepted span { font-size: .5em }
