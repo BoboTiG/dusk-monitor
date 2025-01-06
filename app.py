@@ -74,15 +74,16 @@ def index() -> flask.Response:
     return flask.Response(html, mimetype="text/html")
 
 
-def block_reward(count: int, *, reward: float = 19.8574) -> int:
+def block_reward(count: int) -> int:
     """
     As of 2025-01-06:
         - There is a 19.8574 block reward.
         - Deducting 10% for the team rewards.
         - Block generator gets 80% + voting fractions (not computed here).
     Source: https://github.com/dusk-network/audits/blob/main/core-audits/2024-09_economic-protocol-design_pol-finance.pdf
+    Source: https://github.com/dusk-network/rusk/blob/rusk-1.0.0/rusk/src/lib/node.rs#L132-L157
     """
-    return count * (reward * 0.9 * 0.8)
+    return 19.8574 * 0.8 * count
 
 
 def sizeof_fmt(value: int) -> str:
