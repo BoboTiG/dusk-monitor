@@ -80,3 +80,13 @@ python -m app
 > If you test, you're a coward.
 
 > Si tu testes, t’es un lâche.
+
+## Preview
+
+On desktop:
+
+![Preview on a large screen](./screenshots/dusk-monitoring-large-screen.png)
+
+On a smartphone:
+
+![Preview on a small screen](./screenshots/dusk-monitoring-small-screen.png)
