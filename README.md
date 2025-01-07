@@ -35,8 +35,8 @@ function get_block_heights() {
 
 function list_rejected_blocks() {
     zgrep 'Block generated' /var/log/rusk.log* \
+        | awk '{print $3 $4}' \
         | sed 's/[[:cntrl:]]\[[[:digit:]][a-z]//g' \
-        | awk '{print $4 $5}' \
         | grep -E 'iter=[^0]' | \
             while read -r line ; do \
                 printf '%s ' "$(echo "${line}" | grep -Eo 'round=[[:digit:]]+' | cut -d= -f2)"
