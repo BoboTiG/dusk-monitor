@@ -1,6 +1,6 @@
 # Dusk Node Monitoring
 
-Dumb & simple tool to sync & display Dusk node metrics.
+Dumb'n simple tool to sync & display Dusk node metrics (see the [preview](#preview)).
 It is all about blocks, nothing more.
 
 ## Install
@@ -87,6 +87,6 @@ On desktop:
 
 ![Preview on a large screen](./screenshots/dusk-monitoring-large-screen.png)
 
-On a smartphone:
+On smartphone:
 
 ![Preview on a small screen](./screenshots/dusk-monitoring-small-screen.png)
