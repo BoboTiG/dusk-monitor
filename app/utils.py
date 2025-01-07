@@ -5,7 +5,7 @@ Source: https://github.com/BoboTiG/dusk-monitor
 
 def compute_rewards(blocks: set[int]) -> float:
     """
-    Block generators get 80% + voting fractions (not computed here).
+    Block generators get 70% + voting fractions (not computed here).
     Source: https://github.com/dusk-network/audits/blob/main/core-audits/2024-09_economic-protocol-design_pol-finance.pdf
     Source: https://github.com/dusk-network/rusk/blob/rusk-1.0.0/rusk/src/lib/node.rs#L132-L157
     """
@@ -33,7 +33,7 @@ def compute_rewards(blocks: set[int]) -> float:
             dusk = 19.8574
         else:  # Genesis
             dusk = 0.0
-        amount += dusk * 0.8
+        amount += dusk * 0.7
     return amount
 
 
