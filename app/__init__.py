@@ -2,6 +2,7 @@
 This is part of the DnS Dusk node Monitoring.
 Source: https://github.com/BoboTiG/dusk-monitor
 """
+
 __version__ = "1.0.0"
 __author__ = "Mickaël Schoentgen"
 __copyright__ = f"""

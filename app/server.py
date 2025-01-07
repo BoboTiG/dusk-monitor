@@ -2,6 +2,7 @@
 This is part of the DnS Dusk node Monitoring.
 Source: https://github.com/BoboTiG/dusk-monitor
 """
+
 from subprocess import check_output
 
 import flask
