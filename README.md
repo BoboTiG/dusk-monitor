@@ -18,6 +18,49 @@ python -m pip install -r requirements.txt
 echo 'PROVISIONER_PUBLIC_KEY' > provisioner.txt
 ```
 
+### Node
+
+On the node, execute this script to append shell functions into the user profile file:
+
+```bash
+cat << 'EOF' >> ~/.profile
+
+# Dusk Monitoring (https://github.com/BoboTiG/dusk-monitor)
+
+function get_block_heights() {
+    local current_block="$(ruskquery block-height)"
+    local latest_block="$(API_ENDPOINT=https://nodes.dusk.network ruskquery block-height)"
+    echo "${current_block} ${latest_block}"
+}
+
+function list_rejected_blocks() {
+    zgrep 'Block generated' /var/log/rusk.log* \
+        | sed 's/[[:cntrl:]]\[[[:digit:]][a-z]//g' \
+        | awk '{print $4 $5}' \
+        | grep -E 'iter=[^0]' | \
+            while read -r line ; do \
+                printf '%s ' "$(echo "${line}" | grep -Eo 'round=[[:digit:]]+' | cut -d= -f2)"
+            done
+    echo ""
+}
+EOF
+```
+
+There are also two assumptions:
+- The SSH connection to the node is made via key (and not a password).
+- There is a defined custom SSH `HostName` to connect to the node (`dusk` by default, and it can be tweaked by setting the `DUSK_SSH_HOSTNAME` environment variable).
+
+Here is a sample `~/.ssh/config` file to see what I mean:
+
+```bash
+Host dusk
+    User USER
+    HostName IP
+    PreferredAuthentications publickey
+```
+
+The app will issue commands like `ssh -t DUSK_SSH_HOSTNAME "source .profile ; COMMAND"` (where `COMMAND` will be one of the two functions defined above, nothing more ; and you can inspect the source code to double-check).
+
 ## Run
 
 Update data on a regular basis (to be done via a daily cron job):

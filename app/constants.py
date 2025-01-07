@@ -2,6 +2,7 @@
 This is part of the DnS Dusk node Monitoring.
 Source: https://github.com/BoboTiG/dusk-monitor
 """
+from os import getenv
 from pathlib import Path
 
 # Local files
@@ -25,7 +26,7 @@ PORT = sum(ord(c) for c in "Dusk Node Monitoring")  # Hint: one-thousand-twenty-
 DEBUG = True
 
 # SSH commands to get data from the node
-CMD_SSH = ["ssh", "-t", "dusk"]
+CMD_SSH = ["ssh", "-t", getenv("DUSK_SSH_HOSTNAME", "dusk")]
 CMD_GET_BLOCK_HEIGHTS = [*CMD_SSH, "source .profile ; get_block_heights"]
 CMD_LIST_REJECTED_BLOCKS = [*CMD_SSH, "source .profile ; list_rejected_blocks"]
 
