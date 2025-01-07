@@ -27,6 +27,8 @@ def get_rejected_blocks() -> set[int]:
 def update() -> None:
     new_accepted = get_accepted_blocks()
     new_rejected = get_rejected_blocks()
+    print(f"{new_accepted = }")
+    print(f"{new_rejected = }")
     if not new_accepted and not new_rejected:
         return
 
