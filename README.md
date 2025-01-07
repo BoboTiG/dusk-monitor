@@ -1,6 +1,6 @@
 # Dusk Node Monitoring
 
-Simple tool to sync & display Dusk node metrics.
+Dumb & simple tool to sync & display Dusk node metrics.
 It is all about blocks, nothing more.
 
 ## Install
@@ -25,17 +25,14 @@ Add the provisioner public key in `db.json`.
 Update data on a regular basis (to be done via a daily cron job):
 
 ```bash
-python app --update
+python -m app --update
 ```
 
 Start the local web server at [http://localhost:1923](http://localhost:1923):
 
 ```bash
-python app
+python -m app
 ```
-
 ## Test
 
-```bash
-python -m doctest app.py
-```
+> If you test you're a coward.

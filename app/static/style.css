@@ -21,7 +21,7 @@ button {
     border: 1px solid #111;
     border-radius: .1em / 1em;
     text-align: center;
-    font-size: 3em;
+    font-size: 2.5em;
     font-family: "Monaspace Argon";
     color: #ddd;
     text-shadow: 1px 1px 0 #222;
@@ -30,6 +30,11 @@ button::after {
     display: block;
     font-size: .3em;
     color: moccasin;
+}
+@media (min-width: 500px) {
+    button {
+        font-size: 3em;
+    }
 }
 
 #block-current { background: #635985 }
