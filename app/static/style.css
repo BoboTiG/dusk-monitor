@@ -39,6 +39,7 @@ button::after {
 @media (min-width: 500px) {
     button {
         font-size: 4em;
+        width: 50%;
     }
     #blocks-accepted {
         flex: 1 100%;
