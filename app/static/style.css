@@ -7,19 +7,15 @@
 }
 
 body {
-    height: 100%;
-    padding: 0;
+    height: 100vh;
     margin: 0;
-    background-color: #000;
     display: flex;
     flex-flow: column wrap;
-    justify-content: space-around;
 }
 
 button {
-    flex: 1 auto;
+    flex: 1;
     border: none;
-    text-align: center;
     font-size: 2.5em;
     font-family: "Monaspace Argon";
     color: #ddd;

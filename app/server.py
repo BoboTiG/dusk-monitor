@@ -19,7 +19,8 @@ def index() -> flask.Response:
     rewards = data["rewards"]
     ratio = blocks_accepted * 100 / (blocks_generated or 1)
     current_block, latest_block = get_block_heights()
-    html = f"""<html>
+    html = f"""<!DOCTYPE html>
+<html>
 <head>
     <link rel="shortcut icon" href="/static/favicon.svg">
     <link rel="stylesheet" href="/static/style.css"/>
