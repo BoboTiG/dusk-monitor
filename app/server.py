@@ -33,7 +33,7 @@ def index() -> flask.Response:
     <button id="blocks-generated">{blocks_generated:,}</button>
     <button id="blocks-accepted">
         <div>{blocks_accepted:,}</div>
-        <span title="Ratio blocks accepted / blocks generated is {ratio:0.02f}">{int(ratio)}%</span>
+        <span title="Ratio blocks accepted / blocks generated is {ratio:0.02f}%">{int(ratio)}%</span>
         <span>|</span>
         <span title="{reward:0,.02f}">{utils.format_num(reward)} DUSK</span>
     </button>
