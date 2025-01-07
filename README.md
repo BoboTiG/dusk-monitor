@@ -59,7 +59,7 @@ Host dusk
     PreferredAuthentications publickey
 ```
 
-The app will issue commands like `ssh -t DUSK_SSH_HOSTNAME "source .profile ; COMMAND"` (where `COMMAND` will be one of the two functions defined above, nothing more ; and you can inspect the source code to double-check).
+The app will issue commands like `ssh DUSK_SSH_HOSTNAME "source .profile ; COMMAND"` (where `COMMAND` will be one of the two functions defined above, nothing more ; and you can inspect the source code to double-check).
 
 ## Run
 
