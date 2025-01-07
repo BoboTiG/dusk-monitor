@@ -26,9 +26,9 @@ PORT = sum(ord(c) for c in "Dusk Node Monitoring")  # Hint: one-thousand-twenty-
 DEBUG = True
 
 # SSH commands to get data from the node
-CMD_SSH = ["ssh", "-t", getenv("DUSK_SSH_HOSTNAME", "dusk")]
+CMD_SSH = ["ssh", getenv("DUSK_SSH_HOSTNAME", "dusk")]
 CMD_GET_BLOCK_HEIGHTS = [*CMD_SSH, "source .profile ; get_block_heights"]
-# TODO: Check later if enabling thecompression is better (using the "-C" argument)
+# TODO: Check later if enabling the compression is better (using the "-C" argument)
 CMD_LIST_REJECTED_BLOCKS = [*CMD_SSH, "source .profile ; list_rejected_blocks"]
 
 # Types
