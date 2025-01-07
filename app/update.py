@@ -31,6 +31,8 @@ def update() -> None:
         return
 
     data = db.load()
-    data["rejected"] |= new_rejected
-    data["accepted"] |= new_accepted
+    if new_rejected:
+        data["rejected"] = sorted(set(data["rejected"]) | new_rejected)
+    if new_accepted:
+        data["accepted"] = sorted(set(data["accepted"]) | new_accepted)
     db.save(data)

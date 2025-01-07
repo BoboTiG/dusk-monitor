@@ -31,4 +31,4 @@ CMD_GET_BLOCK_HEIGHTS = [*CMD_SSH, "source .profile ; get_block_heights"]
 CMD_LIST_REJECTED_BLOCKS = [*CMD_SSH, "source .profile ; list_rejected_blocks"]
 
 # Types
-Database = dict[str, set[int]]
+Database = dict[str, list[int]]

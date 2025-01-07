@@ -14,8 +14,8 @@ def load() -> constants.Database:
         data = json.loads(constants.DB_FILE.read_text())
 
     return {
-        "rejected": set(data.get("rejected", [])),
-        "accepted": set(data.get("accepted", [])),
+        "rejected": data.get("rejected", []),
+        "accepted": data.get("accepted", []),
     }
 
 
