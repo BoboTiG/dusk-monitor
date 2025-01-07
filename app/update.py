@@ -25,14 +25,14 @@ def get_rejected_blocks() -> set[int]:
 
 
 def update() -> None:
-    new_rejected = get_rejected_blocks()
     new_accepted = get_accepted_blocks()
-    if not new_rejected and not new_accepted:
+    new_rejected = get_rejected_blocks()
+    if not new_accepted and not new_rejected:
         return
 
     data = db.load()
-    if new_rejected:
-        data["rejected"] = sorted(set(data["rejected"]) | new_rejected)
     if new_accepted:
         data["accepted"] = sorted(set(data["accepted"]) | new_accepted)
+    if new_rejected:
+        data["rejected"] = sorted(set(data["rejected"]) | new_rejected)
     db.save(data)
