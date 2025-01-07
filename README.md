@@ -36,4 +36,4 @@ python -m app
 
 > If you test, you're a coward.
 
-> Si tu testes, t'es un lâche.
+> Si tu testes, t’es un lâche.
