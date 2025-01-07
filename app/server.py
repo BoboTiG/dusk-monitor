@@ -38,6 +38,7 @@ def index() -> flask.Response:
         <span title="{reward:0,.02f}">{utils.format_num(reward)} DUSK</span>
     </button>
     <!-- First version: 2025-01-06! -->
+    <!-- Source: https://github.com/BoboTiG/dusk-monitor -->
 </body>
 </html>"""
     return flask.Response(html, mimetype="text/html")
