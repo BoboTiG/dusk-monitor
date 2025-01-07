@@ -17,14 +17,19 @@ body {
 }
 
 button {
-    flex: 1;
-    border: 1px solid #111;
-    border-radius: .1em / 1em;
+    flex: 1 auto;
+    border: none;
     text-align: center;
     font-size: 2.5em;
     font-family: "Monaspace Argon";
     color: #ddd;
     text-shadow: 1px 1px 0 #222;
+    box-shadow:
+        0 1px 1px hsl(0deg 0% 0% / 0.075),
+        0 2px 2px hsl(0deg 0% 0% / 0.075),
+        0 4px 4px hsl(0deg 0% 0% / 0.075),
+        0 8px 8px hsl(0deg 0% 0% / 0.075),
+        0 16px 16px hsl(0deg 0% 0% / 0.075);
 }
 button::after {
     display: block;
@@ -33,7 +38,10 @@ button::after {
 }
 @media (min-width: 500px) {
     button {
-        font-size: 3em;
+        font-size: 4em;
+    }
+    #blocks-accepted {
+        flex: 1 100%;
     }
 }
 
