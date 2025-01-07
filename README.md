@@ -5,7 +5,7 @@ It is all about blocks, nothing more.
 
 > [!IMPORTANT]
 > Any help is welcome in order to find an efficient GraphQL query to fetch accepted blocks from a given provisioner.
-> See the current query in the [constants.py](app/constants.py) files (look for the `ACCEPTED_BLOCKS_GRAPHQL_QUERY` variable).
+> See the current query in the [constants.py](app/constants.py) file (look for the `ACCEPTED_BLOCKS_GRAPHQL_QUERY` variable).
 
 ## Install
 
