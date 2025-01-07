@@ -7,11 +7,10 @@ if __name__ == "__main__":
     import sys
 
     if "--update" in sys.argv:
-        import app.update as update
+        from app import update
 
         update.update()
     else:
-        import app.constants as constants
-        import app.server as server
+        from app import constants, server
 
-        server.app.run(port=constants.PORT, host="0.0.0.0", debug=True)
+        server.app.run(port=constants.PORT, host=constants.HOST, debug=constants.DEBUG)

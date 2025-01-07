@@ -15,10 +15,10 @@ python -m pip install -r requirements.txt
 ## Setup
 
 ```bash
-cp db.json.sample db.json
+cp provisioner.txt.sample provisioner.txt
 ```
 
-Add the provisioner public key in `db.json`.
+Add the provisioner public key in `provisioner.txt`.
 
 ## Run
 
@@ -33,6 +33,9 @@ Start the local web server at [http://localhost:1923](http://localhost:1923):
 ```bash
 python -m app
 ```
+
 ## Test
 
-> If you test you're a coward.
+> If you test, you're a coward.
+
+> Si tu testes, t'es un lâche.

@@ -6,9 +6,7 @@ from subprocess import check_output
 
 import flask
 
-import app.constants as constants
-import app.db as db
-import app.utils as utils
+from app import constants, db, utils
 
 app = flask.Flask(__name__)
 

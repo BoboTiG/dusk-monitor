@@ -4,18 +4,13 @@ Source: https://github.com/BoboTiG/dusk-monitor
 """
 from subprocess import check_output
 
-import app.constants as constants
-import app.db as db
+import niquests
+
+from app import constants, db
 
 
 def get_accepted_blocks() -> set[int]:
-    import niquests
-
-    # FIXME: Find a more efficient query, like passing `generatorBlsPubkey == "PROVISIONER"` as a condition directly.
-    query = {
-        "topic": "gql",
-        "data": "fragment BlockInfo on Block { header { height, generatorBlsPubkey } } query() { blocks(last: 10000) {...BlockInfo} }",  # noqa: E501
-    }
+    query = {"topic": "gql", "data": constants.ACCEPTED_BLOCKS_GRAPHQL_QUERY}
     with niquests.post(constants.NODE_URL, headers=constants.HEADERS, json=query) as req:
         return {
             block["header"]["height"]

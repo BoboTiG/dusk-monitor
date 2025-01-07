@@ -2,14 +2,17 @@
 This is part of the DnS Dusk node Monitoring.
 Source: https://github.com/BoboTiG/dusk-monitor
 """
+from contextlib import suppress
 import json
 
-import app.constants as constants
+from app import constants
 
 
 def load() -> constants.Database:
-    data = json.loads(constants.DB_FILE.read_text())
-    constants.PROVISIONER = data["provisioner"]
+    data = {}
+    with suppress(FileNotFoundError):
+        data = json.loads(constants.DB_FILE.read_text())
+
     return {
         "rejected": set(data.get("rejected", [])),
         "accepted": set(data.get("accepted", [])),
