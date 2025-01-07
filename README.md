@@ -15,10 +15,8 @@ python -m pip install -r requirements.txt
 ## Setup
 
 ```bash
-cp provisioner.txt.sample provisioner.txt
+echo 'PROVISIONER_PUBLIC_KEY' > provisioner.txt
 ```
-
-Add the provisioner public key in `provisioner.txt`.
 
 ## Run
 
