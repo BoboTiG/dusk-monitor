@@ -16,10 +16,9 @@ def index() -> flask.Response:
     data = db.load()
     blocks_accepted = len(data["accepted"])
     blocks_generated = blocks_accepted + len(data["rejected"])
-    output = check_output(constants.CMD_GET_BLOCK_HEIGHTS, text=True)
-    current_block, latest_block = [int(value) for value in output.strip().split()]
     reward = utils.compute_rewards(data["accepted"])
     ratio = blocks_accepted * 100 / (blocks_generated or 1)
+    current_block, latest_block = get_block_heights()
     html = f"""<html>
 <head>
     <link rel="shortcut icon" href="/static/favicon.svg">
@@ -42,3 +41,13 @@ def index() -> flask.Response:
 </body>
 </html>"""
     return flask.Response(html, mimetype="text/html")
+
+
+def get_block_heights() -> tuple[int, int]:
+    try:
+        output = check_output(constants.CMD_GET_BLOCK_HEIGHTS, text=True)
+        current_block, latest_block = [int(value) for value in output.strip().split()]
+    except Exception as exc:
+        print(f"Error in get_block_heights(): {exc}")
+        current_block, latest_block = 0, 0
+    return current_block, latest_block
