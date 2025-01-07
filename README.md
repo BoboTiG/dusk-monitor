@@ -63,7 +63,7 @@ The app will issue commands like `ssh DUSK_SSH_HOSTNAME "source .profile ; COMMA
 
 ## Run
 
-Update data on a regular basis (to be done via a daily cron job):
+Update data on a regular basis (to be done via a daily cron job, ensure to read notes in [constants.py](app/constants.py) about the `LAST_BLOCKS_COUNT` environment variable):
 
 ```bash
 python -m app --update
