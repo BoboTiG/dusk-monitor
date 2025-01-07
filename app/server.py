@@ -58,5 +58,5 @@ def get_block_heights() -> tuple[int, int]:
         current_block, latest_block = [int(value) for value in output.strip().split()]
     except Exception as exc:
         print(f"Error in get_block_heights(): {exc}")
-        current_block, latest_block = 0, 0
+        current_block = latest_block = 0
     return current_block, latest_block
