@@ -44,11 +44,11 @@ def index() -> flask.Response:
     return flask.Response(html, mimetype="text/html")
 
 
-def format_num(value: int) -> str:
+def format_num(value: float) -> str:
     for unit in ("", "k"):
-        if value < 1000:
+        if value < 1000.0:
             return f"{value:.03f}{unit}"
-        value /= 1000
+        value /= 1000.0
     return f"{value:,.03f}M"
 
 

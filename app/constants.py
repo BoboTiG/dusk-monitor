@@ -35,6 +35,3 @@ CMD_SSH = ["ssh", getenv("DUSK_SSH_HOSTNAME", "dusk")]
 CMD_GET_BLOCK_HEIGHTS = [*CMD_SSH, "source .profile ; get_block_heights"]
 # TODO: Check later if enabling the compression is better (using the "-C" argument)
 CMD_LIST_REJECTED_BLOCKS = [*CMD_SSH, "source .profile ; list_rejected_blocks"]
-
-# Types
-Database = dict[str, set[int]]
