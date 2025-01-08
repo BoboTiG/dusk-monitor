@@ -3,10 +3,19 @@ This is part of the DnS Dusk node Monitoring.
 Source: https://github.com/BoboTiG/dusk-monitor
 """
 
-from contextlib import suppress
 import json
+from contextlib import suppress
 
-from app import constants
+from app import constants, utils
+
+
+def add(blocks: set[int]) -> None:
+    data = load()
+    if new_blocks := blocks - data["blocks"]:
+        data["blocks"] |= new_blocks
+        data["rewards"] = utils.compute_rewards(data["blocks"])
+        save(data)
+        print(f"Saved accepted blocks: {', '.join(sorted(new_blocks))}")
 
 
 def load() -> dict[str, set[int] | float]:

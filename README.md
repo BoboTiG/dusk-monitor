@@ -62,18 +62,26 @@ The app will issue commands like `ssh DUSK_SSH_HOSTNAME "source .profile ; COMMA
 
 ## Run
 
+### Listen to Accepted Blocks
+
+An efficient way to keep track of accepted blocks is to listen to the blockchain directly:
+
+```bash
+python -m app --listen
+```
+
 ### Update Data
 
-Update data on a regular basis (to be done via a cron job, ensure to read notes in [constants.py](app/constants.py) about the `LAST_BLOCKS_COUNT` environment variable):
+In case listening to events is not an option, or unreliable for whatever reason, you can update data on a regular basis (to be done via a cron job, ensure to read notes in [constants.py](app/constants.py) about the `LAST_BLOCKS_COUNT` environment variable):
 
 ```bash
 python -m app --update
 ```
 
-Example of such a cron job that runs every hour:
+Example of such a cron job that runs every day:
 
 ```bash
-0 * * * * cd /path/to/dusk-monitor && ./venv/bin/python -m app --update
+0 0 * * * cd /path/to/dusk-monitor && ./venv/bin/python -m app --update
 ```
 
 ### Web Server

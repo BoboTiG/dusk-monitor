@@ -12,15 +12,10 @@ DB_FILE = ROOT / "db.json"
 PROVISIONER = (ROOT / "provisioner.txt").read_text().strip()
 
 # Mainnet URL
-NODE_URL = "https://nodes.dusk.network/02/Chain"
+NODE_HOSTNAME = "nodes.dusk.network"
 HEADERS = {"User-Agent": "https://github.com/BoboTiG/dusk-monitor"}
-# Number of last blocks to fetch for the query below
-# Note 1: 360 blocks are expected each hour, so using 400 as a safe value.
-# Note 2: 400 is useful only for hourly cron jobs, else a higher value is required.
-# Note 3: When the query below will be optimized, those numbers might be obsolete though.
-LAST_BLOCKS_COUNT = getenv("LAST_BLOCKS_COUNT", 400)
+LAST_BLOCKS_COUNT = getenv("LAST_BLOCKS_COUNT", 10000)
 GENERATED_BLOCKS_GRAPHQL_QUERY = (
-    # FIXME: Find a more efficient query, like passing `generatorBlsPubkey == "PROVISIONER"` as a condition directly.
     "fragment BlockInfo on "
     "Block { header { height, generatorBlsPubkey } } "
     "query() { blocks(last: %s) {...BlockInfo} }" % LAST_BLOCKS_COUNT
