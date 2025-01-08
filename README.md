@@ -102,4 +102,4 @@ On desktop:
 
 On smartphone:
 
-![Preview on a small screen](./screenshots/dusk-monitoring-small-screen.png)
+<img src="./screenshots/dusk-monitoring-small-screen.png" width="50%"/>
