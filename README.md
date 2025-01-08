@@ -67,11 +67,21 @@ The app will issue commands like `ssh DUSK_SSH_HOSTNAME "source .profile ; COMMA
 
 ## Run
 
-Update data on a regular basis (to be done via a daily cron job, ensure to read notes in [constants.py](app/constants.py) about the `LAST_BLOCKS_COUNT` environment variable):
+### Update Data
+
+Update data on a regular basis (to be done via a cron job, ensure to read notes in [constants.py](app/constants.py) about the `LAST_BLOCKS_COUNT` environment variable):
 
 ```bash
 python -m app --update
 ```
+
+Example of such a cron job that runs every hour:
+
+```bash
+0 * * * * cd /path/to/dusk-monitor && ./venv/bin/python -m app --update
+```
+
+### Web Server
 
 Start the local web server at [http://localhost:1923](http://localhost:1923):
 
