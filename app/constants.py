@@ -31,6 +31,5 @@ HOST = "0.0.0.0"
 PORT = sum(ord(c) for c in "Dusk Node Monitoring")  # Hint: one-thousand-twenty-three
 DEBUG = True
 
-# SSH commands to get data from the node
-CMD_SSH = ["ssh", getenv("DUSK_SSH_HOSTNAME", "dusk")]
-CMD_GET_NODE_INFOS = [*CMD_SSH, "source .profile ; get_node_infos"]
+# SSH command to get data from the node
+CMD_GET_NODE_INFO = ["ssh", getenv("DUSK_SSH_HOSTNAME", "dusk"), "source .profile ; get_node_info"]

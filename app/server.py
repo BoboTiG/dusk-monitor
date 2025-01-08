@@ -48,11 +48,11 @@ def format_num(value: float) -> str:
     return f"{value:,.03f}M"
 
 
-def get_node_infos() -> tuple[int, int]:
+def get_node_infos() -> tuple[int, int, int, int]:
+    current_block = latest_block = soft_slashes = hard_slashes = 0
     try:
-        output = check_output(constants.CMD_GET_NODE_INFOS, text=True)
+        output = check_output(constants.CMD_GET_NODE_INFO, text=True)
         current_block, latest_block, soft_slashes, hard_slashes = [int(value) for value in output.strip().split()]
     except Exception as exc:
         print(f"Error in get_block_heights(): {exc}")
-        current_block = latest_block = soft_slashes = hard_slashes = 0
     return current_block, latest_block, soft_slashes, hard_slashes
