@@ -29,7 +29,7 @@ def index() -> flask.Response:
     <title>Dusk Node Monitoring</title>
 </head>
 <body>
-    <button id="block-height" class="{sync_class}" title="{current_block}/{latest_block}">{current_block:,}</button>
+    <button id="block-height" class="{sync_class}" title="{current_block} / {latest_block}">{current_block:,}</button>
     <button id="slashes" class="{slash_class}" title="Soft: {soft_slashes} | Hard: {hard_slashes}">{slashes}</button>
     <button id="blocks-generated">{len(data['blocks']):,}</button>
     <button id="rewards" title="{rewards:0,.02f}">{format_num(rewards)}</button>
