@@ -4,8 +4,8 @@ Dumb'n simple tool to sync & display Dusk node metrics (see the outdated [previe
 It is all about blocks, nothing more.
 
 So far, the *dashboard* will display:
-- The current synced block (in red + a warning sign when behind the latest block).
-- The slashes count (in red + different signs when they happen, and depending on the slash type).
+- The current synchronized block (in red + a warning sign when behind the latest block).
+- The slash count (in red + a warning sign when they happen).
 - The generated blocks count.
 - An approximate rewards value.
 
