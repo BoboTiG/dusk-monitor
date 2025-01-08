@@ -75,14 +75,14 @@ def update() -> None:
     has_changed = False
 
     if blocks_accepted and data["accepted"] != blocks_accepted:
-        data["accepted"] = data["accepted"] | blocks_accepted
+        data["accepted"] |= blocks_accepted
         data["rewards"] = compute_rewards(data["accepted"])
         has_changed = True
     elif data["accepted"] and not data["rewards"]:
         data["rewards"] = compute_rewards(data["accepted"])
         has_changed = True
     if blocks_rejected and data["rejected"] != blocks_rejected:
-        data["rejected"] = data["rejected"] | blocks_rejected
+        data["rejected"] |= blocks_rejected
         has_changed = True
 
     if has_changed:
