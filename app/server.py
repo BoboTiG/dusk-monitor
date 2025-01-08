@@ -15,10 +15,7 @@ app = flask.Flask(__name__)
 @app.route("/")
 def index() -> flask.Response:
     data = db.load()
-    blocks_accepted = len(data["accepted"])
-    blocks_generated = blocks_accepted + len(data["rejected"])
     rewards = data["rewards"]
-    ratio = blocks_accepted * 100 / (blocks_generated or 1)
     current_block, latest_block = get_block_heights()
     html = f"""<!DOCTYPE html>
 <html>
@@ -31,12 +28,9 @@ def index() -> flask.Response:
 <body>
     <button id="block-current">{current_block:,}</button>
     <button id="block-latest">{latest_block:,}</button>
-    <button id="blocks-generated">{blocks_generated:,}</button>
-    <button id="blocks-accepted">
-        <div>{blocks_accepted:,}</div>
-        <span title="Ratio blocks accepted / blocks generated is {ratio:0.02f}%">{int(ratio)}%</span>
-        <span>|</span>
-        <span title="{rewards:0,.02f}">{format_num(rewards)} DUSK</span>
+    <button id="blocks-generated">
+        <div>{len(data['blocks']):,}</div>
+        <span title="{rewards:0,.02f}">💰 {format_num(rewards)} DUSK</span>
     </button>
     <!-- First version: 2025-01-06! -->
     <!-- Source: https://github.com/BoboTiG/dusk-monitor -->

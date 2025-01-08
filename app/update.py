@@ -3,8 +3,6 @@ This is part of the DnS Dusk node Monitoring.
 Source: https://github.com/BoboTiG/dusk-monitor
 """
 
-from subprocess import check_output
-
 import niquests
 
 from app import constants, db
@@ -44,8 +42,8 @@ def compute_rewards(blocks: set[int]) -> float:
     return amount
 
 
-def get_accepted_blocks() -> set[int]:
-    query = {"topic": "gql", "data": constants.ACCEPTED_BLOCKS_GRAPHQL_QUERY}
+def get_generated_blocks() -> set[int]:
+    query = {"topic": "gql", "data": constants.GENERATED_BLOCKS_GRAPHQL_QUERY}
     with niquests.post(constants.NODE_URL, headers=constants.HEADERS, json=query) as req:
         return {
             block["header"]["height"]
@@ -54,34 +52,16 @@ def get_accepted_blocks() -> set[int]:
         }
 
 
-def get_rejected_blocks() -> set[int]:
-    output = check_output(constants.CMD_LIST_REJECTED_BLOCKS, text=True)
-    return {int(block) for block in output.strip().split()}
-
-
 def update() -> None:
-    blocks_accepted = get_accepted_blocks()
+    blocks = get_generated_blocks()
     if constants.DEBUG:
-        print(f"{blocks_accepted = }")
+        print(f"{blocks = }")
 
-    blocks_rejected = get_rejected_blocks()
-    if constants.DEBUG:
-        print(f"{blocks_rejected = }")
-
-    if not blocks_accepted and not blocks_rejected:
+    if not blocks:
         return
 
     data = db.load()
-    has_changed = False
-
-    if blocks_accepted - data["accepted"]:
-        data["accepted"] |= blocks_accepted
-        data["rewards"] = compute_rewards(data["accepted"])
-        has_changed = True
-
-    if blocks_rejected - data["rejected"]:
-        data["rejected"] |= blocks_rejected
-        has_changed = True
-
-    if has_changed:
+    if blocks - data["blocks"]:
+        data["blocks"] |= blocks
+        data["rewards"] = compute_rewards(data["blocks"])
         db.save(data)

@@ -15,13 +15,11 @@ def load() -> dict[str, set[int] | float]:
         data = json.loads(constants.DB_FILE.read_text())
 
     return {
-        "accepted": set(data.get("accepted", [])),
-        "rejected": set(data.get("rejected", [])),
+        "blocks": set(data.get("blocks", [])),
         "rewards": data.get("rewards", 0.0),
     }
 
 
 def save(data: dict[str, set[int] | float]) -> None:
-    data["accepted"] = sorted(data["accepted"])
-    data["rejected"] = sorted(data["rejected"])
+    data["blocks"] = sorted(data["blocks"])
     constants.DB_FILE.write_text(json.dumps(data, sort_keys=True))

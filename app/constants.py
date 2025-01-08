@@ -19,7 +19,7 @@ HEADERS = {"User-Agent": "https://github.com/BoboTiG/dusk-monitor"}
 # Note 2: 400 is useful only for hourly cron jobs, else a higher value is required.
 # Note 3: When the query below will be optimized, those numbers might be obsolete though.
 LAST_BLOCKS_COUNT = getenv("LAST_BLOCKS_COUNT", 400)
-ACCEPTED_BLOCKS_GRAPHQL_QUERY = (
+GENERATED_BLOCKS_GRAPHQL_QUERY = (
     # FIXME: Find a more efficient query, like passing `generatorBlsPubkey == "PROVISIONER"` as a condition directly.
     "fragment BlockInfo on "
     "Block { header { height, generatorBlsPubkey } } "
@@ -34,5 +34,3 @@ DEBUG = True
 # SSH commands to get data from the node
 CMD_SSH = ["ssh", getenv("DUSK_SSH_HOSTNAME", "dusk")]
 CMD_GET_BLOCK_HEIGHTS = [*CMD_SSH, "source .profile ; get_block_heights"]
-# TODO: Check later if enabling the compression is better (using the "-C" argument)
-CMD_LIST_REJECTED_BLOCKS = [*CMD_SSH, "source .profile ; list_rejected_blocks"]

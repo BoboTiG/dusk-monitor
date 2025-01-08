@@ -1,11 +1,11 @@
 # Dusk Node Monitoring
 
-Dumb'n simple tool to sync & display Dusk node metrics (see the [preview](#preview)).
+Dumb'n simple tool to sync & display Dusk node metrics (see the outdated [preview](#preview)).
 It is all about blocks, nothing more.
 
 > [!IMPORTANT]
 > Any help is welcome in order to find an efficient GraphQL query to fetch accepted blocks from a given provisioner.
-> See the current query in the [constants.py](app/constants.py) file (look for the `ACCEPTED_BLOCKS_GRAPHQL_QUERY` variable).
+> See the current query in the [constants.py](app/constants.py) file (look for the `GENERATED_BLOCKS_GRAPHQL_QUERY` variable).
 
 ## Install
 
@@ -36,17 +36,6 @@ function get_block_heights() {
     local latest_block="$(API_ENDPOINT=https://nodes.dusk.network ruskquery block-height)"
     echo "${current_block} ${latest_block}"
 }
-
-function list_rejected_blocks() {
-    zgrep 'Block generated' /var/log/rusk.log* \
-        | awk '{print $3 $4}' \
-        | sed 's/[[:cntrl:]]\[[[:digit:]][a-z]//g' \
-        | grep -E 'iter=[^0]' | \
-            while read -r line ; do \
-                printf '%s ' "$(echo "${line}" | grep -Eo 'round=[[:digit:]]+' | cut -d= -f2)"
-            done
-    echo ""
-}
 EOF
 ```
 
@@ -63,7 +52,7 @@ Host dusk
     PreferredAuthentications publickey
 ```
 
-The app will issue commands like `ssh DUSK_SSH_HOSTNAME "source .profile ; COMMAND"` (where `COMMAND` will be one of the two functions defined above, nothing more ; and you can inspect the source code to double-check).
+The app will issue commands like `ssh DUSK_SSH_HOSTNAME "source .profile ; COMMAND"` (where `COMMAND` will be one of the functions defined above, nothing more ; and you can inspect the source code to double-check).
 
 ## Run
 

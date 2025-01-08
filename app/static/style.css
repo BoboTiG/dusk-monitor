@@ -37,7 +37,7 @@ button::after {
         font-size: 4em;
         width: 50%;
     }
-    #blocks-accepted {
+    #blocks-generated {
         flex: 1 100%;
     }
 }
@@ -48,10 +48,7 @@ button::after {
 #block-latest { background: #443c68 }
 #block-latest::after { content: "｢Latest Block｣" }
 
-#blocks-generated { background: #393053 }
+#blocks-generated { background: #18122b }
 #blocks-generated::after { content: "｢Generated Blocks｣" }
-
-#blocks-accepted { background: #18122b }
-#blocks-accepted::after { content: "｢Accepted Blocks｣" }
-#blocks-accepted div { display: block; margin-bottom: -.4em }
-#blocks-accepted span { font-size: .5em }
+#blocks-generated div { display: block; margin-bottom: -.4em }
+#blocks-generated span { font-size: .5em }
