@@ -9,7 +9,7 @@ import json
 from app import constants
 
 
-def load() -> dict:
+def load() -> dict[str, set[int] | float]:
     data = {}
     with suppress(FileNotFoundError):
         data = json.loads(constants.DB_FILE.read_text())
@@ -21,7 +21,7 @@ def load() -> dict:
     }
 
 
-def save(data: dict) -> None:
+def save(data: dict[str, set[int] | float]) -> None:
     data["accepted"] = sorted(data["accepted"])
     data["rejected"] = sorted(data["rejected"])
     constants.DB_FILE.write_text(json.dumps(data, sort_keys=True))
