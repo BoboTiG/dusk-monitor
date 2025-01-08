@@ -37,7 +37,7 @@ button::after {
         font-size: 4em;
         width: 50%;
     }
-    #blocks-generated {
+    #rewards {
         flex: 1 100%;
     }
 }
@@ -48,7 +48,8 @@ button::after {
 #block-latest { background: #443c68 }
 #block-latest::after { content: "｢Latest Block｣" }
 
-#blocks-generated { background: #18122b }
+#blocks-generated { background: #393053 }
 #blocks-generated::after { content: "｢Generated Blocks｣" }
-#blocks-generated div { display: block; margin-bottom: -.4em }
-#blocks-generated span { font-size: .5em }
+
+#rewards { background: #18122b }
+#rewards::after { content: "｢DUSK Rewards｣" }

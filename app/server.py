@@ -28,10 +28,8 @@ def index() -> flask.Response:
 <body>
     <button id="block-current">{current_block:,}</button>
     <button id="block-latest">{latest_block:,}</button>
-    <button id="blocks-generated">
-        <div>{len(data['blocks']):,}</div>
-        <span title="{rewards:0,.02f}">💰 {format_num(rewards)} DUSK</span>
-    </button>
+    <button id="blocks-generated">{len(data['blocks']):,}</button>
+    <button id="rewards" title="{rewards:0,.02f}">{format_num(rewards)}</button>
     <!-- First version: 2025-01-06! -->
     <!-- Source: https://github.com/BoboTiG/dusk-monitor -->
 </body>
