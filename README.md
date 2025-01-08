@@ -9,13 +9,6 @@ So far, the *dashboard* will display:
 - The generated blocks count.
 - An approximate rewards value.
 
-> [!IMPORTANT]
-> Any help is welcome in order to find an efficient GraphQL query to fetch accepted blocks from a given provisioner.
-> See the current query in the [constants.py](app/constants.py) file (look for the `GENERATED_BLOCKS_GRAPHQL_QUERY` variable).
-
-> [!NOTE]
-> As you can see, dashboard colors are what they are. If anyone wants to propose better color schemes, or even some CSS styles to improve the visual, do not hesitate!
-
 ## Install
 
 ```bash
@@ -106,3 +99,6 @@ On desktop:
 On smartphone:
 
 <img src="./screenshots/dusk-monitoring-small-screen.png" width="50%"/>
+
+> [!NOTE]
+> As you can see, dashboard colors are what they are. If anyone wants to propose better color schemes, or even some CSS styles to improve the visual, do not hesitate!
