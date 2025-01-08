@@ -43,7 +43,7 @@ function get_node_info() {
     local stake_info="$(rusk-wallet stake-info 2>/dev/null)"
     local soft_slashes="$(echo "${stake_info}"| grep -E '^Slashes' | awk '{print $2}')"
     local hard_slashes="$(echo "${stake_info}"| grep -E '^Hard Slashes' | awk '{print $3}')"
-    echo "${current_block} ${latest_block} ${soft_slashes} ${hard_slashes}"
+    echo "${current_block} ${latest_block:-0} ${soft_slashes} ${hard_slashes}"
 }
 EOF
 ```
