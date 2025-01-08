@@ -72,7 +72,7 @@ python -m app --listen
 
 ### Update Data
 
-In case listening to events is not an option, or unreliable for whatever reason, you can update data on a regular basis (to be done via a cron job, ensure to read notes in [constants.py](app/constants.py) about the `LAST_BLOCKS_COUNT` environment variable):
+In case listening to events is not an option, or unreliable for whatever reason, you can update data on a regular basis:
 
 ```bash
 python -m app --update
