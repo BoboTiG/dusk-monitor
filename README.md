@@ -13,6 +13,9 @@ So far, the *dashboard* will display:
 > Any help is welcome in order to find an efficient GraphQL query to fetch accepted blocks from a given provisioner.
 > See the current query in the [constants.py](app/constants.py) file (look for the `GENERATED_BLOCKS_GRAPHQL_QUERY` variable).
 
+> [!NOTE]
+> As you can see, dashboard colors are what they are. If anyone wants to propose better color schemes, or even some CSS styles to improve the visual, do not hesitate!
+
 ## Install
 
 ```bash

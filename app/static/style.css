@@ -1,3 +1,26 @@
+:root {
+    --text: #ddd;
+    --text-shadow: #000;
+    --sub-text: moccasin;
+    --error: crimson;
+    --btn-1: #635985;
+    --btn-2: #443c68;
+    --btn-3: #393053;
+    --btn-4: #18122b;
+}
+@media (prefers-color-scheme: light) {
+    :root {
+        --text: #222;
+        --text-shadow: #fff;
+        --sub-text: darkslateblue;
+        --error: red;
+        --btn-1: #ede4ff;
+        --btn-2: #d7bbf5;
+        --btn-3: #a076f9;
+        --btn-4: #a555ec;
+    }
+}
+
 @font-face {
     /* https://github.com/githubnext/monaspace/blob/v1.000/fonts/webfonts/MonaspaceArgonVarVF%5Bwght%2Cwdth%2Cslnt%5D.woff2 */
     font-family: "Monaspace Argon";
@@ -18,8 +41,8 @@ button {
     border: none;
     font-size: 2.75em;
     font-family: "Monaspace Argon";
-    color: #ddd;
-    text-shadow: .5px .5px 0 #222;
+    color: var(--text);
+    text-shadow: 0 .2px .5px var(--text-shadow);
     box-shadow:
         0 1px 1px hsl(0deg 0% 0% / 0.075),
         0 2px 2px hsl(0deg 0% 0% / 0.075),
@@ -27,32 +50,31 @@ button {
         0 8px 8px hsl(0deg 0% 0% / 0.075),
         0 16px 16px hsl(0deg 0% 0% / 0.075);
 }
-button.error { color: crimson }
+button.error { color: var(--error) }
 button::after {
     display: block;
     font-size: .3em;
-    color: moccasin;
+    color: var(--sub-text);
 }
+
 @media (min-width: 500px) {
     button {
         font-size: 4.5em;
         width: 50%;
     }
-    #rewards {
-        flex: 1 100%;
-    }
+    #rewards { flex: 1 100% }
 }
 
-#block-height { background: #635985 }
+#block-height { background: var(--btn-1) }
 #block-height::after { content: "｢Current Block｣" }
 #block-height.error:after { content: "｢Current Block - ⚠️ Desynchronized｣" }
 
-#slashes { background: #443c68 }
+#slashes { background: var(--btn-2) }
 #slashes::after { content: "｢Slashes｣" }
 #slashes.error:after { content: "｢⚠️ Slashes｣" }
 
-#blocks-generated { background: #393053 }
+#blocks-generated { background: var(--btn-3) }
 #blocks-generated::after { content: "｢Generated Blocks｣" }
 
-#rewards { background: #18122b }
+#rewards { background: var(--btn-4) }
 #rewards::after { content: "｢💰 DUSK Rewards｣" }
