@@ -28,4 +28,4 @@ async def to_accepted_blocks():
             raw_block = raw_block[raw_block.find(b'{"header"'):]
             block = json.loads(raw_block)
             if block["header"]["generator_bls_pubkey"] == constants.PROVISIONER:
-                db.add({block["header"]["height"]})
+                db.add(set([block["header"]["height"]]))
