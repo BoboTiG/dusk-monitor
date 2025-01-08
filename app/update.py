@@ -61,9 +61,13 @@ def get_rejected_blocks() -> set[int]:
 
 def update() -> None:
     blocks_accepted = get_accepted_blocks()
+    if constants.DEBUG:
+        print(f"{blocks_accepted = }")
+
     blocks_rejected = get_rejected_blocks()
-    print(f"{blocks_accepted = }")
-    print(f"{blocks_rejected = }")
+    if constants.DEBUG:
+        print(f"{blocks_rejected = }")
+
     if not blocks_accepted and not blocks_rejected:
         return
 
