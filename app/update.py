@@ -53,7 +53,12 @@ def get_generated_blocks() -> set[int]:
 
 
 def update() -> None:
-    blocks = get_generated_blocks()
+    try:
+        blocks = get_generated_blocks()
+    except niquests.exceptions.JSONDecodeError as exc:
+        print(f"Error in update(): {exc}")
+        return
+
     if constants.DEBUG:
         print(f"{blocks = }")
 
