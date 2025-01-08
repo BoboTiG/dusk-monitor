@@ -5,8 +5,8 @@ It is all about blocks, nothing more.
 
 So far, the *dashboard* will display:
 - The current synced block (in red + a warning sign when behind the latest block).
-- The slashes count (in red + diferent signs in when it occures depending on slash types).
-- The generated blocks counr.
+- The slashes count (in red + different signs when they happen, and depending on the slash type).
+- The generated blocks count.
 - An approximate rewards value.
 
 > [!IMPORTANT]
