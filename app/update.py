@@ -56,7 +56,7 @@ def update() -> None:
     try:
         blocks = get_generated_blocks()
     except niquests.exceptions.JSONDecodeError as exc:
-        print(f"Error in update(): {exc}")
+        print(f"Error in get_generated_blocks(): {exc}")
         return
 
     if constants.DEBUG:

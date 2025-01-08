@@ -16,14 +16,14 @@ app = flask.Flask(__name__)
 def index() -> flask.Response:
     data = db.load()
     rewards = data["rewards"]
-    current_block, latest_block, soft_slashes, hard_slashes = get_node_infos()
+    current_block, latest_block, soft_slashes, hard_slashes = get_node_info()
     slashes = soft_slashes + hard_slashes
     sync_class = "error" if current_block < (latest_block - 1) else ""
     slash_class = "error" if slashes else ""
     html = f"""<!DOCTYPE html>
 <html>
 <head>
-    <link rel="shortcut icon" href="/static/favicon.svg">
+    <link rel="icon" href="/static/favicon.svg">
     <link rel="stylesheet" href="/static/style.css"/>
     <meta content="width=device-width,initial-scale=1.0" name="viewport">
     <title>Dusk Node Monitoring</title>
@@ -48,11 +48,11 @@ def format_num(value: float) -> str:
     return f"{value:,.03f}M"
 
 
-def get_node_infos() -> tuple[int, int, int, int]:
+def get_node_info() -> tuple[int, int, int, int]:
     current_block = latest_block = soft_slashes = hard_slashes = 0
     try:
         output = check_output(constants.CMD_GET_NODE_INFO, text=True)
         current_block, latest_block, soft_slashes, hard_slashes = [int(value) for value in output.strip().split()]
     except Exception as exc:
-        print(f"Error in get_block_heights(): {exc}")
+        print(f"Error in get_node_info(): {exc}")
     return current_block, latest_block, soft_slashes, hard_slashes
