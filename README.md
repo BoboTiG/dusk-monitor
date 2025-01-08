@@ -1,6 +1,6 @@
 # Dusk Node Monitoring
 
-Dumb'n simple tool to sync & display Dusk node metrics (see the outdated [preview](#preview)).
+Dumb'n simple tool to sync & display Dusk node metrics (go to the [preview](#preview)).
 It is all about blocks, nothing more.
 
 So far, the *dashboard* will display:
