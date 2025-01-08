@@ -31,7 +31,7 @@ def index() -> flask.Response:
 <body>
     <button id="block-height" class="{sync_class}" title="Current: {current_block:,} | Latest: {latest_block:,}">{current_block:,}</button>
     <button id="slashes" class="{slash_class}" title="Soft: {soft_slashes} | Hard: {hard_slashes}">{slashes}</button>
-    <button id="blocks-generated">{len(data['blocks']):,}</button>
+    <button id="blocks-generated" title="Latest: {max(data['blocks']):,}">{len(data['blocks']):,}</button>
     <button id="rewards" title="{rewards:0,.02f}">{format_num(rewards)}</button>
     <!-- First version: 2025-01-06! -->
     <!-- Source: https://github.com/BoboTiG/dusk-monitor -->
