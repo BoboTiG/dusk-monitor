@@ -74,11 +74,12 @@ def update() -> None:
     data = db.load()
     has_changed = False
 
-    if blocks_accepted and data["accepted"] != blocks_accepted:
+    if blocks_accepted - data["accepted"]:
         data["accepted"] |= blocks_accepted
         data["rewards"] = compute_rewards(data["accepted"])
         has_changed = True
-    if blocks_rejected and data["rejected"] != blocks_rejected:
+
+    if blocks_rejected - data["rejected"]:
         data["rejected"] |= blocks_rejected
         has_changed = True
 
