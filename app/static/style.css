@@ -19,7 +19,7 @@ button {
     font-size: 2.5em;
     font-family: "Monaspace Argon";
     color: #ddd;
-    text-shadow: 1px 1px 0 #222;
+    text-shadow: .5px .5px 0 #222;
     box-shadow:
         0 1px 1px hsl(0deg 0% 0% / 0.075),
         0 2px 2px hsl(0deg 0% 0% / 0.075),
@@ -27,6 +27,7 @@ button {
         0 8px 8px hsl(0deg 0% 0% / 0.075),
         0 16px 16px hsl(0deg 0% 0% / 0.075);
 }
+button.error { color: #e94c4c }
 button::after {
     display: block;
     font-size: .3em;
@@ -42,14 +43,16 @@ button::after {
     }
 }
 
-#block-current { background: #635985 }
-#block-current::after { content: "｢Current Block｣" }
+#block-height { background: #635985 }
+#block-height::after { content: "｢Current Block｣" }
+#block-height.error:after { content: "｢Current Block - ⚠️ Desynchronized｣" }
 
-#block-latest { background: #443c68 }
-#block-latest::after { content: "｢Latest Block｣" }
+#slashes { background: #443c68 }
+#slashes::after { content: "｢Slashes｣" }
+#slashes.error:after { content: "｢⚠️ Slashes｣" }
 
 #blocks-generated { background: #393053 }
 #blocks-generated::after { content: "｢Generated Blocks｣" }
 
 #rewards { background: #18122b }
-#rewards::after { content: "｢DUSK Rewards｣" }
+#rewards::after { content: "｢💰 DUSK Rewards｣" }

@@ -33,4 +33,4 @@ DEBUG = True
 
 # SSH commands to get data from the node
 CMD_SSH = ["ssh", getenv("DUSK_SSH_HOSTNAME", "dusk")]
-CMD_GET_BLOCK_HEIGHTS = [*CMD_SSH, "source .profile ; get_block_heights"]
+CMD_GET_NODE_INFOS = [*CMD_SSH, "source .profile ; get_node_infos"]

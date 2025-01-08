@@ -16,7 +16,10 @@ app = flask.Flask(__name__)
 def index() -> flask.Response:
     data = db.load()
     rewards = data["rewards"]
-    current_block, latest_block = get_block_heights()
+    current_block, latest_block, soft_slashes, hard_slashes = get_node_infos()
+    slashes = soft_slashes + hard_slashes
+    sync_class = "error" if current_block < (latest_block - 1) else ""
+    slash_class = "error" if slashes else ""
     html = f"""<!DOCTYPE html>
 <html>
 <head>
@@ -26,8 +29,8 @@ def index() -> flask.Response:
     <title>Dusk Node Monitoring</title>
 </head>
 <body>
-    <button id="block-current">{current_block:,}</button>
-    <button id="block-latest">{latest_block:,}</button>
+    <button id="block-height" class="{sync_class}">{current_block:,}</button>
+    <button id="slashes" class="{slash_class}" title="Soft: {soft_slashes} | Hard: {hard_slashes}">{slashes}</button>
     <button id="blocks-generated">{len(data['blocks']):,}</button>
     <button id="rewards" title="{rewards:0,.02f}">{format_num(rewards)}</button>
     <!-- First version: 2025-01-06! -->
@@ -45,11 +48,11 @@ def format_num(value: float) -> str:
     return f"{value:,.03f}M"
 
 
-def get_block_heights() -> tuple[int, int]:
+def get_node_infos() -> tuple[int, int]:
     try:
-        output = check_output(constants.CMD_GET_BLOCK_HEIGHTS, text=True)
-        current_block, latest_block = [int(value) for value in output.strip().split()]
+        output = check_output(constants.CMD_GET_NODE_INFOS, text=True)
+        current_block, latest_block, soft_slashes, hard_slashes = [int(value) for value in output.strip().split()]
     except Exception as exc:
         print(f"Error in get_block_heights(): {exc}")
-        current_block = latest_block = 0
-    return current_block, latest_block
+        current_block = latest_block = soft_slashes = hard_slashes = 0
+    return current_block, latest_block, soft_slashes, hard_slashes

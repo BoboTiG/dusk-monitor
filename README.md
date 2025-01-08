@@ -31,10 +31,13 @@ cat << 'EOF' >> ~/.profile
 
 # Dusk Monitoring (https://github.com/BoboTiG/dusk-monitor)
 
-function get_block_heights() {
+function get_node_infos() {
     local current_block="$(ruskquery block-height)"
     local latest_block="$(API_ENDPOINT=https://nodes.dusk.network ruskquery block-height)"
-    echo "${current_block} ${latest_block}"
+    local stake_info="$(stake-info 2>/dev/null)"
+    local soft_slashes="$(echo "${stake_info}"| grep -E '^Slashes' | awk '{print $2}')"
+    local hard_slashes="$(echo "${stake_info}"| grep -E '^Hard Slashes' | awk '{print $3}')"
+    echo "${current_block} ${latest_block} ${soft_slashes} ${hard_slashes}"
 }
 EOF
 ```
