@@ -3,6 +3,12 @@
 Dumb'n simple tool to sync & display Dusk node metrics (see the outdated [preview](#preview)).
 It is all about blocks, nothing more.
 
+So far, the *dashboard* will display:
+- The current synced block (in red + a warning sign when behind the latest block).
+- The slashes count (in red + diferent signs in when it occures depending on slash types).
+- The generated blocks counr.
+- An approximate rewards value.
+
 > [!IMPORTANT]
 > Any help is welcome in order to find an efficient GraphQL query to fetch accepted blocks from a given provisioner.
 > See the current query in the [constants.py](app/constants.py) file (look for the `GENERATED_BLOCKS_GRAPHQL_QUERY` variable).
