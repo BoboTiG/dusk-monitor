@@ -16,7 +16,7 @@ body {
 button {
     flex: 1;
     border: none;
-    font-size: 2.5em;
+    font-size: 2.75em;
     font-family: "Monaspace Argon";
     color: #ddd;
     text-shadow: .5px .5px 0 #222;
@@ -35,7 +35,7 @@ button::after {
 }
 @media (min-width: 500px) {
     button {
-        font-size: 4em;
+        font-size: 4.5em;
         width: 50%;
     }
     #rewards {
