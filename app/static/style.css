@@ -71,15 +71,15 @@ button::after {
 }
 
 #block-height { background: var(--btn-1) }
-#block-height::after { content: "｢Current Block｣" }
-#block-height.error:after { content: "｢Current Block - ⚠️ Desynchronized｣" }
+#block-height::after { content: "｢current block｣" }
+#block-height.error:after { content: "｢⚠️ current block｣" }
 
 #slashes { background: var(--btn-2) }
-#slashes::after { content: "｢Slashes｣" }
-#slashes.error:after { content: "｢⚠️ Slashes｣" }
+#slashes::after { content: "｢slashes｣" }
+#slashes.error:after { content: "｢⚠️ slashes｣" }
 
 #blocks-generated { background: var(--btn-3) }
-#blocks-generated::after { content: "｢Generated Blocks｣" }
+#blocks-generated::after { content: "｢blocks generated｣" }
 
 #rewards { background: var(--btn-4) }
-#rewards::after { content: "｢💰 DUSK Rewards｣" }
+#rewards::after { content: "｢rewards｣" }
