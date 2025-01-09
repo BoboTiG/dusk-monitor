@@ -13,12 +13,15 @@ def add(blocks: set[int]) -> None:
     data = load()
     if new_blocks := blocks - data["blocks"]:
         data["blocks"] |= new_blocks
+
         if data["rewards"]:
             data["rewards"] += utils.compute_rewards(new_blocks)
         else:
             data["rewards"] = utils.compute_rewards(data["blocks"])
+
         save(data)
-        print(f"Saved accepted blocks: {', '.join(sorted(new_blocks))}")
+
+        print(f"New blocks persisted: {', '.join(str(b) for b in sorted(new_blocks))}")
 
 
 def load() -> dict[str, set[int] | float]:
