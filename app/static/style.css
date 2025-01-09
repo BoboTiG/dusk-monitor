@@ -1,8 +1,8 @@
 :root {
     --text: #ddd;
-    --text-shadow: #000;
+    --text-shadow: #222;
     --sub-text: moccasin;
-    --error: crimson;
+    --error: orangered;
     --btn-1: #635985;
     --btn-2: #443c68;
     --btn-3: #393053;
@@ -11,13 +11,13 @@
 @media (prefers-color-scheme: light) {
     :root {
         --text: #222;
-        --text-shadow: #fff;
-        --sub-text: darkslateblue;
-        --error: red;
-        --btn-1: #ede4ff;
-        --btn-2: #d7bbf5;
-        --btn-3: #a076f9;
-        --btn-4: #a555ec;
+        --text-shadow: #ddd;
+        --sub-text: darkslategray;
+        --error: #f00000;
+        --btn-1: #f6ffde;
+        --btn-2: #e3f2c1;
+        --btn-3: #c9dbb2;
+        --btn-4: #aac8a7;
     }
 }
 
