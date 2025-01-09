@@ -11,17 +11,18 @@ from app import constants, utils
 
 def add(blocks: set[int]) -> None:
     data = load()
-    if new_blocks := blocks - data["blocks"]:
-        data["blocks"] |= new_blocks
+    if not (new_blocks := blocks - data["blocks"]):
+        return
 
-        if data["rewards"]:
-            data["rewards"] += utils.compute_rewards(new_blocks)
-        else:
-            data["rewards"] = utils.compute_rewards(data["blocks"])
+    data["blocks"] |= new_blocks
 
-        save(data)
+    if data["rewards"]:
+        data["rewards"] += utils.compute_rewards(new_blocks)
+    else:
+        data["rewards"] = utils.compute_rewards(data["blocks"])
 
-        print(f"New blocks persisted: {', '.join(str(b) for b in sorted(new_blocks))}")
+    save(data)
+    print(f"New blocks persisted: {', '.join(str(b) for b in sorted(new_blocks))}")
 
 
 def load() -> dict[str, set[int] | float]:
