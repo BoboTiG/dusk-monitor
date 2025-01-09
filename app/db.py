@@ -15,12 +15,7 @@ def add(blocks: set[int]) -> None:
         return
 
     data["blocks"] |= new_blocks
-
-    if data["rewards"]:
-        data["rewards"] += utils.compute_rewards(new_blocks)
-    else:
-        data["rewards"] = utils.compute_rewards(data["blocks"])
-
+    utils.update_rewards(data, new_blocks)
     save(data)
     print(f"New blocks persisted: {', '.join(str(b) for b in sorted(new_blocks))}")
 
@@ -31,8 +26,12 @@ def load() -> dict[str, set[int] | float]:
         data = json.loads(constants.DB_FILE.read_text())
 
     return {
+        # Generated blocks list
         "blocks": set(data.get("blocks", [])),
+        # Current rewards
         "rewards": data.get("rewards", 0.0),
+        # Total theoric rewards
+        "total-rewards": data.get("total-rewards", 0.0),
     }
 
 

@@ -3,6 +3,11 @@ This is part of the DnS Dusk node Monitoring.
 Source: https://github.com/BoboTiG/dusk-monitor
 """
 
+from contextlib import suppress
+import niquests
+
+from app import constants
+
 
 def compute_rewards(blocks: set[int]) -> float:
     """
@@ -36,3 +41,18 @@ def compute_rewards(blocks: set[int]) -> float:
             dusk = 0.0
         amount += dusk * 0.7
     return amount
+
+
+def get_current_rewards() -> set[int]:
+    with niquests.post(f"https://{constants.NODE_HOSTNAME}/on/node/provisioners", headers=constants.HEADERS) as req:
+        return next((prov["reward"] / 10**9 for prov in req.json() if prov["key"] == constants.PROVISIONER), 0.0)
+
+
+def update_rewards(data: dict[str, set[int] | float], new_blocks: set[int]) -> None:
+    with suppress(Exception):
+        data["rewards"] = get_current_rewards()
+
+    if data["total-rewards"]:
+        data["total-rewards"] += compute_rewards(new_blocks)
+    else:
+        data["total-rewards"] = compute_rewards(data["blocks"])

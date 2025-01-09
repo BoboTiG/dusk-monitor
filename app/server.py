@@ -24,6 +24,7 @@ class NodeInfo(NamedTuple):
 def index() -> flask.Response:
     data = db.load()
     rewards = data["rewards"]
+    total_rewards = data["total-rewards"]
     node = get_node_info()
     slashes = node.slash_soft + node.slash_hard
     sync_err = ' class="error"' if node.blk_cur < (node.blk_lat - 1) else ""
@@ -40,7 +41,7 @@ def index() -> flask.Response:
     <button id="block-height"{sync_err} title="Current: {node.blk_cur:,} | Latest: {node.blk_lat:,}">{node.blk_cur:,}</button>
     <button id="slashes"{slash_err} title="Soft: {node.slash_soft} | Hard: {node.slash_hard}">{slashes}</button>
     <button id="blocks-generated" title="Latest: {max(data['blocks']):,}">{len(data['blocks']):,}</button>
-    <button id="rewards" title="{rewards:0,.02f}">{format_num(rewards)}</button>
+    <button id="rewards" title="Current: {rewards:0,.02f} | Total: {total_rewards:0,.02f}">{format_num(rewards)}</button>
     <!-- First version: 2025-01-06 -->
     <!-- Source: https://github.com/BoboTiG/dusk-monitor -->
 </body>
