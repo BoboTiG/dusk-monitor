@@ -3,6 +3,7 @@ This is part of the DnS Dusk node Monitoring.
 Source: https://github.com/BoboTiG/dusk-monitor
 """
 
+
 def compute_rewards(blocks: set[int]) -> float:
     """
     Block generators get 70% + voting fractions (not computed here).

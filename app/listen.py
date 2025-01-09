@@ -25,7 +25,7 @@ async def to_accepted_blocks():
 
         while "listening":
             raw_block = await wss.recv()
-            raw_block = raw_block[raw_block.find(b'{"header"'):]
+            raw_block = raw_block[raw_block.find(b'{"header"') :]
             block = json.loads(raw_block)
             if block["header"]["generator_bls_pubkey"] == constants.PROVISIONER:
                 db.add(set([block["header"]["height"]]))
