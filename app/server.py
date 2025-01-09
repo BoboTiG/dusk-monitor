@@ -26,8 +26,8 @@ def index() -> flask.Response:
     rewards = data["rewards"]
     node = get_node_info()
     slashes = node.slash_soft + node.slash_hard
-    sync_class = "error" if node.blk_cur < (node.blk_lat - 1) else ""
-    slash_class = "error" if slashes else ""
+    sync_err = ' class="error"' if node.blk_cur < (node.blk_lat - 1) else ""
+    slash_err = ' class="error"' if slashes else ""
     html = f"""<!DOCTYPE html>
 <html>
 <head>
@@ -37,11 +37,11 @@ def index() -> flask.Response:
     <title>Dusk Node Monitoring</title>
 </head>
 <body>
-    <button id="block-height" class="{sync_class}" title="Current: {node.blk_cur:,} | Latest: {node.blk_lat:,}">{node.blk_cur:,}</button>
-    <button id="slashes" class="{slash_class}" title="Soft: {node.slash_soft} | Hard: {node.slash_hard}">{slashes}</button>
+    <button id="block-height"{sync_err} title="Current: {node.blk_cur:,} | Latest: {node.blk_lat:,}">{node.blk_cur:,}</button>
+    <button id="slashes"{slash_err} title="Soft: {node.slash_soft} | Hard: {node.slash_hard}">{slashes}</button>
     <button id="blocks-generated" title="Latest: {max(data['blocks']):,}">{len(data['blocks']):,}</button>
     <button id="rewards" title="{rewards:0,.02f}">{format_num(rewards)}</button>
-    <!-- First version: 2025-01-06! -->
+    <!-- First version: 2025-01-06 -->
     <!-- Source: https://github.com/BoboTiG/dusk-monitor -->
 </body>
 </html>"""
