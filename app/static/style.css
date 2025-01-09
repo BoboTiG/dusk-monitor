@@ -64,6 +64,11 @@ button::after {
     }
     #rewards { flex: 1 100% }
 }
+@media (max-width: 499px) {
+    body {
+        flex-direction: column-reverse;
+    }
+}
 
 #block-height { background: var(--btn-1) }
 #block-height::after { content: "｢Current Block｣" }
