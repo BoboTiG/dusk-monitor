@@ -57,10 +57,10 @@ def format_num(value: float) -> str:
 
 
 def get_node_info() -> NodeInfo:
-    current_block = latest_block = soft_slashes = hard_slashes = 0
+    blk_cur = blk_lat = slash_soft = slash_hard = 0
     try:
         output = check_output(constants.CMD_GET_NODE_INFO, text=True)
-        current_block, latest_block, soft_slashes, hard_slashes = [int(value) for value in output.strip().split()]
+        blk_cur, blk_lat, slash_soft, slash_hard = [int(value) for value in output.strip().split()]
     except Exception as exc:
         print(f"Error in get_node_info(): {exc}")
-    return NodeInfo(current_block, latest_block, soft_slashes, hard_slashes)
+    return NodeInfo(blk_cur, blk_lat, slash_soft, slash_hard)
