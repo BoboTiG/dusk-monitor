@@ -4,6 +4,7 @@ Source: https://github.com/BoboTiG/dusk-monitor
 """
 
 from contextlib import suppress
+import subprocess
 import niquests
 
 from app import constants
@@ -48,6 +49,14 @@ def get_current_rewards() -> set[int]:
         return next((prov["reward"] / 10**9 for prov in req.json() if prov["key"] == constants.PROVISIONER), 0.0)
 
 
+def play_sound_of_the_riches() -> None:
+    if not constants.PLAY_SOUND:
+        return
+
+    with suppress(Exception):
+        subprocess.call(constants.PLAY_SOUND_CMD)
+
+
 def update_rewards(data: dict[str, set[int] | float], new_blocks: set[int]) -> None:
     with suppress(Exception):
         data["rewards"] = get_current_rewards()
@@ -56,3 +65,5 @@ def update_rewards(data: dict[str, set[int] | float], new_blocks: set[int]) -> N
         data["total-rewards"] += compute_rewards(new_blocks)
     else:
         data["total-rewards"] = compute_rewards(data["blocks"])
+
+    play_sound_of_the_riches()

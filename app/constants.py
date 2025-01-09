@@ -7,9 +7,9 @@ from os import getenv
 from pathlib import Path
 
 # Local files
-ROOT = Path(__file__).parent.parent
-DB_FILE = ROOT / "db.json"
-PROVISIONER = (ROOT / "provisioner.txt").read_text().strip()
+ROOT = Path(__file__).parent
+DB_FILE = ROOT.parent / "db.json"
+PROVISIONER = (ROOT.parent / "provisioner.txt").read_text().strip()
 
 # Mainnet URL
 NODE_HOSTNAME = "nodes.dusk.network"
@@ -28,3 +28,8 @@ DEBUG = True
 
 # SSH command to get data from the node
 CMD_GET_NODE_INFO = ["ssh", getenv("DUSK_SSH_HOSTNAME", "dusk"), "source .profile ; get_node_info"]
+
+# Bonus: play a sound on new block generated (only when PLAY_SOUND is True)
+PLAY_SOUND = getenv("PLAY_SOUND", "1") != "0"
+AUDIO_FILE = ROOT / "static" / "mixkit-melodic-gold-price-2000.wav"
+PLAY_SOUND_CMD = ["ffplay", "-nodisp", "-autoexit", "-loglevel", "quiet", AUDIO_FILE]

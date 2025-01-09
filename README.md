@@ -7,7 +7,9 @@ So far, the *dashboard* will display:
 - The current synchronized block (in red + a warning sign when behind the latest block).
 - The slash count (in red + a warning sign when they happen).
 - The generated blocks count.
-- An approximate rewards value.
+- The current rewards value (+ a theoric total rewards accumulated so far).
+
+A nice sound will be played on new generated block, and this is totally optional. You can, disable it by setting the `PLAY_SOUND=0` environment variable.
 
 ## Install
 
