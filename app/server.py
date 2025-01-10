@@ -27,8 +27,8 @@ def index() -> flask.Response:
     total_rewards = data["total-rewards"]
     node = get_node_info()
     slashes = node.slash_soft + node.slash_hard
-    sync_err = ' class="error"' if node.blk_cur < (node.blk_lat - 1) else ""
-    slash_err = ' class="error"' if slashes else ""
+    sync_err = '⚠️ ' if node.blk_cur < (node.blk_lat - 1) else ""
+    slash_err = '⚠️ ' if slashes else ""
     html = f"""<!DOCTYPE html>
 <html>
 <head>
@@ -38,10 +38,10 @@ def index() -> flask.Response:
     <title>Dusk Node Monitoring</title>
 </head>
 <body>
-    <div tooltip id="block-height"{sync_err} data-tooltip="Latest: {node.blk_lat:,}">{node.blk_cur:,}</div>
-    <div tooltip id="slashes"{slash_err} data-tooltip="Soft: {node.slash_soft} | Hard: {node.slash_hard}">{slashes}</div>
-    <div tooltip id="blocks-generated" data-tooltip="Latest: {max(data['blocks']):,}">{len(data['blocks']):,}</div>
-    <div tooltip id="rewards" data-tooltip="Current: {rewards:0,.02f} | Total: {total_rewards:0,.02f}">{format_num(rewards)}</div>
+    <div id="block-height" tooltip data-tooltip="Latest: {node.blk_lat:,}"{' class="error"' if sync_err else ''}>{node.blk_cur:,}<span>｢{sync_err}current block｣</span></div>
+    <div id="slashes" tooltip data-tooltip="Soft: {node.slash_soft} | Hard: {node.slash_hard}"{' class="error"' if slash_err else ''}>{slashes}<span>｢{slash_err}slashes｣</span></div>
+    <div id="blocks-generated" tooltip data-tooltip="Latest: {max(data['blocks']):,}">{len(data['blocks']):,}<span>｢blocks generated｣</span></div>
+    <div id="rewards" tooltip data-tooltip="Current: {rewards:0,.02f} | Total: {total_rewards:0,.02f}">{format_num(rewards)}<span>｢rewards｣</span></div>
     <!-- First version: 2025-01-06 -->
     <!-- Source: https://github.com/BoboTiG/dusk-monitor -->
 </body>
