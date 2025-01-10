@@ -55,6 +55,7 @@ def play_sound_of_the_riches() -> None:
 
     with suppress(Exception):
         subprocess.call(constants.PLAY_SOUND_CMD)
+        print("🔔")
 
 
 def update_rewards(data: dict[str, set[int] | float], new_blocks: set[int]) -> None:
