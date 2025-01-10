@@ -41,7 +41,7 @@ def index() -> flask.Response:
     div.append(f'<div id="blocks-generated" tooltip data-tooltip="Latest: {max(blocks):,}">{len(blocks):,}<span>｢blocks generated｣</span></div>')
     div.append(f'<div id="rewards" tooltip data-tooltip="Current: {rewards:0,.02f} | Total: {total_rewards:0,.02f}">{format_num(rewards)}<span>｢rewards｣</span></div>')
 
-    html = f"""<!DOCTYPE html>
+    html = """<!DOCTYPE html>
 <html>
 <head>
     <link rel="icon" href="/static/favicon.svg">
@@ -50,11 +50,11 @@ def index() -> flask.Response:
     <title>Dusk Node Monitoring</title>
 </head>
 <body>
-    {'\n    '.join(div)}
+    %s
     <!-- First version: 2025-01-06 -->
     <!-- Source: https://github.com/BoboTiG/dusk-monitor -->
 </body>
-</html>"""
+</html>""" % "\n    ".join(div)
     return flask.Response(html, mimetype="text/html")
 
 
