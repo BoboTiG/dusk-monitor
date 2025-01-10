@@ -39,7 +39,7 @@ def index() -> flask.Response:
     else:
         div.append(f'<div id="slashes">{slashes}<span>｢slashes｣</span></div>')
     div.append(f'<div id="blocks-generated" tooltip data-tooltip="Latest: {node.blk_max:,}">{node.blk_tot:,}<span>｢blocks generated｣</span></div>')
-    div.append(f'<div id="rewards" tooltip data-tooltip="Current: {node.rewards:0,.02f} | Total: {node.total_rewards:0,.02f}">{format_num(node.rewards)}<span>｢rewards｣</span></div>')
+    div.append(f'<div id="rewards" tooltip data-tooltip="Current: {int(node.rewards):,} | Total: {int(node.total_rewards):,}">{format_num(node.rewards)}<span>｢rewards｣</span></div>')
 
     html = """<!DOCTYPE html>
 <html>
