@@ -27,8 +27,19 @@ def index() -> flask.Response:
     total_rewards = data["total-rewards"]
     node = get_node_info()
     slashes = node.slash_soft + node.slash_hard
-    sync_err = '⚠️ ' if node.blk_cur < (node.blk_lat - 1) else ""
-    slash_err = '⚠️ ' if slashes else ""
+
+    div = []
+    if node.blk_cur < (node.blk_lat - 1):
+        div.append(f'<div id="block-height" tooltip data-tooltip="Latest: {node.blk_lat:,}" class="error">{node.blk_cur:,}<span>｢⚠️ current block｣</span></div>')
+    else:
+        div.append(f'<div id="block-height">{node.blk_cur:,}<span>｢current block｣</span></div>')
+    if slashes:
+        div.append(f'<div id="slashes" tooltip data-tooltip="Soft: {node.slash_soft} | Hard: {node.slash_hard}" class="error">{slashes}<span>｢⚠️ slashes｣</span></div>')
+    else:
+        div.append(f'<div id="slashes">{slashes}<span>｢slashes｣</span></div>')
+    div.append(f'<div id="blocks-generated" tooltip data-tooltip="Latest: {max(data['blocks']):,}">{len(data['blocks']):,}<span>｢blocks generated｣</span></div>')
+    div.append(f'<div id="rewards" tooltip data-tooltip="Current: {rewards:0,.02f} | Total: {total_rewards:0,.02f}">{format_num(rewards)}<span>｢rewards｣</span></div>')
+
     html = f"""<!DOCTYPE html>
 <html>
 <head>
@@ -38,10 +49,7 @@ def index() -> flask.Response:
     <title>Dusk Node Monitoring</title>
 </head>
 <body>
-    <div id="block-height" tooltip data-tooltip="Latest: {node.blk_lat:,}"{' class="error"' if sync_err else ''}>{node.blk_cur:,}<span>｢{sync_err}current block｣</span></div>
-    <div id="slashes" tooltip data-tooltip="Soft: {node.slash_soft} | Hard: {node.slash_hard}"{' class="error"' if slash_err else ''}>{slashes}<span>｢{slash_err}slashes｣</span></div>
-    <div id="blocks-generated" tooltip data-tooltip="Latest: {max(data['blocks']):,}">{len(data['blocks']):,}<span>｢blocks generated｣</span></div>
-    <div id="rewards" tooltip data-tooltip="Current: {rewards:0,.02f} | Total: {total_rewards:0,.02f}">{format_num(rewards)}<span>｢rewards｣</span></div>
+    {'\n    '.join(div)}
     <!-- First version: 2025-01-06 -->
     <!-- Source: https://github.com/BoboTiG/dusk-monitor -->
 </body>

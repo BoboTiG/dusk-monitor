@@ -11,11 +11,7 @@ from app import constants, db
 def get_generated_blocks() -> set[int]:
     query = {"topic": "gql", "data": constants.GENERATED_BLOCKS_GRAPHQL_QUERY}
     with niquests.post(f"https://{constants.NODE_HOSTNAME}/02/Chain", headers=constants.HEADERS, json=query) as req:
-        return {
-            block["header"]["height"]
-            for block in req.json()["blocks"]
-            if block["header"]["generatorBlsPubkey"] == constants.PROVISIONER
-        }
+        return {block["header"]["height"] for block in req.json()["blocks"] if block["header"]["generatorBlsPubkey"] == constants.PROVISIONER}
 
 
 def update() -> None:
