@@ -25,6 +25,7 @@ def index() -> flask.Response:
     data = db.load()
     rewards = data["rewards"]
     total_rewards = data["total-rewards"]
+    blocks = data["blocks"]
     node = get_node_info()
     slashes = node.slash_soft + node.slash_hard
 
@@ -37,7 +38,7 @@ def index() -> flask.Response:
         div.append(f'<div id="slashes" tooltip data-tooltip="Soft: {node.slash_soft} | Hard: {node.slash_hard}" class="error">{slashes}<span>｢⚠️ slashes｣</span></div>')
     else:
         div.append(f'<div id="slashes">{slashes}<span>｢slashes｣</span></div>')
-    div.append(f'<div id="blocks-generated" tooltip data-tooltip="Latest: {max(data['blocks']):,}">{len(data['blocks']):,}<span>｢blocks generated｣</span></div>')
+    div.append(f'<div id="blocks-generated" tooltip data-tooltip="Latest: {max(blocks):,}">{len(blocks):,}<span>｢blocks generated｣</span></div>')
     div.append(f'<div id="rewards" tooltip data-tooltip="Current: {rewards:0,.02f} | Total: {total_rewards:0,.02f}">{format_num(rewards)}<span>｢rewards｣</span></div>')
 
     html = f"""<!DOCTYPE html>
