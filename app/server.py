@@ -38,10 +38,10 @@ def index() -> flask.Response:
     <title>Dusk Node Monitoring</title>
 </head>
 <body>
-    <button id="block-height"{sync_err} title="Current: {node.blk_cur:,} | Latest: {node.blk_lat:,}">{node.blk_cur:,}</button>
-    <button id="slashes"{slash_err} title="Soft: {node.slash_soft} | Hard: {node.slash_hard}">{slashes}</button>
-    <button id="blocks-generated" title="Latest: {max(data['blocks']):,}">{len(data['blocks']):,}</button>
-    <button id="rewards" title="Current: {rewards:0,.02f} | Total: {total_rewards:0,.02f}">{format_num(rewards)}</button>
+    <div tooltip id="block-height"{sync_err} data-tooltip="Latest: {node.blk_lat:,}">{node.blk_cur:,}</div>
+    <div tooltip id="slashes"{slash_err} data-tooltip="Soft: {node.slash_soft} | Hard: {node.slash_hard}">{slashes}</div>
+    <div tooltip id="blocks-generated" data-tooltip="Latest: {max(data['blocks']):,}">{len(data['blocks']):,}</div>
+    <div tooltip id="rewards" data-tooltip="Current: {rewards:0,.02f} | Total: {total_rewards:0,.02f}">{format_num(rewards)}</div>
     <!-- First version: 2025-01-06 -->
     <!-- Source: https://github.com/BoboTiG/dusk-monitor -->
 </body>

@@ -34,15 +34,35 @@ body {
     margin: 0;
     display: flex;
     flex-flow: column wrap;
-}
-
-button {
-    flex: 1;
-    border: none;
-    font-size: 2.75em;
+    cursor: pointer;
     font-family: "Monaspace Argon";
+    text-align: center;
     color: var(--text);
     text-shadow: 0 .2px .5px var(--text-shadow);
+}
+
+[tooltip]::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    display: block;
+    padding: 8px 16px;
+    width: calc(50% - 16px - 16px);
+    margin-top: -4em;
+    font-size: .3em;
+    background-color: hsl(0deg 0% 0% / 0.175);
+    color: var(--sub-text);
+    opacity: 0;
+    transition: all .2s ease-in-out .5s;
+}
+[tooltip]:hover::before {
+    opacity: 1;
+    transform: translate(0, 50%);
+}
+
+div {
+    flex: 1;
+    align-content: center;
+    font-size: 3em;
     box-shadow:
         0 1px 1px hsl(0deg 0% 0% / 0.075),
         0 2px 2px hsl(0deg 0% 0% / 0.075),
@@ -50,15 +70,16 @@ button {
         0 8px 8px hsl(0deg 0% 0% / 0.075),
         0 16px 16px hsl(0deg 0% 0% / 0.075);
 }
-button.error { color: var(--error) }
-button::after {
+div.error { color: var(--error) }
+div.error::before { color: var(--error) }
+div::after {
     display: block;
-    font-size: .3em;
+    font-size: .4em;
     color: var(--sub-text);
 }
 
 @media (min-width: 500px) {
-    button {
+    div {
         font-size: 4.5em;
         width: 50%;
     }
@@ -67,6 +88,9 @@ button::after {
 @media (max-width: 499px) {
     body {
         flex-direction: column-reverse;
+    }
+    [tooltip]::before {
+        width: calc(100% - 16px - 16px);
     }
 }
 
