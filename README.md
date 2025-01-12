@@ -1,9 +1,8 @@
 # Dusk Node Monitoring
 
-Dumb'n simple tool to sync & display Dusk node metrics (go to the [preview](#preview)).
-It is all about blocks, nothing more.
+A minimalist dashboard for your Dusk node (go to the [preview](#preview)).
 
-So far, the *dashboard* will display:
+So far, we display:
 - The current synchronized block (in red + a warning sign when behind the latest block).
 - The slash count (in red + a warning sign when they happen).
 - The generated blocks count.
