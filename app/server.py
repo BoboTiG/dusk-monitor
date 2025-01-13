@@ -3,6 +3,7 @@ This is part of the DnS Dusk node Monitoring.
 Source: https://github.com/BoboTiG/dusk-monitor
 """
 
+from random import choice
 from subprocess import check_output
 from typing import NamedTuple
 
@@ -46,6 +47,7 @@ def index() -> flask.Response:
 <head>
     <link rel="icon" href="/static/favicon.svg">
     <link rel="stylesheet" href="/static/style.css"/>
+    <link rel="stylesheet" href="/static/%s"/>
     <meta content="width=device-width,initial-scale=1.0" name="viewport">
     <title>Dusk Node Monitoring</title>
 </head>
@@ -54,7 +56,7 @@ def index() -> flask.Response:
     <!-- First version: 2025-01-06 -->
     <!-- Source: https://github.com/BoboTiG/dusk-monitor -->
 </body>
-</html>""" % "\n    ".join(div)
+</html>""" % (get_random_style(), "\n    ".join(div))
     return flask.Response(html, mimetype="text/html")
 
 
@@ -85,3 +87,7 @@ def get_node_info() -> NodeInfo:
         data["rewards"],
         data["total-rewards"],
     )
+
+
+def get_random_style() -> str:
+    return choice(constants.CSS_FILES).name

@@ -8,6 +8,7 @@ from pathlib import Path
 
 # Local files
 ROOT = Path(__file__).parent
+STATIC = ROOT / "static"
 DB_FILE = ROOT.parent / "db.json"
 PROVISIONER = (ROOT.parent / "provisioner.txt").read_text().strip()
 
@@ -21,11 +22,12 @@ GENERATED_BLOCKS_GRAPHQL_QUERY = "fragment BlockInfo on Block { header { height,
 HOST = "0.0.0.0"
 PORT = sum(ord(c) for c in "Dusk Node Monitoring")  # Hint: one-thousand-twenty-three
 DEBUG = True
+CSS_FILES = list(STATIC.glob("light-*.css"))
 
 # SSH command to get data from the node
 CMD_GET_NODE_INFO = ["ssh", getenv("DUSK_SSH_HOSTNAME", "dusk"), "source .profile ; get_node_info"]
 
 # Bonus: play a sound on new block generated (only when PLAY_SOUND is True)
 PLAY_SOUND = getenv("PLAY_SOUND", "1") != "0"
-AUDIO_FILE = ROOT / "static" / "mixkit-melodic-gold-price-2000.wav"
+AUDIO_FILE = STATIC / "mixkit-melodic-gold-price-2000.wav"
 PLAY_SOUND_CMD = ["ffplay", "-nodisp", "-autoexit", "-loglevel", "quiet", AUDIO_FILE]

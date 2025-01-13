@@ -9,19 +9,6 @@
     --btn-3: #393053;
     --btn-4: #18122b;
 }
-@media (prefers-color-scheme: light) {
-    :root {
-        --text: #222;
-        --text-shadow: #ddd;
-        --sub-text: darkslategray;
-        --error: #f00000;
-        --tooltip-bg: hsl(0deg 0% 0% / 0.075);
-        --btn-1: #f6ffde;
-        --btn-2: #e3f2c1;
-        --btn-3: #c9dbb2;
-        --btn-4: #aac8a7;
-    }
-}
 
 @font-face {
     /* https://github.com/githubnext/monaspace/blob/v1.000/fonts/webfonts/MonaspaceArgonVarVF%5Bwght%2Cwdth%2Cslnt%5D.woff2 */
@@ -55,6 +42,7 @@ body {
     color: var(--sub-text);
     opacity: 0;
     transition: all .2s ease-in-out .5s;
+    text-shadow: 0 .2px .5px var(--text-shadow);
 }
 [tooltip]:hover::after {
     opacity: 1;

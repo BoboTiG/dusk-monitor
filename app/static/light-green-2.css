@@ -1,0 +1,13 @@
+@media (prefers-color-scheme: light) {
+    :root {
+        --text: #000;
+        --text-shadow: #fff;
+        --sub-text: #222;
+        --error: #f00000;
+        --tooltip-bg: hsl(0deg 0% 0% / 0.075);
+        --btn-1: #bee6ce;
+        --btn-2: #bcffdb;
+        --btn-3: #8dffcd;
+        --btn-4: #68d89b;
+    }
+}
