@@ -1,0 +1,7 @@
+version: 2
+updates:
+  # Python requirements
+  - package-ecosystem: pip
+    directory: /
+    schedule:
+      interval: daily
