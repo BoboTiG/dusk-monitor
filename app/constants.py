@@ -31,3 +31,6 @@ CMD_GET_NODE_INFO = ["ssh", getenv("DUSK_SSH_HOSTNAME", "dusk"), "source .profil
 PLAY_SOUND = getenv("PLAY_SOUND", "1") != "0"
 AUDIO_FILE = STATIC / "mixkit-melodic-gold-price-2000.wav"
 PLAY_SOUND_CMD = ["ffplay", "-nodisp", "-autoexit", "-loglevel", "quiet", AUDIO_FILE]
+
+# Voter fraction rewards, in percent (estimation)
+VOTER_FRACTION_PERCENT = 1.125
