@@ -3,7 +3,10 @@ This is part of the DnS Dusk node Monitoring.
 Source: https://github.com/BoboTiG/dusk-monitor
 """
 
+import contextlib
 import json
+import socket
+from time import sleep
 
 import niquests
 import websockets
@@ -11,7 +14,20 @@ import websockets
 from app import constants, db
 
 
-async def to_accepted_blocks():
+def handle_connection_lost(*, sleep_sec: float = 0.5) -> None:
+    """Wait until the network is back again."""
+    print("Connection lost! Reconnecting …")
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        while "waiting nicely":
+            sleep(sleep_sec)
+            with contextlib.suppress(OSError):
+                # https://www.fdn.fr/actions/dns/
+                s.connect(("80.67.169.12", 53))
+                print("Connection is back again!")
+                return
+
+
+async def listen_to_accepted_blocks():
     """https://docs.dusk.network/developer/integrations/rues/"""
     url = f"wss://{constants.NODE_HOSTNAME}/on"
 
@@ -29,3 +45,11 @@ async def to_accepted_blocks():
             block = json.loads(raw_block)
             if block["header"]["generator_bls_pubkey"] == constants.PROVISIONER:
                 db.add(set([block["header"]["height"]]))
+
+
+async def to_accepted_blocks() -> None:
+    while "listening":
+        try:
+            await listen_to_accepted_blocks()
+        except (niquests.RequestException, socket.gaierror):
+            handle_connection_lost()
