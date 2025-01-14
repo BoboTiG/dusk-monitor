@@ -59,7 +59,7 @@ Host dusk
     PreferredAuthentications publickey
 ```
 
-The app will issue commands like `ssh DUSK_SSH_HOSTNAME "source .profile ; COMMAND"` (where `COMMAND` will be one of the functions defined above, nothing more ; and you can inspect the source code to double-check).
+The app will issue commands like `ssh DUSK_SSH_HOSTNAME "source .profile ; COMMAND"` (where `COMMAND` will be the one defined above, nothing more; and you can inspect the source code to double-check).
 
 ## Run
 
@@ -93,12 +93,6 @@ Start the local web server at [http://localhost:1923](http://localhost:1923):
 python -m app
 ```
 
-## Test
-
-> If you test, you're a coward.
-
-> Si tu testes, t’es un lâche.
-
 ## Preview
 
 On desktop:
@@ -108,6 +102,3 @@ On desktop:
 On smartphone:
 
 <img src="./screenshots/dusk-monitoring-small-screen.png" width="50%"/>
-
-> [!NOTE]
-> As you can see, dashboard colors are what they are. If anyone wants to propose better color schemes, or even some CSS styles to improve the visual, do not hesitate!
