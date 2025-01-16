@@ -14,15 +14,14 @@ import websockets
 from app import constants, db
 
 
-def handle_connection_lost(*, sleep_sec: float = 0.5) -> None:
+def handle_connection_lost() -> None:
     """Wait until the network is back again."""
     print("Connection lost! Reconnecting …")
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         while "waiting nicely":
-            sleep(sleep_sec)
+            sleep(constants.NET_CHECK_INTVL)
             with contextlib.suppress(OSError):
-                # https://www.fdn.fr/actions/dns/
-                s.connect(("80.67.169.12", 53))
+                s.connect((constants.NET_CHECK_IP, constants.NET_CHECK_PORT))
                 print("Connection is back again!")
                 return
 

@@ -34,3 +34,8 @@ PLAY_SOUND_CMD = ["ffplay", "-nodisp", "-autoexit", "-loglevel", "quiet", AUDIO_
 
 # Voter fraction rewards, in percent (estimation)
 VOTER_FRACTION_PERCENT = 1.125
+
+# Used to check when the connection is back again in `--listen` (https://www.fdn.fr/actions/dns/)
+NET_CHECK_IP = "80.67.169.12"
+NET_CHECK_PORT = 53
+NET_CHECK_INTVL = 5
