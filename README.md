@@ -1,6 +1,6 @@
 # Dusk Node Monitoring
 
-A minimalist dashboard for your Dusk node (go to the [preview](#preview)).
+A minimalist dashboard for your Dusk node (go to the [preview](#preview)). Here is [how to setup a node, in French](https://www.tiger-222.fr/luma/blockchain/node-dusk.html).
 
 So far, we display:
 - The current synchronized block (in red + a warning sign when behind the latest block).
