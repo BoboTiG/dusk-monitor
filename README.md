@@ -8,14 +8,13 @@ So far, we display:
 - The generated blocks count.
 - The current rewards value (+ a theoric total rewards accumulated so far).
 
-A nice sound will be played on new generated block, and this is totally optional. You can, disable it by setting the `PLAY_SOUND=0` environment variable.
+🔔 A nice sound will be played on new generated block, and this is totally optional. You can disable it by setting the `PLAY_SOUND=0` environment variable.
 
 ## Install
 
 ```bash
 python3 -m venv venv
 . ./venv/bin/activate
-python -m pip install -U pip
 python -m pip install -r requirements.txt
 ```
 
@@ -45,9 +44,9 @@ EOF
 ```
 
 There are assumptions:
-- The SSH connection to the node is made via key (and not a password).
-- There is a defined custom SSH `HostName` to connect to the node (`dusk` by default, and it can be tweaked by setting the `DUSK_SSH_HOSTNAME` environment variable).
-- The `rusk-wallet` environment variable is exported (`export RUSK_WALLET_PWD='THE_PASSWORD'`).
+1. The SSH connection to the node is made via key (and not a password).
+2. There is a defined custom SSH `HostName` to connect to the node (`dusk` by default, and it can be tweaked by setting the `DUSK_SSH_HOSTNAME` environment variable).
+3. The `rusk-wallet` environment variable is exported (`export RUSK_WALLET_PWD='THE_PASSWORD'`).
 
 Here is a sample `~/.ssh/config` file to see what I mean:
 
