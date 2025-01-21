@@ -35,7 +35,7 @@ async def listen_to_accepted_blocks():
 
         # Subscribe to the accepted blocks topic
         headers = constants.HEADERS | {"Rusk-Session-Id": session_id}
-        with niquests.get(f"http://{constants.NODE_HOSTNAME}/on/blocks/accepted", headers=headers) as req:
+        with niquests.get(f"https://{constants.NODE_HOSTNAME}/on/blocks/accepted", headers=headers) as req:
             req.raise_for_status()
 
         while "listening":
