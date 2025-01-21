@@ -4,10 +4,16 @@ Source: https://github.com/BoboTiG/dusk-monitor
 """
 
 import json
+from itertools import islice
 from contextlib import suppress
-from itertools import batched
 
 from app import constants, utils
+
+
+def batched(iterable, n):
+    iterator = iter(iterable)
+    while batch := tuple(islice(iterator, n)):
+        yield batch
 
 
 def add(blocks: set[int]) -> None:
