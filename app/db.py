@@ -16,13 +16,17 @@ def batched(iterable, n):
         yield batch
 
 
-def add(blocks: set[int]) -> None:
+def add(blocks: set[int], last_block: int = 0) -> None:
     data = load()
     if not (new_blocks := blocks - data["blocks"]):
         return
 
     data["blocks"] |= new_blocks
     utils.update_rewards(data, new_blocks)
+
+    if last_block:
+        data["last-checked-block"] = last_block
+
     save(data)
     print(f"New blocks persisted: {', '.join(str(b) for b in sorted(new_blocks))}")
 
@@ -35,6 +39,8 @@ def load() -> dict[str, set[int] | float]:
     return {
         # Generated blocks list
         "blocks": set(data.get("blocks", [])),
+        # Last checked block (used in --update)
+        "last-checked-block": data.get("last-checked-block", 0),
         # Current rewards
         "rewards": data.get("rewards", 0.0),
         # Total theoric rewards
@@ -48,6 +54,7 @@ def save(data: dict[str, set[int] | float]) -> None:
     "blocks": [
         {blocks}
     ],
+    "last-checked-block": {data["last-checked-block"]},
     "rewards": {data["rewards"]},
     "total-rewards": {data["total-rewards"]}
 }}

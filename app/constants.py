@@ -16,8 +16,9 @@ PROVISIONER = (ROOT.parent / "provisioner.txt").read_text().strip()
 # Mainnet URL
 NODE_HOSTNAME = "nodes.dusk.network"
 HEADERS = {"User-Agent": "https://github.com/BoboTiG/dusk-monitor"}
-LAST_BLOCKS_COUNT = getenv("LAST_BLOCKS_COUNT", 10000)
-GENERATED_BLOCKS_GRAPHQL_QUERY = "fragment BlockInfo on Block { header { height, generatorBlsPubkey } } query() { blocks(last: %s) {...BlockInfo} }" % LAST_BLOCKS_COUNT
+GQL_GENERATED_BLOCKS = "fragment BlockInfo on Block { header { height, generatorBlsPubkey } } query() { blocks(range: [%d, %d]) {...BlockInfo} }"
+GQL_GENERATED_BLOCKS_ITEMS_COUNT = 10_000
+GQL_LAST_BLOCK = "query { block(height: -1) { header { height } } }"
 
 # Local web server
 HOST = "0.0.0.0"
