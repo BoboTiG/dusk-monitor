@@ -27,14 +27,13 @@ echo 'PROVISIONER_PUBLIC_KEY' > provisioner.txt
 
 ### Node
 
-On the node, execute this script to append shell functions into the user profile file:
+On the node, execute this script to append one shell function into the user profile file:
 
 ```bash
 cat << 'EOF' >> ~/.profile
 
-# Dusk Monitoring (https://github.com/BoboTiG/dusk-monitor)
-
 function get_node_info() {
+    # Dusk Monitoring (https://github.com/BoboTiG/dusk-monitor)
     local current_block="$(ruskquery block-height)"
     local latest_block="$(API_ENDPOINT=https://nodes.dusk.network ruskquery block-height)"
     local stake_info="$(rusk-wallet stake-info 2>/dev/null)"
@@ -59,7 +58,7 @@ Host dusk
     PreferredAuthentications publickey
 ```
 
-The app will issue commands like `ssh DUSK_SSH_HOSTNAME "source .profile ; COMMAND"` (where `COMMAND` will be the one defined above, nothing more; and you can inspect the source code to double-check).
+The app will issue that only one command as `ssh DUSK_SSH_HOSTNAME "source .profile ; get_node_info"` (nothing more, and you can inspect the source code to [double-check](https://github.com/search?q=repo:BoboTiG/dusk-monitor%20CMD_GET_NODE_INFO&type=code).
 
 ## Run
 
@@ -94,6 +93,9 @@ python -m app
 ```
 
 ## Preview
+
+> [!NOTE]
+> Those screenshots might be outdated, but the essence of the dashboard is still relevant from those pictures.
 
 On desktop:
 
