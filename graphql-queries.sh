@@ -10,6 +10,7 @@ curl 'https://nodes.dusk.network/02/Chain' --data-raw \
 
 
 # Fetch latest 100 blocks (only the height, and provisioner)
+# You can find more retreivable data from `BlockInfo`: https://github.com/dusk-network/rusk/blob/835bc6f57d3f1edb06f45266b9005018772b0561/explorer/src/lib/services/gql-queries.js#L27
 curl 'https://nodes.dusk.network/02/Chain' --data-raw \
    '{"topic":"gql","data":"fragment BlockInfo on Block { header { height, generatorBlsPubkey } } query() { blocks(last: 100) {...BlockInfo} }"}'
 
