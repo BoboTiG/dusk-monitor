@@ -49,7 +49,9 @@ def load() -> dict[str, set[int] | float]:
 
 
 def save(data: dict[str, set[int] | float]) -> None:
-    blocks = ",\n        ".join(str(batch)[1:-1] for batch in batched(sorted(data["blocks"]), constants.DB_BLOCKS_PER_LINE))
+    blocks = ",\n        ".join(
+        str(batch)[1:-1] for batch in batched(sorted(data["blocks"]), constants.DB_BLOCKS_PER_LINE)
+    )
     output = f"""{{
     "blocks": [
         {blocks}

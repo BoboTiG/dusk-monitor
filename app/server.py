@@ -32,14 +32,20 @@ def index() -> flask.Response:
 
     div = []
     if node.blk_cur < (node.blk_lat - 1):
-        div.append(f'<div id="block-height" tooltip data-tooltip="Latest: {node.blk_lat:,}" class="error">{node.blk_cur:,}<span>｢⚠️ current block｣</span></div>')
+        div.append(
+            f'<div id="block-height" tooltip data-tooltip="Latest: {node.blk_lat:,}" class="error">{node.blk_cur:,}<span>｢⚠️ current block｣</span></div>'
+        )
     else:
         div.append(f'<div id="block-height">{node.blk_cur:,}<span>｢current block｣</span></div>')
     if slashes:
-        div.append(f'<div id="slashes" tooltip data-tooltip="Soft: {node.slash_soft} | Hard: {node.slash_hard}" class="error">{slashes}<span>｢⚠️ slashes｣</span></div>')
+        div.append(
+            f'<div id="slashes" tooltip data-tooltip="Soft: {node.slash_soft} | Hard: {node.slash_hard}" class="error">{slashes}<span>｢⚠️ slashes｣</span></div>'
+        )
     else:
         div.append(f'<div id="slashes">{slashes}<span>｢slashes｣</span></div>')
-    div.append(f'<div id="blocks-generated" tooltip data-tooltip="Latest: {node.blk_max:,}">{node.blk_tot:,}<span>｢blocks generated｣</span></div>')
+    div.append(
+        f'<div id="blocks-generated" tooltip data-tooltip="Latest: {node.blk_max:,}">{node.blk_tot:,}<span>｢blocks generated｣</span></div>'
+    )
     div.append(
         f'<div id="rewards" tooltip data-tooltip="Current: {int(node.rewards):,} | Total: {int(node.total_rewards * constants.VOTER_FRACTION_PERCENT):,}">{format_num(node.rewards)}<span>｢rewards｣</span></div>'
     )
