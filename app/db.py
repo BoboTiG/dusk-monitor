@@ -5,6 +5,7 @@ Source: https://github.com/BoboTiG/dusk-monitor
 
 import json
 from contextlib import suppress
+from itertools import batched
 
 from app import constants, utils
 
@@ -36,5 +37,12 @@ def load() -> dict[str, set[int] | float]:
 
 
 def save(data: dict[str, set[int] | float]) -> None:
-    data["blocks"] = sorted(data["blocks"])
-    constants.DB_FILE.write_text(json.dumps(data, sort_keys=True))
+    output = f"""{{
+    "blocks": [
+        {",\n        ".join(str(batch)[1:-1] for batch in batched(sorted(data["blocks"]), constants.DB_BLOCKS_PER_LINE))}
+    ],
+    "rewards": {data["rewards"]},
+    "total-rewards": {data["total-rewards"]}
+}}
+"""
+    constants.DB_FILE.write_text(output)

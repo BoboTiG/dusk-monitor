@@ -10,6 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).parent
 STATIC = ROOT / "static"
 DB_FILE = ROOT.parent / "db.json"
+DB_BLOCKS_PER_LINE = 50
 PROVISIONER = (ROOT.parent / "provisioner.txt").read_text().strip()
 
 # Mainnet URL
