@@ -9,8 +9,9 @@ from pathlib import Path
 # Local files
 ROOT = Path(__file__).parent
 STATIC = ROOT / "static"
-DB_FILE = ROOT.parent / "db.json"
-PROVISIONER = (ROOT.parent / "provisioner.txt").read_text().strip()
+DATA_DIR = Path(getenv("DATA_DIR", ROOT.parent))
+DB_FILE = DATA_DIR / "db.json"
+PROVISIONER = (DATA_DIR / "provisioner.txt").read_text().strip()
 
 # Database
 DB_BLOCKS_PER_LINE = 50

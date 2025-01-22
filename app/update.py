@@ -48,5 +48,4 @@ def update() -> None:
     except niquests.exceptions.JSONDecodeError as exc:
         print(f"Error in get_generated_blocks(): {exc}")
     else:
-        if blocks:
-            db.add(blocks, last_block=last_block)
+        db.add(blocks, last_block=last_block)

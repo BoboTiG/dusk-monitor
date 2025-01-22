@@ -26,13 +26,12 @@ python -m pip install -r requirements.txt
 
 ## Setup
 
-```bash
-echo 'PROVISIONER_PUBLIC_KEY' > provisioner.txt
-```
+### On the Node
 
-### Node
+> [!IMPORTANT]
+> The `rusk-wallet` environment variable must be exported (`export RUSK_WALLET_PWD='THE_PASSWORD' >> ~/.profile`).
 
-On the node, execute this script to append one shell function into the user profile file:
+Execute this script to append one shell function into the user profile file:
 
 ```bash
 cat << 'EOF' >> ~/.profile
@@ -49,23 +48,68 @@ function get_node_info() {
 EOF
 ```
 
-There are assumptions:
-1. The SSH connection to the node is made via key (and not a password).
-2. There is a defined custom SSH `HostName` to connect to the node (`dusk` by default, and it can be tweaked by setting the `DUSK_SSH_HOSTNAME` environment variable on the local machine).
-3. The `rusk-wallet` environment variable is exported on the node (`export RUSK_WALLET_PWD='THE_PASSWORD'`).
+### On the Local Machine
 
-Here is a sample `~/.ssh/config` file to see what I mean:
+> [!IMPORTANT]
+> There are assumptions:
+>
+> 1. The SSH connection to the node is made via public key (and not a password).
+> 2. There is a defined custom SSH `HostName` to connect to the node (`dusk` by default, and it can be tweaked by setting the `DUSK_SSH_HOSTNAME` environment variable).
+>
+> Here is a sample `~/.ssh/config` file to see what I mean:
+>
+> ```bash
+> Host dusk
+>     User USER
+>     HostName IP
+>     PreferredAuthentications publickey
+> ```
+>
+> The app will issue that only one command as `ssh DUSK_SSH_HOSTNAME "source .profile ; get_node_info"` (nothing more, and you can inspect the source code to [double-check](https://github.com/search?q=repo:BoboTiG/dusk-monitor%20CMD_GET_NODE_INFO&type=code).
+
+#### Data
+
+A JSON file (`db.json`) will be created, and updated, as a database-like container. Those `db.json`, and `provisioner.txt`, files are stored at the root of the repository by default. You can move them to another place, and set the `DATA_DIR` environment variable accordingly:
 
 ```bash
-Host dusk
-    User USER
-    HostName IP
-    PreferredAuthentications publickey
+DATA_DIR=../dusk-monitor-data/node-1 COMMAND
 ```
 
-The app will issue that only one command as `ssh DUSK_SSH_HOSTNAME "source .profile ; get_node_info"` (nothing more, and you can inspect the source code to [double-check](https://github.com/search?q=repo:BoboTiG/dusk-monitor%20CMD_GET_NODE_INFO&type=code).
+You will then have that tree:
+
+```bash
+../dusk-monitor-data
+└─── node-1
+     ├── db.json
+     └── provisioner.txt
+```
+
+#### The Provisioner File
+
+```bash
+echo 'PROVISIONER_PUBLIC_KEY' > "${DATA_DIR:-.}/provisioner.txt"
+```
 
 ## Run
+
+### First Run
+
+The very first run, you could:
+
+1. Setup the [provisioner file](#the-provisioner-file).
+1. [Update data](#update-data).
+1. Setup the [daily cron job](#update-data).
+1. Continue to [next runs](#next-runs).
+
+### Next Runs
+
+Then, you could:
+
+1. Start the [listener](#listen-to-accepted-blocks) in one terminal, keep it running 7/7 24/24.
+1. Start the [web server](#web-server) in another terminal, keep it running as long as you want to have a visual on the dashboard.
+1. That's it!
+
+## Commands
 
 ### Listen to Accepted Blocks
 

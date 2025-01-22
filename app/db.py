@@ -31,17 +31,20 @@ def batched(iterable, n):
 
 def add(blocks: set[int], last_block: int = 0) -> None:
     data = load()
-    if not (new_blocks := blocks - data.blocks):
-        return
+    need_persistence = False
 
-    data.blocks |= new_blocks
-    utils.update_rewards(data, new_blocks)
+    if new_blocks := blocks - data.blocks:
+        data.blocks |= new_blocks
+        utils.update_rewards(data, new_blocks)
+        need_persistence = True
+        print(f"New blocks persisted: {', '.join(str(b) for b in sorted(new_blocks))}")
 
     if last_block:
         data.last_checked_block = last_block
+        need_persistence = True
 
-    save(data)
-    print(f"New blocks persisted: {', '.join(str(b) for b in sorted(new_blocks))}")
+    if need_persistence:
+        save(data)
 
 
 def load() -> DataBase:
