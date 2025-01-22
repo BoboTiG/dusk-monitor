@@ -42,7 +42,7 @@ AUDIO_FILE = STATIC / "mixkit-melodic-gold-price-2000.wav"
 PLAY_SOUND_CMD = ["ffplay", "-nodisp", "-autoexit", "-loglevel", "quiet", str(AUDIO_FILE)]
 
 # Voter fraction rewards, in percent (estimation)
-VOTER_FRACTION_PERCENT = 1.125
+VOTER_FRACTION_PERCENT = 1.1335
 
 # Used to check when the connection is back again in `--listen` (https://www.fdn.fr/actions/dns/)
 NET_CHECK_IP = "80.67.169.12"
