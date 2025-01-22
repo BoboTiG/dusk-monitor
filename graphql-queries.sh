@@ -2,6 +2,9 @@
 #
 # A bunch of useful GQL queries (used, or not, in that project).
 #
+# Some Python code can be found here on how to use RUES:
+#     https://github.com/BoboTiG/dusk-monitor/blob/d4ee9f94d96c3a115c6f375a8765862598d4e0f0/app/listen.py
+#
 
 
 # Fetch the latest block height
