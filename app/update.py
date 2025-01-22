@@ -86,7 +86,8 @@ def play_sound_of_the_riches() -> None:
     if constants.PLAY_SOUND:
         with suppress(Exception):
             subprocess.call(constants.PLAY_SOUND_CMD)
-            print("🔔")
+            if constants.DEBUG:
+                print("🔔")
 
 
 def update() -> None:
