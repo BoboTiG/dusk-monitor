@@ -10,7 +10,7 @@ from app import constants, db
 
 def get_generated_blocks() -> tuple[int, set[int]]:
     data = db.load()
-    last_checked_block = data["last-checked-block"]
+    last_checked_block = data[constants.DB_KEY_LAST_CHECKED_BLOCK]
     last_block = get_last_block()
     blocks: set[int] = set()
     url = f"https://{constants.NODE_HOSTNAME}/02/Chain"

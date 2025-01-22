@@ -10,8 +10,14 @@ from pathlib import Path
 ROOT = Path(__file__).parent
 STATIC = ROOT / "static"
 DB_FILE = ROOT.parent / "db.json"
-DB_BLOCKS_PER_LINE = 50
 PROVISIONER = (ROOT.parent / "provisioner.txt").read_text().strip()
+
+# Database
+DB_BLOCKS_PER_LINE = 50
+DB_KEY_BLOCKS = "blocks"
+DB_KEY_LAST_CHECKED_BLOCK = "last-checked-block"
+DB_KEY_REWARDS = "rewards"
+DB_KEY_TOTAL_REWARDS = "total-rewards"
 
 # Mainnet URL
 NODE_HOSTNAME = "nodes.dusk.network"

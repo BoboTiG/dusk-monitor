@@ -86,14 +86,14 @@ def get_node_info() -> NodeInfo:
         blk_cur = blk_lat = slash_soft = slash_hard = 0
 
     return NodeInfo(
-        max(data["blocks"]),
+        max(data[constants.DB_KEY_BLOCKS]),
         blk_cur,
         blk_lat,
-        len(data["blocks"]),
+        len(data[constants.DB_KEY_BLOCKS]),
         slash_soft,
         slash_hard,
-        data["rewards"],
-        data["total-rewards"],
+        data[constants.DB_KEY_REWARDS],
+        data[constants.DB_KEY_TOTAL_REWARDS],
     )
 
 

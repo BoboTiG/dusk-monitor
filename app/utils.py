@@ -60,11 +60,11 @@ def play_sound_of_the_riches() -> None:
 
 def update_rewards(data: dict[str, set[int] | float], new_blocks: set[int]) -> None:
     with suppress(Exception):
-        data["rewards"] = get_current_rewards()
+        data[constants.DB_KEY_REWARDS] = get_current_rewards()
 
-    if data["total-rewards"]:
-        data["total-rewards"] += compute_rewards(new_blocks)
+    if data[constants.DB_KEY_TOTAL_REWARDS]:
+        data[constants.DB_KEY_TOTAL_REWARDS] += compute_rewards(new_blocks)
     else:
-        data["total-rewards"] = compute_rewards(data["blocks"])
+        data[constants.DB_KEY_TOTAL_REWARDS] = compute_rewards(data[constants.DB_KEY_BLOCKS])
 
     play_sound_of_the_riches()

@@ -18,14 +18,14 @@ def batched(iterable, n):
 
 def add(blocks: set[int], last_block: int = 0) -> None:
     data = load()
-    if not (new_blocks := blocks - data["blocks"]):
+    if not (new_blocks := blocks - data[constants.DB_KEY_BLOCKS]):
         return
 
-    data["blocks"] |= new_blocks
+    data[constants.DB_KEY_BLOCKS] |= new_blocks
     utils.update_rewards(data, new_blocks)
 
     if last_block:
-        data["last-checked-block"] = last_block
+        data[constants.DB_KEY_LAST_CHECKED_BLOCK] = last_block
 
     save(data)
     print(f"New blocks persisted: {', '.join(str(b) for b in sorted(new_blocks))}")
@@ -38,27 +38,27 @@ def load() -> dict[str, set[int] | float]:
 
     return {
         # Generated blocks list
-        "blocks": set(data.get("blocks", [])),
+        constants.DB_KEY_BLOCKS: set(data.get(constants.DB_KEY_BLOCKS, [])),
         # Last checked block (used in --update)
-        "last-checked-block": data.get("last-checked-block", 0),
+        constants.DB_KEY_LAST_CHECKED_BLOCK: data.get(constants.DB_KEY_LAST_CHECKED_BLOCK, 0),
         # Current rewards
-        "rewards": data.get("rewards", 0.0),
+        constants.DB_KEY_REWARDS: data.get(constants.DB_KEY_REWARDS, 0.0),
         # Total theoric rewards
-        "total-rewards": data.get("total-rewards", 0.0),
+        constants.DB_KEY_TOTAL_REWARDS: data.get(constants.DB_KEY_TOTAL_REWARDS, 0.0),
     }
 
 
 def save(data: dict[str, set[int] | float]) -> None:
     blocks = ",\n        ".join(
-        str(batch)[1:-1] for batch in batched(sorted(data["blocks"]), constants.DB_BLOCKS_PER_LINE)
+        str(batch)[1:-1] for batch in batched(sorted(data[constants.DB_KEY_BLOCKS]), constants.DB_BLOCKS_PER_LINE)
     )
     output = f"""{{
-    "blocks": [
+    "{constants.DB_KEY_BLOCKS}": [
         {blocks.rstrip(",")}
     ],
-    "last-checked-block": {data["last-checked-block"]},
-    "rewards": {data["rewards"]},
-    "total-rewards": {data["total-rewards"]}
+    "{constants.DB_KEY_LAST_CHECKED_BLOCK}": {data[constants.DB_KEY_LAST_CHECKED_BLOCK]},
+    "{constants.DB_KEY_REWARDS}": {data[constants.DB_KEY_REWARDS]},
+    "{constants.DB_KEY_TOTAL_REWARDS}": {data[constants.DB_KEY_TOTAL_REWARDS]}
 }}
 """
     constants.DB_FILE.write_text(output)
