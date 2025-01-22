@@ -3,11 +3,17 @@ This is part of the DnS Dusk node Monitoring.
 Source: https://github.com/BoboTiG/dusk-monitor
 """
 
+from __future__ import annotations
+
 from contextlib import suppress
 import subprocess
 import niquests
+from typing import TYPE_CHECKING
 
 from app import constants
+
+if TYPE_CHECKING:
+    from app.db import DataBase
 
 
 def compute_rewards(blocks: set[int]) -> float:
@@ -44,7 +50,7 @@ def compute_rewards(blocks: set[int]) -> float:
     return amount
 
 
-def get_current_rewards() -> set[int]:
+def get_current_rewards() -> float:
     with niquests.post(f"https://{constants.NODE_HOSTNAME}/on/node/provisioners", headers=constants.HEADERS) as req:
         return next((prov["reward"] / 10**9 for prov in req.json() if prov["key"] == constants.PROVISIONER), 0.0)
 
@@ -58,13 +64,13 @@ def play_sound_of_the_riches() -> None:
         print("🔔")
 
 
-def update_rewards(data: dict[str, set[int] | float], new_blocks: set[int]) -> None:
+def update_rewards(data: "DataBase", new_blocks: set[int]) -> None:
     with suppress(Exception):
-        data[constants.DB_KEY_REWARDS] = get_current_rewards()
+        data.rewards = get_current_rewards()
 
-    if data[constants.DB_KEY_TOTAL_REWARDS]:
-        data[constants.DB_KEY_TOTAL_REWARDS] += compute_rewards(new_blocks)
+    if data.total_rewards:
+        data.total_rewards += compute_rewards(new_blocks)
     else:
-        data[constants.DB_KEY_TOTAL_REWARDS] = compute_rewards(data[constants.DB_KEY_BLOCKS])
+        data.total_rewards = compute_rewards(data.blocks)
 
     play_sound_of_the_riches()

@@ -38,7 +38,7 @@ CMD_GET_NODE_INFO = ["ssh", getenv("DUSK_SSH_HOSTNAME", "dusk"), "source .profil
 # Bonus: play a sound on new block generated (only when PLAY_SOUND is True)
 PLAY_SOUND = getenv("PLAY_SOUND", "1") != "0"
 AUDIO_FILE = STATIC / "mixkit-melodic-gold-price-2000.wav"
-PLAY_SOUND_CMD = ["ffplay", "-nodisp", "-autoexit", "-loglevel", "quiet", AUDIO_FILE]
+PLAY_SOUND_CMD = ["ffplay", "-nodisp", "-autoexit", "-loglevel", "quiet", str(AUDIO_FILE)]
 
 # Voter fraction rewards, in percent (estimation)
 VOTER_FRACTION_PERCENT = 1.125

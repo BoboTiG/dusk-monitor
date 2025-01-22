@@ -10,16 +10,15 @@ from app import constants, db
 
 def get_generated_blocks() -> tuple[int, set[int]]:
     data = db.load()
-    last_checked_block = data[constants.DB_KEY_LAST_CHECKED_BLOCK]
     last_block = get_last_block()
     blocks: set[int] = set()
     url = f"https://{constants.NODE_HOSTNAME}/02/Chain"
 
     if constants.DEBUG:
-        print(f"last-checked-block = {last_checked_block:,}")
+        print(f"last-checked-block = {data.last_checked_block:,}")
         print(f"last-block         = {last_block:,}")
 
-    for from_block in range(last_checked_block, last_block, constants.GQL_GENERATED_BLOCKS_ITEMS_COUNT):
+    for from_block in range(data.last_checked_block, last_block, constants.GQL_GENERATED_BLOCKS_ITEMS_COUNT):
         to_block = from_block + constants.GQL_GENERATED_BLOCKS_ITEMS_COUNT
 
         if constants.DEBUG:
