@@ -54,7 +54,7 @@ def save(data: dict[str, set[int] | float]) -> None:
     )
     output = f"""{{
     "blocks": [
-        {blocks}
+        {blocks.rstrip(",")}
     ],
     "last-checked-block": {data["last-checked-block"]},
     "rewards": {data["rewards"]},
