@@ -3,6 +3,7 @@ This is part of the DnS Dusk node Monitoring.
 Source: https://github.com/BoboTiG/dusk-monitor
 """
 
+import math
 from random import choice
 from subprocess import check_output
 from typing import NamedTuple
@@ -47,7 +48,7 @@ def index() -> flask.Response:
         f'<div id="blocks-generated" tooltip data-tooltip="Latest: {node.blk_max:,}">{node.blk_tot:,}<span>｢blocks generated｣</span></div>'
     )
     div.append(
-        f'<div id="rewards" tooltip data-tooltip="Current: {int(node.rewards):,} | Total: {int(node.total_rewards * constants.VOTER_FRACTION_PERCENT):,}">{format_num(node.rewards)}<span>｢rewards｣</span></div>'
+        f'<div id="rewards" tooltip data-tooltip="Current: {math.ceil(node.rewards):,} | Total: {math.ceil(node.total_rewards * constants.VOTER_FRACTION_PERCENT):,}">{format_num(node.rewards)}<span>｢rewards｣</span></div>'
     )
 
     html = """<!DOCTYPE html>
