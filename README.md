@@ -105,7 +105,7 @@ The very first run, you could:
 
 Then, you could:
 
-1. Start the [listener](#listen-to-accepted-blocks) in one terminal, keep it running 7/7 24/24.
+1. Optionally, start the [listener](#listen-to-accepted-blocks) in one terminal, keep it running 7/7 24/24. It is convenient as it will update data in real-time, but the cron job will also take care of updates every day, in any cases.
 1. Start the [web server](#web-server) in another terminal, keep it running as long as you want to have a visual on the dashboard.
 1. That's it!
 
