@@ -3,48 +3,35 @@ This is part of the DnS Dusk node Monitoring.
 Source: https://github.com/BoboTiG/dusk-monitor
 """
 
-from dataclasses import dataclass
+from __future__ import annotations
+
 import json
+from dataclasses import dataclass
 from itertools import islice
 from contextlib import suppress
+from typing import TYPE_CHECKING
 
-from app import constants, utils
+from app import constants
+
+if TYPE_CHECKING:
+    from typing import Iterator
 
 
-@dataclass(slots=True)
+@dataclass(slots=True, kw_only=True)
 class DataBase:
-    # Generated blocks
     blocks: set[int]
-    # Last checked block (used in --update)
-    last_checked_block: int
-    # Current rewards
+    current_block: int
+    last_block: int
     rewards: float
-    # Total theoric rewards
+    slash_hard: int
+    slash_soft: int
     total_rewards: float
 
 
-def batched(iterable, n):
+def batched(iterable: list[int], n: int) -> Iterator[str]:
     iterator = iter(iterable)
-    while batch := tuple(islice(iterator, n)):
-        yield batch
-
-
-def add(blocks: set[int], last_block: int = 0) -> None:
-    data = load()
-    need_persistence = False
-
-    if new_blocks := blocks - data.blocks:
-        data.blocks |= new_blocks
-        utils.update_rewards(data, new_blocks)
-        need_persistence = True
-        print(f"New blocks persisted: {', '.join(str(b) for b in sorted(new_blocks))}")
-
-    if last_block:
-        data.last_checked_block = last_block
-        need_persistence = True
-
-    if need_persistence:
-        save(data)
+    while batch := list(islice(iterator, n)):
+        yield str(batch)[1:-1]
 
 
 def load() -> DataBase:
@@ -53,24 +40,28 @@ def load() -> DataBase:
         data = json.loads(constants.DB_FILE.read_text())
 
     return DataBase(
-        set(data.get(constants.DB_KEY_BLOCKS, [])),
-        int(data.get(constants.DB_KEY_LAST_CHECKED_BLOCK, 0)),
-        float(data.get(constants.DB_KEY_REWARDS, 0.0)),
-        float(data.get(constants.DB_KEY_TOTAL_REWARDS, 0.0)),
+        blocks=set(data.get(constants.DB_KEY_BLOCKS, [])),
+        current_block=int(data.get(constants.DB_KEY_CURRENT_BLOCK, 0)),
+        last_block=int(data.get(constants.DB_KEY_LAST_BLOCK, 0)),
+        rewards=float(data.get(constants.DB_KEY_REWARDS, 0.0)),
+        slash_hard=int(data.get(constants.DB_KEY_SLASH_HARD, 0)),
+        slash_soft=int(data.get(constants.DB_KEY_SLASH_SOFT, 0)),
+        total_rewards=float(data.get(constants.DB_KEY_TOTAL_REWARDS, 0.0)),
     )
 
 
 def save(data: DataBase) -> None:
-    blocks = ",\n        ".join(
-        str(batch)[1:-1] for batch in batched(sorted(data.blocks), constants.DB_BLOCKS_PER_LINE)
-    )
-    output = f"""{{
+    glue = ",\n        "
+
+    constants.DB_FILE.write_text(f"""{{
     "{constants.DB_KEY_BLOCKS}": [
-        {blocks.rstrip(",")}
+        {glue.join(batched(sorted(data.blocks), constants.DB_BLOCKS_PER_LINE))}
     ],
-    "{constants.DB_KEY_LAST_CHECKED_BLOCK}": {data.last_checked_block},
+    "{constants.DB_KEY_CURRENT_BLOCK}": {data.current_block},
+    "{constants.DB_KEY_LAST_BLOCK}": {data.last_block},
     "{constants.DB_KEY_REWARDS}": {data.rewards},
+    "{constants.DB_KEY_SLASH_HARD}": {data.slash_hard},
+    "{constants.DB_KEY_SLASH_SOFT}": {data.slash_soft},
     "{constants.DB_KEY_TOTAL_REWARDS}": {data.total_rewards}
 }}
-"""
-    constants.DB_FILE.write_text(output)
+""")

@@ -6,7 +6,6 @@ Source: https://github.com/BoboTiG/dusk-monitor
 import math
 from random import choice
 from subprocess import check_output
-from typing import NamedTuple
 
 import flask
 
@@ -15,41 +14,33 @@ from app import constants, db
 app = flask.Flask(__name__)
 
 
-class NodeInfo(NamedTuple):
-    blk_max: int
-    blk_cur: int
-    blk_lat: int
-    blk_tot: int
-    slash_soft: int
-    slash_hard: int
-    rewards: float
-    total_rewards: float
-
-
 @app.route("/")
 def index() -> flask.Response:
-    node = get_node_info()
-    slashes = node.slash_soft + node.slash_hard
+    data = get_node_info()
+    slashes = data.slash_soft + data.slash_hard
 
     div = []
-    if node.blk_cur < (node.blk_lat - 1):
+
+    if data.current_block < (data.last_block - 1):
         div.append(
-            f'<div id="block-height" tooltip data-tooltip="Latest: {node.blk_lat:,}" class="error">{node.blk_cur:,}<span>｢⚠️ current block｣</span></div>'
-        )
+            f'<div id="block-height" tooltip data-tooltip="Latest: {data.last_block:,}" class="error">{data.current_block:,}<span>｢⚠️ current block｣</span></div>'
+        )  # noqa: E501
     else:
-        div.append(f'<div id="block-height">{node.blk_cur:,}<span>｢current block｣</span></div>')
+        div.append(f'<div id="block-height">{data.current_block:,}<span>｢current block｣</span></div>')
+
     if slashes:
         div.append(
-            f'<div id="slashes" tooltip data-tooltip="Soft: {node.slash_soft} | Hard: {node.slash_hard}" class="error">{slashes}<span>｢⚠️ slashes｣</span></div>'
-        )
+            f'<div id="slashes" tooltip data-tooltip="Soft: {data.slash_soft} | Hard: {data.slash_hard}" class="error">{slashes}<span>｢⚠️ slashes｣</span></div>'
+        )  # noqa: E501
     else:
         div.append(f'<div id="slashes">{slashes}<span>｢slashes｣</span></div>')
+
     div.append(
-        f'<div id="blocks-generated" tooltip data-tooltip="Latest: {node.blk_max:,}">{node.blk_tot:,}<span>｢blocks generated｣</span></div>'
-    )
+        f'<div id="blocks-generated" tooltip data-tooltip="Latest: {max(data.blocks):,}">{len(data.blocks):,}<span>｢blocks generated｣</span></div>'
+    )  # noqa: E501
     div.append(
-        f'<div id="rewards" tooltip data-tooltip="Current: {math.ceil(node.rewards):,} | Total: {math.ceil(node.total_rewards * constants.VOTER_FRACTION_PERCENT):,}">{format_num(node.rewards)}<span>｢rewards｣</span></div>'
-    )
+        f'<div id="rewards" tooltip data-tooltip="Current: {math.ceil(data.rewards):,} | Total: {math.ceil(data.total_rewards * constants.VOTER_FRACTION_PERCENT):,}">{format_num(data.rewards)}<span>｢rewards｣</span></div>'
+    )  # noqa: E501
 
     html = """<!DOCTYPE html>
 <html>
@@ -77,25 +68,13 @@ def format_num(value: float) -> str:
     return f"{value:,.03f}M"
 
 
-def get_node_info() -> NodeInfo:
+def get_node_info() -> db.DataBase:
     data = db.load()
     try:
-        output = check_output(constants.CMD_GET_NODE_INFO, text=True)
-        blk_cur, blk_lat, slash_soft, slash_hard = [int(value) for value in output.strip().split()]
+        data.current_block = int(check_output(constants.CMD_GET_NODE_SYNCED_BLOCK, text=True).strip())
     except Exception as exc:
         print(f"Error in get_node_info(): {exc}")
-        blk_cur = blk_lat = slash_soft = slash_hard = 0
-
-    return NodeInfo(
-        max(data.blocks),
-        blk_cur,
-        blk_lat,
-        len(data.blocks),
-        slash_soft,
-        slash_hard,
-        data.rewards,
-        data.total_rewards,
-    )
+    return data
 
 
 def get_random_style() -> str:
