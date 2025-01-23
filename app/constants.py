@@ -45,4 +45,4 @@ AUDIO_FILE = STATIC / "mixkit-melodic-gold-price-2000.wav"
 PLAY_SOUND_CMD = ["ffplay", "-nodisp", "-autoexit", "-loglevel", "quiet", str(AUDIO_FILE)]
 
 # Voter fraction rewards, in percent (estimation)
-VOTER_FRACTION_PERCENT = 1.1335
+VOTER_FRACTION_PERCENT = 1.13
