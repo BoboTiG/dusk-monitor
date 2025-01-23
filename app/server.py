@@ -55,6 +55,7 @@ def index() -> flask.Response:
     %s
     <!-- First version: 2025-01-06 -->
     <!-- Source: https://github.com/BoboTiG/dusk-monitor -->
+    <!-- Dusk wallet for tips: VKZpBrNtEeTobMgYkkdcGiZn8fK2Ve2yez429yRXrH4nUUDTuvr7Tv74xFA2DKNVegtF6jaom2uacZMm8Z2Lg2J -->
 </body>
 </html>""" % (get_random_style(), "\n    ".join(div))
     return flask.Response(html, mimetype="text/html")
