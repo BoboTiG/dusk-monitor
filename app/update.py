@@ -94,8 +94,9 @@ def update() -> None:
     try:
         last_block = get_last_block()
         blocks = get_generated_blocks(last_block)
-    except niquests.exceptions.JSONDecodeError as exc:
-        print(f"Error in update(): {exc}")
+    except Exception as exc:
+        if constants.DEBUG:
+            print(f"Error in update(): {exc}")
         return
 
     data = db.load()

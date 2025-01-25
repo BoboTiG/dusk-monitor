@@ -74,7 +74,8 @@ def get_node_info() -> db.DataBase:
     try:
         data.current_block = int(check_output(constants.CMD_GET_NODE_SYNCED_BLOCK, text=True).strip())
     except Exception as exc:
-        print(f"Error in get_node_info(): {exc}")
+        if constants.DEBUG:
+            print(f"Error in get_node_info(): {exc}")
     return data
 
 
