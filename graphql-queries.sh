@@ -26,3 +26,7 @@ curl 'https://nodes.dusk.network/on/graphql/query' -H 'rusk-gqlvar-count: 100' -
 # Fetch a range of blocks (here, from blocks at height 10 until 12)
 curl 'https://nodes.dusk.network/on/graphql/query' --data-raw \
    'fragment BlockInfo on Block { header { height, generatorBlsPubkey } } query() { blocks(range: [10, 12]) {...BlockInfo} }'
+
+
+# Get the list of all provisioners
+curl 'https://nodes.dusk.network/on/node/provisioners' -X POST

@@ -1,6 +1,6 @@
 # Dusk Node Monitoring
 
-A minimalist dashboard for your Dusk node (go to the [preview](#preview), and check [similar projects](#similar-projects)). Here is [how to setup a node, in French](https://www.tiger-222.fr/luma/blockchain/node-dusk.html).
+A minimalist dashboard for your Dusk node (go to the [preview](#preview), and check [similar projects](#similar-projects)). Here is [how to set up a node, in French](https://www.tiger-222.fr/luma/blockchain/node-dusk.html).
 
 > [!TIP]
 > Dusk wallet for tips:
@@ -60,8 +60,8 @@ echo 'PROVISIONER_PUBLIC_KEY' > "${DATA_DIR:-.}/provisioner.txt"
 
 ## Run
 
-1. Setup the [provisioner file](#the-provisioner-file).
-1. Setup the [cron job](#update-data).
+1. Set up the [provisioner file](#the-provisioner-file).
+1. Set up the [cron job](#update-data).
 1. Start the [web server](#web-server), keep it running as long as you want to have a visual on the dashboard.
 1. That's it!
 
@@ -92,7 +92,7 @@ So far, we display:
 - The current synchronized block (in red + a warning sign when behind the latest block).
 - The slash count (in red + a warning sign when they happen).
 - The generated blocks count.
-- The current rewards value (+ a theoric total rewards accumulated so far).
+- The current rewards value (+ an estimated total rewards accumulated so far).
 
 🔔 A nice sound will be played on new generated block, and this is totally optional. You can disable it by setting the `PLAY_SOUND=0` environment variable.
 
