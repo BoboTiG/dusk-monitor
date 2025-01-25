@@ -71,8 +71,7 @@ def get_generated_blocks(last_block: int) -> set[int]:
 
 
 def get_last_block() -> int:
-    query = constants.GQL_LAST_BLOCK
-    with niquests.post(constants.URL_RUES_GQL, headers=constants.HEADERS, data=query) as req:
+    with niquests.post(constants.URL_RUES_GQL, headers=constants.HEADERS, data=constants.GQL_LAST_BLOCK) as req:
         return req.json()["block"]["header"]["height"]
 
 
