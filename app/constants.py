@@ -24,8 +24,9 @@ DB_KEY_SLASH_SOFT = "slash-soft"
 DB_KEY_TOTAL_REWARDS = "total-rewards"
 
 # Mainnet URL
-NODE_HOSTNAME = "nodes.dusk.network"
 HEADERS = {"User-Agent": "https://github.com/BoboTiG/dusk-monitor"}
+URL_RUES_GQL = f"https://nodes.dusk.network/on/graphql/query"
+URL_RUES_PROVISIONERS = f"https://nodes.dusk.network/on/node/provisioners"
 GQL_GENERATED_BLOCKS = "fragment BlockInfo on Block { header { height, generatorBlsPubkey } } query() { blocks(range: [%d, %d]) {...BlockInfo} }"
 GQL_GENERATED_BLOCKS_ITEMS_COUNT = 10_000
 GQL_LAST_BLOCK = "query { block(height: -1) { header { height } } }"

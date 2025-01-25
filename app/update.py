@@ -47,7 +47,6 @@ def compute_rewards(blocks: set[int]) -> float:
 def get_generated_blocks(last_block: int) -> set[int]:
     data = db.load()
     blocks: set[int] = set()
-    url = f"https://{constants.NODE_HOSTNAME}/02/Chain"
 
     if constants.DEBUG:
         print(f"DB last-block = {data.last_block:,}")
@@ -57,10 +56,10 @@ def get_generated_blocks(last_block: int) -> set[int]:
         to_block = from_block + constants.GQL_GENERATED_BLOCKS_ITEMS_COUNT
 
         if constants.DEBUG:
-            print(f"POST {url!r} [{from_block:,}, {to_block:,}]")
+            print(f"POST {constants.URL_RUES_GQL!r} [{from_block:,}, {to_block:,}]")
 
-        query = {"topic": "gql", "data": constants.GQL_GENERATED_BLOCKS % (from_block, to_block)}
-        with niquests.post(url, headers=constants.HEADERS, json=query) as req:
+        query = constants.GQL_GENERATED_BLOCKS % (from_block, to_block)
+        with niquests.post(constants.URL_RUES_GQL, headers=constants.HEADERS, data=query) as req:
             if new_blocks := {
                 block["header"]["height"]
                 for block in req.json()["blocks"]
@@ -72,13 +71,13 @@ def get_generated_blocks(last_block: int) -> set[int]:
 
 
 def get_last_block() -> int:
-    query = {"topic": "gql", "data": constants.GQL_LAST_BLOCK}
-    with niquests.post(f"https://{constants.NODE_HOSTNAME}/02/Chain", headers=constants.HEADERS, json=query) as req:
+    query = constants.GQL_LAST_BLOCK
+    with niquests.post(constants.URL_RUES_GQL, headers=constants.HEADERS, data=query) as req:
         return req.json()["block"]["header"]["height"]
 
 
 def get_provisioner_data() -> dict:
-    with niquests.post(f"https://{constants.NODE_HOSTNAME}/on/node/provisioners", headers=constants.HEADERS) as req:
+    with niquests.post(constants.URL_RUES_PROVISIONERS, headers=constants.HEADERS) as req:
         return next((prov for prov in req.json() if prov["key"] == constants.PROVISIONER), {})
 
 
