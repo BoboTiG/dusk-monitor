@@ -7,7 +7,7 @@
     <div id="block-height">{{ data.current_block | format_int }}<span>｢current block｣</span></div>
     {%- endif %} 
     {%- if data.slash_soft + data.slash_hard %}
-    <div id="slashes" tooltip data-tooltip="Soft: {{ data.slash_soft }} | Hard: {{ data.slash_hard }}" class="error">{{ data.slash_soft + data.slash_hard }}<span>｢⚠️ slashes｣</span></div>
+    <div id="slashes" tooltip data-tooltip="Soft: {{ data.slash_soft }} | Hard: {{ data.slash_hard }}" class="error">{{ data.slash_soft + data.slash_hard }}<span>｢{{ "🚨" if data.slash_hard else "⚠️" }} slashes｣</span></div>
     {%- else %}
     <div id="slashes">{{ data.slash_soft + data.slash_hard }}<span>｢slashes｣</span></div>
     {%- endif %} 
