@@ -9,6 +9,7 @@ import json
 from dataclasses import dataclass
 from itertools import islice
 from contextlib import suppress
+from datetime import UTC, datetime
 from typing import TYPE_CHECKING
 
 from app import constants
@@ -73,3 +74,7 @@ def save(data: DataBase) -> None:
     "{constants.DB_KEY_VERSION}": {data.version}
 }}
 """)
+
+    now = datetime.now(tz=UTC).replace(second=0, microsecond=0)
+    with constants.REWARDS_FILE.open(mode="+at") as fh:
+        fh.write(f"{int(now.timestamp())}|{data.rewards}\n")

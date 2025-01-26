@@ -11,6 +11,7 @@ ROOT = Path(__file__).parent
 STATIC = ROOT / "static"
 DATA_DIR = Path(getenv("DATA_DIR", ROOT.parent))
 DB_FILE = DATA_DIR / "db.json"
+REWARDS_FILE = DATA_DIR / "rewards.txt"
 PROVISIONER = (DATA_DIR / "provisioner.txt").read_text().strip()
 
 # Database
