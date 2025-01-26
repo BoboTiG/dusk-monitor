@@ -70,6 +70,10 @@ def get_generated_blocks(last_block: int) -> set[int]:
     return blocks
 
 
+def get_current_block() -> int:
+    return int(subprocess.check_output(constants.CMD_GET_NODE_SYNCED_BLOCK, text=True).strip())
+
+
 def get_last_block() -> int:
     with niquests.post(constants.URL_RUES_GQL, headers=constants.HEADERS, data=constants.GQL_LAST_BLOCK) as req:
         return req.json()["block"]["header"]["height"]
@@ -83,7 +87,7 @@ def get_provisioner_data() -> dict:
 def play_sound_of_the_riches() -> None:
     if constants.PLAY_SOUND:
         with suppress(Exception):
-            subprocess.call(constants.PLAY_SOUND_CMD)
+            subprocess.check_call(constants.PLAY_SOUND_CMD)
             if constants.DEBUG:
                 print("🔔")
 
@@ -104,6 +108,9 @@ def update() -> None:
         data.rewards = provisioner_data["reward"] / 10**9
         data.slash_hard = provisioner_data["hard_faults"]
         data.slash_soft = provisioner_data["faults"]
+
+    with suppress(Exception):
+        data.current_block = get_current_block()
 
     if new_blocks := blocks - data.blocks:
         data.blocks |= new_blocks
