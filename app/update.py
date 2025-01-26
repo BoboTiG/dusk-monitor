@@ -4,6 +4,7 @@ Source: https://github.com/BoboTiG/dusk-monitor
 """
 
 from contextlib import suppress
+import json
 import subprocess
 import niquests
 
@@ -44,30 +45,52 @@ def compute_rewards(blocks: set[int]) -> float:
     return amount
 
 
-def get_generated_blocks(last_block: int) -> set[int]:
-    data = db.load()
+def scan_the_blockchain(last_db_block: int, last_block: int) -> tuple[bool, int, set[int], dict]:
     blocks: set[int] = set()
+    history: dict[str, tuple[int, str]] = {}
+    status = True
+    provisioner = constants.PROVISIONER
 
     if constants.DEBUG:
-        print(f"DB last-block = {data.last_block:,}")
+        print(f"DB last-block = {last_db_block:,}")
         print(f"last-block    = {last_block:,}")
 
-    for from_block in range(data.last_block, last_block, constants.GQL_GENERATED_BLOCKS_ITEMS_COUNT):
-        to_block = from_block + constants.GQL_GENERATED_BLOCKS_ITEMS_COUNT
+    for from_block in range(last_db_block, last_block, constants.GQL_GET_BLOCKS_ITEMS_COUNT):
+        to_block = from_block + constants.GQL_GET_BLOCKS_ITEMS_COUNT
+        query = constants.GQL_GET_BLOCKS % (from_block, to_block)
 
         if constants.DEBUG:
             print(f"POST {constants.URL_RUES_GQL!r} [{from_block:,}, {to_block:,}]")
 
-        query = constants.GQL_GENERATED_BLOCKS % (from_block, to_block)
-        with niquests.post(constants.URL_RUES_GQL, headers=constants.HEADERS, data=query) as req:
-            if new_blocks := {
-                block["header"]["height"]
-                for block in req.json()["blocks"]
-                if block["header"]["generatorBlsPubkey"] == constants.PROVISIONER
-            }:
-                blocks.update(new_blocks)
+        try:
+            with niquests.post(constants.URL_RUES_GQL, headers=constants.HEADERS, data=query) as req:
+                req.raise_for_status()
+                res = req.json()
+        except Exception as exc:
+            if constants.DEBUG:
+                print(f"Error in scan_the_blockchain(): {exc}")
+            last_block = from_block
+            status = False
+            break
 
-    return blocks
+        for block in res["blocks"]:
+            # New generated block
+            if block["header"]["generatorBlsPubkey"] == provisioner:
+                blocks.add(block["header"]["height"])
+
+            for transaction in block["transactions"]:
+                tx_data = json.loads(transaction["tx"]["json"])
+
+                # Provisioner action
+                # TODO: decode TX fn_args to retrieve amounts staked/unstaked/withdrawed/transfered
+                if (
+                    tx_data["type"] == "moonlight"
+                    and tx_data["sender"] == provisioner
+                    and tx_data["call"]["contract"] == constants.CONTRACT_STAKING
+                ):
+                    history[str(block["header"]["timestamp"])] = tx_data["call"]["fn_name"], block["header"]["height"]
+
+    return status, last_block, blocks, history
 
 
 def get_current_block() -> int:
@@ -76,11 +99,13 @@ def get_current_block() -> int:
 
 def get_last_block() -> int:
     with niquests.post(constants.URL_RUES_GQL, headers=constants.HEADERS, data=constants.GQL_LAST_BLOCK) as req:
+        req.raise_for_status()
         return req.json()["block"]["header"]["height"]
 
 
 def get_provisioner_data() -> dict:
     with niquests.post(constants.URL_RUES_PROVISIONERS, headers=constants.HEADERS) as req:
+        req.raise_for_status()
         return next((prov for prov in req.json() if prov["key"] == constants.PROVISIONER), {})
 
 
@@ -93,15 +118,18 @@ def play_sound_of_the_riches() -> None:
 
 
 def update() -> None:
+    data = db.load()
+
+    # Force a full scan
+    if data.version < constants.DB_VERSION:
+        data.last_block = 0
+
     try:
-        last_block = get_last_block()
-        blocks = get_generated_blocks(last_block)
+        status, last_block, blocks, history = scan_the_blockchain(data.last_block, get_last_block())
     except Exception as exc:
         if constants.DEBUG:
             print(f"Error in update(): {exc}")
         return
-
-    data = db.load()
 
     with suppress(Exception):
         provisioner_data = get_provisioner_data()
@@ -112,15 +140,24 @@ def update() -> None:
     with suppress(Exception):
         data.current_block = get_current_block()
 
+    if history:
+        data.history.update(history)
+
     if new_blocks := blocks - data.blocks:
         data.blocks |= new_blocks
         if data.total_rewards:
             data.total_rewards += compute_rewards(new_blocks)
         else:
             data.total_rewards = compute_rewards(data.blocks)
-        print(f"New blocks persisted: {', '.join(str(b) for b in sorted(new_blocks))}")
+
+        if constants.DEBUG:
+            print(f"New blocks persisted: {', '.join(str(b) for b in sorted(new_blocks))}")
+
         play_sound_of_the_riches()
 
     data.last_block = last_block
+
+    if status:
+        data.version = constants.DB_VERSION
 
     db.save(data)

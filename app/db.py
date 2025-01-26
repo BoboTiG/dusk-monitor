@@ -21,11 +21,13 @@ if TYPE_CHECKING:
 class DataBase:
     blocks: set[int]
     current_block: int
+    history: dict[str, tuple[int, str]]
     last_block: int
     rewards: float
     slash_hard: int
     slash_soft: int
     total_rewards: float
+    version: int
 
 
 def batched(iterable: list[int], n: int) -> Iterator[str]:
@@ -42,11 +44,13 @@ def load() -> DataBase:
     return DataBase(
         blocks=set(data.get(constants.DB_KEY_BLOCKS, [])),
         current_block=int(data.get(constants.DB_KEY_CURRENT_BLOCK, 0)),
+        history=data.get(constants.DB_KEY_HISTORY, {}),
         last_block=int(data.get(constants.DB_KEY_LAST_BLOCK, 0)),
         rewards=float(data.get(constants.DB_KEY_REWARDS, 0.0)),
         slash_hard=int(data.get(constants.DB_KEY_SLASH_HARD, 0)),
         slash_soft=int(data.get(constants.DB_KEY_SLASH_SOFT, 0)),
         total_rewards=float(data.get(constants.DB_KEY_TOTAL_REWARDS, 0.0)),
+        version=int(data.get(constants.DB_KEY_VERSION, 1)),
     )
 
 
@@ -58,10 +62,14 @@ def save(data: DataBase) -> None:
         {glue.join(batched(sorted(data.blocks), constants.DB_BLOCKS_PER_LINE))}
     ],
     "{constants.DB_KEY_CURRENT_BLOCK}": {data.current_block},
+    "{constants.DB_KEY_HISTORY}": {{
+        {glue.join(f'"{k}": ["{v[0]}", {v[1]}]' for k, v in sorted(data.history.items()))}
+    }},
     "{constants.DB_KEY_LAST_BLOCK}": {data.last_block},
     "{constants.DB_KEY_REWARDS}": {data.rewards},
     "{constants.DB_KEY_SLASH_HARD}": {data.slash_hard},
     "{constants.DB_KEY_SLASH_SOFT}": {data.slash_soft},
-    "{constants.DB_KEY_TOTAL_REWARDS}": {data.total_rewards}
+    "{constants.DB_KEY_TOTAL_REWARDS}": {data.total_rewards},
+    "{constants.DB_KEY_VERSION}": {data.version}
 }}
 """)
