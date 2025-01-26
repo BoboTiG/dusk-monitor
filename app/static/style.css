@@ -76,9 +76,7 @@ div.error::after { color: var(--error) }
     #rewards { flex: 1 100% }
 }
 @media (max-width: 499px) {
-    body {
-        flex-direction: column-reverse;
-    }
+    body { flex-direction: column-reverse }
     [tooltip]::after {
         margin-top: -.9em;
         width: calc(100% - 16px - 16px);
