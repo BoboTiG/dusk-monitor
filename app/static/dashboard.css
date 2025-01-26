@@ -10,13 +10,8 @@
     font-size: .25em;
     background-color: var(--tooltip-bg);
     color: var(--sub-text);
-    opacity: 0;
-    transition: all .2s ease-in-out .5s;
-    text-shadow: 0 .2px .5px var(--text-shadow);
-}
-[tooltip]:hover::after {
-    opacity: 1;
     transform: translate(0, 50%);
+    text-shadow: 0 .2px .5px var(--text-shadow);
 }
 
 div {
