@@ -1,5 +1,5 @@
 """
-This is part of the DnS Dusk node Monitoring.
+This is part of the Dusk node Monitoring.
 Source: https://github.com/BoboTiG/dusk-monitor
 """
 
