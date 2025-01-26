@@ -1,19 +1,5 @@
 @import url("base.css");
 
-[tooltip]::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    display: block;
-    padding: 8px 16px;
-    width: calc(50% - 16px - 16px);
-    margin-top: -.5em;
-    font-size: .25em;
-    background-color: var(--tooltip-bg);
-    color: var(--sub-text);
-    transform: translate(0, 50%);
-    text-shadow: 0 .2px .5px var(--text-shadow);
-}
-
 div {
     flex: 1;
     align-content: center;
@@ -34,6 +20,16 @@ div > span {
 div.error,
 div.error::after { color: var(--error) }
 
+[tooltip]::after {
+    content: attr(data-tooltip);
+    padding: 8px 16px;
+    font-size: .25em;
+    display: block;
+    margin-top: .2em;
+    color: var(--sub-text);
+    text-shadow: 0 .2px .5px var(--text-shadow);
+}
+
 #block-height { background-color: var(--btn-1) }
 #slashes { background-color: var(--btn-2) }
 #blocks-generated { background-color: var(--btn-3) }
@@ -50,7 +46,6 @@ div.error::after { color: var(--error) }
 #history p {
     margin: 0;
     padding: .3em;
-    border-top: 1px solid var(--tooltip-bg);
 }
 #history span {
     font-size: 1.2em;
@@ -87,10 +82,5 @@ div.error::after { color: var(--error) }
     #history {
         flex-direction: column-reverse;
         flex: 0 10%;
-    }
-
-    [tooltip]::after {
-        margin-top: -.9em;
-        width: calc(100% - 16px - 16px);
     }
 }
