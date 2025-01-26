@@ -26,8 +26,8 @@ def index() -> str:
 @app.template_filter()
 def format_float(value: float) -> str:
     for unit in ("", "k"):
-        if value < 1000.0:
-            return f"{value:.03f}{unit}"
+        if abs(value) < 1000.0:
+            return f"{value:,.03f}{unit}"
         value /= 1000.0
     return f"{value:,.03f}M"
 
