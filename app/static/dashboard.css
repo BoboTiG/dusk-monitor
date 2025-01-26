@@ -1,0 +1,101 @@
+@import url("base.css");
+
+[tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    display: block;
+    padding: 8px 16px;
+    width: calc(50% - 16px - 16px);
+    margin-top: -.5em;
+    font-size: .25em;
+    background-color: var(--tooltip-bg);
+    color: var(--sub-text);
+    opacity: 0;
+    transition: all .2s ease-in-out .5s;
+    text-shadow: 0 .2px .5px var(--text-shadow);
+}
+[tooltip]:hover::after {
+    opacity: 1;
+    transform: translate(0, 50%);
+}
+
+div {
+    flex: 1;
+    align-content: center;
+    overflow-y: scroll;
+    font-size: 3em;
+    box-shadow:
+        0 1px 1px hsl(0deg 0% 0% / 0.075),
+        0 2px 2px hsl(0deg 0% 0% / 0.075),
+        0 4px 4px hsl(0deg 0% 0% / 0.075),
+        0 8px 8px hsl(0deg 0% 0% / 0.075),
+        0 16px 16px hsl(0deg 0% 0% / 0.075);
+}
+div > span {
+    display: block;
+    font-size: .4em;
+    color: var(--sub-text);
+}
+div.error,
+div.error::after { color: var(--error) }
+
+#block-height { background-color: var(--btn-1) }
+#slashes { background-color: var(--btn-2) }
+#blocks-generated { background-color: var(--btn-3) }
+#rewards,
+#history { background-color: var(--btn-4) }
+
+#history {
+    display: flex;
+    flex-flow: column;
+    font-size: 1.2em;
+    color: var(--sub-text);
+    align-content: center;
+}
+#history p {
+    margin: 0;
+    padding: .3em;
+    border-top: 1px solid var(--tooltip-bg);
+}
+#history span {
+    font-size: 1.2em;
+    color: var(--text);
+}
+#history .go-down span { color: var(--down) }
+#history .go-down span::before,
+#history .unstake span::before { content: "📉 " }
+#history .go-up span { color: var(--up) }
+#history .go-up span::before { content: "📈 +" }
+#history .stake span::before { content: "📈 " }
+#history .withdraw span::before { content: "💰 " }
+#history .stake span,
+#history .unstake span,
+#history .withdraw span { font-variant: small-caps }
+
+@media (min-width: 500px) {
+    div {
+        font-size: 4.5em;
+        width: 50%;
+    }
+    #history { font-size: 2em }
+
+    #block-height,
+    #slashes,
+    #blocks-generated { flex: 1 33% }
+    #rewards { flex: 1 33% }
+    #history { flex: 1 66% }
+}
+
+@media (max-width: 499px) {
+    body  { flex-direction: column-reverse }
+    
+    #history {
+        flex-direction: column-reverse;
+        flex: 0 10%;
+    }
+
+    [tooltip]::after {
+        margin-top: -.9em;
+        width: calc(100% - 16px - 16px);
+    }
+}

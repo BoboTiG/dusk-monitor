@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 
+{% block page %}dashboard{% endblock %}
 {% block body %}
     {%- if data.current_block < (data.last_block - 1) %}
     <div id="block-height" tooltip data-tooltip="Latest: {{ data.last_block | format_int }}" class="error">{{ data.current_block | format_int }}<span>｢⚠️ current block｣</span></div>
@@ -13,4 +14,13 @@
     {%- endif %} 
     <div id="blocks-generated" tooltip data-tooltip="Latest: {{ data.blocks | max | format_int }}">{{ data.blocks | length | format_int }}<span>｢blocks generated｣</span></div>
     <div id="rewards" tooltip data-tooltip="Current: {{ data.rewards | format_int }} | Total: {{ estimated_rewards | format_int }}">{{ data.rewards | format_float }}<span>｢rewards｣</span></div>
+    <div id="history">
+        {%- for when, what, action in history %}
+        <p class="{{ action }}">{{ when.strftime("%H:%M") }} <span>{{ what }}</span></p>
+        {%- endfor %}
+    </div>
+    <script>
+        // Reload the page eavery 5 minutes
+        setTimeout(function () { location.reload() }, 60 * 5 * 1000);
+    </script>
 {% endblock %}

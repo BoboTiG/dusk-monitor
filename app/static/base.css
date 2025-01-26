@@ -1,0 +1,34 @@
+:root {
+    --text: #ddd;
+    --text-shadow: #222;
+    --sub-text: moccasin;
+    --error: orangered;
+    --tooltip-bg: hsl(0deg 100% 100% / 0.075);
+    --btn-1: #635985;
+    --btn-2: #443c68;
+    --btn-3: #393053;
+    --btn-4: #18122b;
+    --up: lime;
+    --down: fuchsia;
+}
+
+@font-face {
+    /* https://github.com/githubnext/monaspace/blob/v1.000/fonts/webfonts/MonaspaceArgonVarVF%5Bwght%2Cwdth%2Cslnt%5D.woff2 */
+    font-family: "Monaspace Argon";
+    src:
+        local("Monaspace Argon Regular"),
+        url("/static/monaspace-argon.woff2") format("woff2");
+}
+
+body {
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-flow: column wrap;
+    cursor: pointer;
+    font-family: "Monaspace Argon";
+    text-align: center;
+    color: var(--text);
+    text-shadow: 0 .2px .5px var(--text-shadow);
+    user-select: none;
+}

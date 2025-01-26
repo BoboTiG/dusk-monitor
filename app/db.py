@@ -22,7 +22,7 @@ if TYPE_CHECKING:
 class DataBase:
     blocks: set[int]
     current_block: int
-    history: dict[str, tuple[int, str]]
+    history: dict[str, tuple[str, int]]
     last_block: int
     rewards: float
     slash_hard: int
