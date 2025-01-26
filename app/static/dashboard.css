@@ -40,7 +40,6 @@ div.error::after { color: var(--error) }
     display: flex;
     flex-flow: column;
     font-size: 1.2em;
-    color: var(--sub-text);
     align-content: center;
 }
 #history p {
@@ -67,7 +66,8 @@ div.error::after { color: var(--error) }
         font-size: 4.5em;
         width: 50%;
     }
-    #history { font-size: 2em }
+    #history { font-size: 1.5em }
+    #history span { font-size: 1.5em }
 
     #block-height,
     #slashes,
