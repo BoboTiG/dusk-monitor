@@ -23,6 +23,11 @@ curl 'https://nodes.dusk.network/on/graphql/query' -H 'rusk-gqlvar-count: 100' -
    'fragment BlockInfo on Block { header { height, generatorBlsPubkey } } query($count: Int!) { blocks(last: $count) {...BlockInfo} }'
 
 
+# Fetch latest 100 blocks (include the height, provisioner, and transactions data)
+curl 'https://nodes.dusk.network/on/graphql/query' --data-raw \
+   'fragment TransactionInfo on SpentTransaction { tx { callData { contractId, data, fnName }, txType }} fragment BlockInfo on Block { header { height, generatorBlsPubkey }, transactions {...TransactionInfo} } query() { blocks(last: 100) {...BlockInfo} }'
+
+
 # Fetch a range of blocks (here, from blocks at height 10 until 12)
 curl 'https://nodes.dusk.network/on/graphql/query' --data-raw \
    'fragment BlockInfo on Block { header { height, generatorBlsPubkey } } query() { blocks(range: [10, 12]) {...BlockInfo} }'
