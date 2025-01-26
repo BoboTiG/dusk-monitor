@@ -53,7 +53,7 @@ def craft_history(data: db.DataBase) -> list[tuple[str, str]]:
     for line1, line2 in zip(rewards_history, rewards_history[1:], strict=False):
         when, rewards1 = line1.strip().split("|", 1)
         _, rewards2 = line2.strip().split("|", 1)
-        if diff := float(rewards2) - float(rewards1):
+        if (diff := float(rewards2) - float(rewards1)) != 0.0:
             res.append((to_date(when), format_float(diff), "go-up" if diff > 0.0 else "go-down"))
 
     res = sorted(res)[-12:]  # Last 12 items (1 hour of data)
