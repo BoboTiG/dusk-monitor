@@ -1,13 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <link rel="icon" href="/static/favicon.svg">
-    <link rel="stylesheet" href="/static/style.css"/>
-    <link rel="stylesheet" href="/static/{{ css }}"/>
-    <meta content="width=device-width,initial-scale=1.0" name="viewport">
-    <title>Dusk Node Monitoring</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block body %}
     {%- if data.current_block < (data.last_block - 1) %}
     <div id="block-height" tooltip data-tooltip="Latest: {{ data.last_block | format_int }}" class="error">{{ data.current_block | format_int }}<span>｢⚠️ current block｣</span></div>
     {%- else %}
@@ -20,8 +13,4 @@
     {%- endif %} 
     <div id="blocks-generated" tooltip data-tooltip="Latest: {{ data.blocks | max | format_int }}">{{ data.blocks | length | format_int }}<span>｢blocks generated｣</span></div>
     <div id="rewards" tooltip data-tooltip="Current: {{ data.rewards | format_int }} | Total: {{ estimated_rewards | format_int }}">{{ data.rewards | format_float }}<span>｢rewards｣</span></div>
-    <!-- First version: 2025-01-06 -->
-    <!-- Source: https://github.com/BoboTiG/dusk-monitor -->
-    <!-- Dusk wallet for tips: VKZpBrNtEeTobMgYkkdcGiZn8fK2Ve2yez429yRXrH4nUUDTuvr7Tv74xFA2DKNVegtF6jaom2uacZMm8Z2Lg2J -->
-</body>
-</html>
+{% endblock %}
