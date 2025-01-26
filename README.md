@@ -93,6 +93,7 @@ So far, we display:
 - The slash count (in red + a warning sign when they happen).
 - The generated blocks count.
 - The current rewards value (+ an estimated total rewards accumulated so far).
+- The history of the past hour.
 
 🔔 A nice sound will be played on new generated block, and this is totally optional. You can disable it by setting the `PLAY_SOUND=0` environment variable.
 
