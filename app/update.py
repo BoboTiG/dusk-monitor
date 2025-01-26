@@ -53,7 +53,7 @@ def scan_the_blockchain(last_db_block: int, last_block: int) -> tuple[bool, int,
 
     if constants.DEBUG:
         print(f"DB last-block = {last_db_block:,}")
-        print(f"last-block    = {last_block:,}")
+        print(f"BC last-block = {last_block:,}")
 
     for from_block in range(last_db_block, last_block, constants.GQL_GET_BLOCKS_ITEMS_COUNT):
         to_block = from_block + constants.GQL_GET_BLOCKS_ITEMS_COUNT
