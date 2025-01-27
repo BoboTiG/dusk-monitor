@@ -59,7 +59,7 @@ def craft_history(data: db.DataBase) -> list[tuple[str, str]]:
     for line1, line2 in zip(rewards_history, rewards_history[1:], strict=False):
         when, rewards1 = line1.strip().split("|", 1)
         _, rewards2 = line2.strip().split("|", 1)
-        if (diff := float(rewards2) - float(rewards1)) != 0.0:
+        if (diff := float(rewards1) - float(rewards2)) != 0.0:
             if diff:
                 res.append((when, f"+{format_float(diff)}", "go-up"))
             else:
