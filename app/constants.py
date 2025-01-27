@@ -49,8 +49,8 @@ CSS_FILES = list(STATIC.glob("light-*.css"))
 # SSH command to get data from the node
 CMD_GET_NODE_SYNCED_BLOCK = ["ssh", getenv("DUSK_SSH_HOSTNAME", "dusk"), "ruskquery block-height"]
 
-# Shell command to get data from the rewards history file
-CMD_GET_LAST_REWARDS = ["tail", "-12", str(REWARDS_FILE)]
+# Shell command to get data from the rewards history file (1 hour of data)
+CMD_GET_LAST_REWARDS = ["tail", "-14", str(REWARDS_FILE)]
 
 # Bonus: play a sound on new block generated (only when PLAY_SOUND is True)
 PLAY_SOUND = getenv("PLAY_SOUND", "1") != "0"

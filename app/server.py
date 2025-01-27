@@ -53,7 +53,7 @@ def to_hour(value: str) -> str:
 
 def craft_history(data: db.DataBase) -> list[tuple[str, str]]:
     res: list[tuple[str, str, str]] = []
-    rewards_history = check_output(constants.CMD_GET_LAST_REWARDS, text=True).strip().splitlines()
+    rewards_history = sorted(check_output(constants.CMD_GET_LAST_REWARDS, text=True).strip().splitlines(), reverse=True)
 
     # Rewards
     for line1, line2 in zip(rewards_history, rewards_history[1:], strict=False):
@@ -73,7 +73,6 @@ def craft_history(data: db.DataBase) -> list[tuple[str, str]]:
         if when >= first_date:
             res.append((when, details[0].title(), details[0]))
 
-    res = sorted(res)[-12:]  # Last 12 items (1 hour of data)
     return sorted(res, reverse=True)  # type: ignore[arg-type]
 
 
