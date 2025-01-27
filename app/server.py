@@ -3,7 +3,7 @@ This is part of the Dusk node Monitoring.
 Source: https://github.com/BoboTiG/dusk-monitor
 """
 
-from datetime import UTC, datetime
+from datetime import datetime
 from random import choice
 
 import flask
@@ -41,7 +41,7 @@ def format_int(value: int | float) -> str:
 
 def craft_history(data: db.DataBase) -> list[tuple[str, str]]:
     def to_date(value: str) -> datetime:
-        return datetime.fromtimestamp(float(value), tz=UTC)
+        return datetime.fromtimestamp(float(value))
 
     actions_history = data.history
     rewards_history = constants.REWARDS_FILE.read_text().splitlines()[-20:]  # Last 20 records
