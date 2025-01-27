@@ -40,22 +40,32 @@ def format_int(value: int | float) -> str:
     return f"{int(value):,}"
 
 
-def craft_history(data: db.DataBase) -> list[tuple[str, str]]:
-    def to_date(value: str) -> datetime:
-        return datetime.fromtimestamp(float(value))
+@app.template_filter()
+def to_hour(value: str) -> str:
+    return datetime.fromtimestamp(float(value)).strftime("%H:%M")
 
-    actions_history = data.history
+
+def craft_history(data: db.DataBase) -> list[tuple[str, str]]:
+    res: list[tuple[str, str, str]] = []
     rewards_history = check_output(constants.CMD_GET_LAST_REWARDS, text=True).strip().splitlines()
 
-    res: list[tuple[datetime, str, str]] = [
-        (to_date(when), details[0], details[0]) for when, details in actions_history.items()
-    ]
-
+    # Rewards
     for line1, line2 in zip(rewards_history, rewards_history[1:], strict=False):
         when, rewards1 = line1.strip().split("|", 1)
         _, rewards2 = line2.strip().split("|", 1)
         if (diff := float(rewards2) - float(rewards1)) != 0.0:
-            res.append((to_date(when), format_float(diff), "go-up" if diff > 0.0 else "go-down"))
+            if diff:
+                res.append((when, f"+{format_float(diff)}", "go-up"))
+            else:
+                res.append((when, format_float(diff), "go-down"))
+        else:
+            res.append((when, "∓0.000", "go-nowhere"))
+
+    # Actions (stake/unstake/withdraw)
+    first_date = res[0][0]
+    for when, details in data.history.items():
+        if when >= first_date:
+            res.append((when, details[0].title(), details[0]))
 
     res = sorted(res)[-12:]  # Last 12 items (1 hour of data)
     return sorted(res, reverse=True)  # type: ignore[arg-type]

@@ -55,6 +55,8 @@ div.error::after { color: var(--error) }
 #history .unstake span::before { content: "📉 " }
 #history .go-up span { color: var(--up) }
 #history .go-up span::before { content: "📈 +" }
+#history .go-nowhere span { color: var(--sub-text) }
+#history .go-nowhere span::before { content: "🔜 ∓" }
 #history .stake span::before { content: "📈 " }
 #history .withdraw span::before { content: "💰 " }
 #history .stake span,
