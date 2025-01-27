@@ -23,6 +23,7 @@ def index() -> str:
         data=data,
         estimated_rewards=data.total_rewards * constants.VOTER_FRACTION_PERCENT,
         history=history,
+        longest=len(max(history, key=lambda v: len(v[1]))[1]),
     )
 
 
@@ -38,6 +39,11 @@ def format_float(value: float) -> str:
 @app.template_filter()
 def format_int(value: int | float) -> str:
     return f"{int(value):,}"
+
+
+@app.template_filter()
+def pad(value: str, width: int) -> str:
+    return value.rjust(width, "\u00a0")
 
 
 @app.template_filter()

@@ -54,14 +54,11 @@ div.error::after { color: var(--error) }
 #history .go-down span::before,
 #history .unstake span::before { content: "📉 " }
 #history .go-up span { color: var(--up) }
-#history .go-up span::before { content: "📈 +" }
-#history .go-nowhere span { color: var(--sub-text) }
-#history .go-nowhere span::before { content: "🔜 ∓" }
+#history .go-up span::before,
 #history .stake span::before { content: "📈 " }
+#history .go-nowhere span { color: var(--sub-text) }
+#history .go-nowhere span::before { content: "🔜 " }
 #history .withdraw span::before { content: "💰 " }
-#history .stake span,
-#history .unstake span,
-#history .withdraw span { font-variant: small-caps }
 
 @media (min-width: 500px) {
     div {
