@@ -5,6 +5,7 @@ Source: https://github.com/BoboTiG/dusk-monitor
 
 from datetime import datetime
 from random import choice
+from subprocess import check_output
 
 import flask
 
@@ -44,7 +45,7 @@ def craft_history(data: db.DataBase) -> list[tuple[str, str]]:
         return datetime.fromtimestamp(float(value))
 
     actions_history = data.history
-    rewards_history = constants.REWARDS_FILE.read_text().splitlines()[-20:]  # Last 20 records
+    rewards_history = check_output(constants.CMD_GET_LAST_REWARDS, text=True).strip().splitlines()
 
     res: list[tuple[datetime, str, str]] = [
         (to_date(when), details[0], details[0]) for when, details in actions_history.items()
