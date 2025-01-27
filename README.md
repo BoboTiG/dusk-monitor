@@ -107,7 +107,3 @@ On desktop:
 On smartphone:
 
 <img src="./screenshots/dusk-monitoring-small-screen.png" width="50%"/>
-
-## Similar Projects
-
-- [wolfrage76/DuskMan](https://github.com/wolfrage76/DuskMan/)
