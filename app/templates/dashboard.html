@@ -13,12 +13,16 @@
     {%- else %}
     <div id="slashes">{{ data.slash_soft + data.slash_hard }}<span>｢slashes｣</span></div>
     {%- endif %} 
-    <div id="rewards" tooltip data-tooltip="Current: {{ data.rewards | format_int }} | Total: {{ estimated_rewards | format_int }}">{{ data.rewards | format_float }}<span>｢rewards｣</span></div>
+    <div id="rewards" tooltip data-tooltip="Current: {{ data.rewards | format_int }} | Total: {{ estimated_rewards | format_int }}">
+        <span id="countdown" data-duration="300" data-transition="linear" data-color="yellow" data-size="24"></span>
+        {{ data.rewards | format_float }}<span>｢rewards｣</span>
+    </div>
     <div id="history">
         {%- for when, what, action in history %}
         <p class="{{ action }}">{{ when | to_hour }} <span>{{ what | pad(longest) }}</span></p>
         {%- endfor %}
     </div>
+    <script src="/static/script.js"></script>
     <script>
         // Reload the page every 5 minutes
         setTimeout(function () { location.reload() }, 60 * 5 * 1000);

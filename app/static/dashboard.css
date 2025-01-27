@@ -60,6 +60,20 @@ div.error::after { color: var(--error) }
 #history .go-nowhere span::before { content: "🔜 " }
 #history .withdraw span::before { content: "💰 " }
 
+#countdown {
+    float: right;
+    top: -2em;
+    right: .6em;
+    text-shadow: 0 .2px .5px var(--text-shadow);
+    opacity: .8;
+}
+
+@keyframes progress {
+    100% {
+        stroke-dashoffset: 1256.12939453125;
+    }
+}
+
 @media (min-width: 500px) {
     div {
         font-size: 4.5em;
@@ -73,6 +87,11 @@ div.error::after { color: var(--error) }
     #blocks-generated { flex: 1 33% }
     #rewards { flex: 1 33% }
     #history { flex: 1 66% }
+
+    #countdown {
+        top: -2em;
+        right: .6em;
+    }
 }
 
 @media (max-width: 499px) {
@@ -85,4 +104,9 @@ div.error::after { color: var(--error) }
     #blocks-generated { order: 3 }
     #block-height { order: 4 }
     #slashes { order: 5 }
+
+    #countdown {
+        top: -1em;
+        right: .6em;
+    }
 }
