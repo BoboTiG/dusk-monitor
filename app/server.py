@@ -65,7 +65,7 @@ def craft_history(data: db.DataBase) -> list[tuple[str, str]]:
             else:
                 res.append((when, format_float(diff), "go-down"))
         else:
-            res.append((when, "∓0.000", "go-nowhere"))
+            res.append((when, "±0.000", "go-nowhere"))
 
     # Actions (stake/unstake/withdraw)
     first_date = res[0][0]
