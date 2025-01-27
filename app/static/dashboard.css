@@ -30,9 +30,9 @@ div.error::after { color: var(--error) }
     text-shadow: 0 .2px .5px var(--text-shadow);
 }
 
-#block-height { background-color: var(--btn-1) }
-#slashes { background-color: var(--btn-2) }
 #blocks-generated { background-color: var(--btn-3) }
+#block-height { background-color: var(--btn-2) }
+#slashes { background-color: var(--btn-1) }
 #rewards,
 #history { background-color: var(--btn-4) }
 
@@ -76,10 +76,13 @@ div.error::after { color: var(--error) }
 }
 
 @media (max-width: 499px) {
-    body  { flex-direction: column-reverse }
-    
     #history {
+        order: 1;
         flex-direction: column-reverse;
         flex: 0 10%;
     }
+    #rewards { order: 2 }
+    #blocks-generated { order: 3 }
+    #block-height { order: 4 }
+    #slashes { order: 5 }
 }
