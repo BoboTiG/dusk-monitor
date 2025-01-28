@@ -51,16 +51,16 @@ DATA_DIR=../dusk-monitor-data/node-1 python -m app
 ## Preview
 
 So far, we display:
+
 - The current synchronized block (in red + a warning sign when behind the latest block).
 - The slash count (in red + a warning sign when they happen).
 - The generated blocks count.
 - The current rewards value (+ an estimated total rewards accumulated so far).
 - The history of the past hour.
 
-🔔 A nice sound will be played on new generated block, and this is totally optional. You can disable it by setting the `PLAY_SOUND=0` environment variable.
-
 > [!NOTE]
 > Those screenshots might be outdated, but the essence of the dashboard is still relevant from those pictures.
+> Also, if you have any **design skills**, please take a look at #5 🙏
 
 On desktop:
 
