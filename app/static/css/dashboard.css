@@ -95,12 +95,11 @@ div.error::after { color: var(--error) }
 }
 
 @media (max-width: 499px) {
+    #rewards { order: 1 }
     #history {
-        order: 1;
-        flex-direction: column-reverse;
+        order: 2;
         flex: 0 10%;
     }
-    #rewards { order: 2 }
     #blocks-generated { order: 3 }
     #block-height { order: 4 }
     #slashes { order: 5 }
