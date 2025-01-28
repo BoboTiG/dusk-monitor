@@ -17,7 +17,7 @@ DB_FILE = DATA_DIR / "db.json"
 REWARDS_FILE = DATA_DIR / "rewards.txt"
 
 # Database
-DB_VERSION = 2
+DB_VERSION = 3
 DB_BLOCKS_PER_LINE = 50
 DB_KEY_BLOCKS = "blocks"
 DB_KEY_CURRENT_BLOCK = "current-block"
@@ -40,6 +40,7 @@ query() { blocks(range: [%d, %d]) {...BlockInfo} }
 """
 GQL_GET_BLOCKS_ITEMS_COUNT = 10_000
 GQL_LAST_BLOCK = "query { block(height: -1) { header { height } } }"
+CONTRACT_TRANSFER = "0100000000000000000000000000000000000000000000000000000000000000"
 CONTRACT_STAKING = "0200000000000000000000000000000000000000000000000000000000000000"
 
 # Shell command to get data from the rewards history file (1 hour of data)

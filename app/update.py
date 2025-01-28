@@ -73,6 +73,8 @@ def scan_the_blockchain(last_db_block: int, last_block: int) -> tuple[bool, int,
             status = False
             break
 
+        contracts = {constants.CONTRACT_STAKING, constants.CONTRACT_TRANSFER}
+
         for block in res["blocks"]:
             # New generated block
             if block["header"]["generatorBlsPubkey"] == provisioner:
@@ -86,7 +88,7 @@ def scan_the_blockchain(last_db_block: int, last_block: int) -> tuple[bool, int,
                 if (
                     tx_data["type"] == "moonlight"
                     and tx_data["sender"] == provisioner
-                    and tx_data["call"]["contract"] == constants.CONTRACT_STAKING
+                    and tx_data["call"]["contract"] in contracts
                 ):
                     history[str(block["header"]["timestamp"])] = tx_data["call"]["fn_name"], block["header"]["height"]
 
