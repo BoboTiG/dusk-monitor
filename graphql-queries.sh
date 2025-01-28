@@ -33,6 +33,11 @@ curl 'https://nodes.dusk.network/on/graphql/query' --data-raw \
    'fragment TransactionInfo on SpentTransaction { tx { json } } fragment BlockInfo on Block { header { height, generatorBlsPubkey }, transactions {...TransactionInfo} } query() { blocks(last: 100) {...BlockInfo} }'
 
 
+# Fetch transaction details on a given block
+curl 'https://nodes.dusk.network/on/graphql/query' --data-raw \
+   'fragment TransactionInfo on SpentTransaction { tx { json } } fragment BlockInfo on Block { transactions {...TransactionInfo} } query() { block(height: 42) {...BlockInfo} }'
+
+
 # Fetch a range of blocks (here, from blocks at height 10 until 12)
 curl 'https://nodes.dusk.network/on/graphql/query' --data-raw \
    'fragment BlockInfo on Block { header { height, generatorBlsPubkey } } query() { blocks(range: [10, 12]) {...BlockInfo} }'

@@ -17,7 +17,7 @@ DB_FILE = DATA_DIR / "db.json"
 REWARDS_FILE = DATA_DIR / "rewards.txt"
 
 # Database
-DB_VERSION = 3
+DB_VERSION = 4
 DB_BLOCKS_PER_LINE = 50
 DB_KEY_BLOCKS = "blocks"
 DB_KEY_CURRENT_BLOCK = "current-block"

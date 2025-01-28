@@ -45,17 +45,17 @@ def compute_rewards(blocks: set[int]) -> float:
     return amount
 
 
-def scan_the_blockchain(last_db_block: int, last_block: int) -> tuple[bool, int, set[int], dict]:
+def scan_the_blockchain(last_block_db: int, last_block_bc: int) -> tuple[bool, int, set[int], dict]:
     blocks: set[int] = set()
-    history: dict[str, tuple[int, str]] = {}
+    history: dict[str, tuple[str, int, int]] = {}
     status = True
     provisioner = config.PROVISIONER
 
     if constants.DEBUG:
-        print(f"DB last-block = {last_db_block:,}")
-        print(f"BC last-block = {last_block:,}")
+        print(f"DB last-block = {last_block_db:,}")
+        print(f"BC last-block = {last_block_bc:,}")
 
-    for from_block in range(last_db_block, last_block, constants.GQL_GET_BLOCKS_ITEMS_COUNT):
+    for from_block in range(last_block_db, last_block_bc, constants.GQL_GET_BLOCKS_ITEMS_COUNT):
         to_block = from_block + constants.GQL_GET_BLOCKS_ITEMS_COUNT
         query = constants.GQL_GET_BLOCKS % (from_block, to_block)
 
@@ -69,7 +69,7 @@ def scan_the_blockchain(last_db_block: int, last_block: int) -> tuple[bool, int,
         except Exception as exc:
             if constants.DEBUG:
                 print(f"Error in scan_the_blockchain(): {exc}")
-            last_block = from_block
+            last_block_bc = from_block
             status = False
             break
 
@@ -84,15 +84,25 @@ def scan_the_blockchain(last_db_block: int, last_block: int) -> tuple[bool, int,
                 tx_data = json.loads(transaction["tx"]["json"])
 
                 # Provisioner action
-                # TODO: decode TX fn_args to retrieve amounts staked/unstaked/withdrawed/transfered
-                if (
-                    tx_data["type"] == "moonlight"
-                    and tx_data["sender"] == provisioner
-                    and tx_data["call"]["contract"] in contracts
+                if tx_data["type"] == "moonlight" and (
+                    tx_data["sender"] == provisioner or tx_data["receiver"] == provisioner
                 ):
-                    history[str(block["header"]["timestamp"])] = tx_data["call"]["fn_name"], block["header"]["height"]
+                    fn_name = str(tx_data["call"]["fn_name"]) if tx_data["call"] else "transfer"
+                    amount = 0
 
-    return status, last_block, blocks, history
+                    if fn_name == "transfer":
+                        amount = int(tx_data["value"])
+                        if tx_data["sender"] == provisioner:
+                            amount *= -1
+                    else:
+                        # stake/unstake, convert (from public to shielded), withdraw
+                        amount = int(tx_data["deposit"])
+                        if fn_name == "unstake":
+                            amount *= -1
+
+                    history[str(block["header"]["timestamp"])] = fn_name, amount, int(block["header"]["height"])
+
+    return status, last_block_bc, blocks, history
 
 
 def get_current_block() -> int:
@@ -129,7 +139,10 @@ def update() -> None:
 
     # Force a full scan
     if data.version < constants.DB_VERSION:
+        data.blocks = set()
+        data.history = {}
         data.last_block = 0
+        data.total_rewards = 0
 
     try:
         status, last_block, blocks, history = scan_the_blockchain(data.last_block, get_last_block())

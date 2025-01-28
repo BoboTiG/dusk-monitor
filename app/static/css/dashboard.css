@@ -47,13 +47,16 @@ div.error::after { color: var(--error) }
     padding: .3em;
 }
 #history span { font-size: 1.2em }
-#history .go-down span { color: var(--down) }
+
+#history .down span { color: var(--down) }
+#history .up span { color: var(--up) }
+#history .go-nowhere span { color: var(--sub-text) }
+
+#history .convert span::before { content: "🛡️ " }
 #history .go-down span::before,
 #history .unstake span::before { content: "📉 " }
-#history .go-up span { color: var(--up) }
 #history .go-up span::before,
 #history .stake span::before { content: "📈 " }
-#history .go-nowhere span { color: var(--sub-text) }
 #history .go-nowhere span::before { content: "🔜 " }
 #history .withdraw span::before { content: "💰 " }
 

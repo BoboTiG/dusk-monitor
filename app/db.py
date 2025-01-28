@@ -22,7 +22,7 @@ if TYPE_CHECKING:
 class DataBase:
     blocks: set[int]
     current_block: int
-    history: dict[str, tuple[str, int]]
+    history: dict[str, tuple[str, int, int]]  # "timestamp": ("fn_name", amount, block)
     last_block: int
     rewards: float
     slash_hard: int
@@ -64,7 +64,7 @@ def save(data: DataBase) -> None:
     ],
     "{constants.DB_KEY_CURRENT_BLOCK}": {data.current_block},
     "{constants.DB_KEY_HISTORY}": {{
-        {glue.join(f'"{k}": ["{v[0]}", {v[1]}]' for k, v in sorted(data.history.items()))}
+        {glue.join(f'"{timestamp}": ["{fn_name}", {amount}, {block}]' for timestamp, (fn_name, amount, block) in sorted(data.history.items()))}
     }},
     "{constants.DB_KEY_LAST_BLOCK}": {data.last_block},
     "{constants.DB_KEY_REWARDS}": {data.rewards},
