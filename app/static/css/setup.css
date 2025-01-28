@@ -7,6 +7,13 @@ h2 {
     text-transform: uppercase;
 }
 
+hr {
+    width: 50%;
+    margin: 2em auto 4em auto;  /* top right bottom left */
+    border: none;
+    border-top: 1px dashed var(--btn-2);
+}
+
 form {
     flex: 1;
     align-self: center;
