@@ -82,7 +82,6 @@ def save(form: dict) -> None:
     }
 
     if new_data != load(verbose=False):
-        print(f"UPDATE with {new_data}")
         constants.CONFIG_FILE.write_text(json.dumps(new_data, indent=4, sort_keys=True))
         load()
 
