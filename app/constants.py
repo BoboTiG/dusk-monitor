@@ -6,13 +6,15 @@ Source: https://github.com/BoboTiG/dusk-monitor
 from os import getenv
 from pathlib import Path
 
+# Debug mode
+DEBUG = getenv("DEBUG", "0") == "1"
+
 # Local files
 ROOT = Path(__file__).parent
-STATIC = ROOT / "static"
 DATA_DIR = Path(getenv("DATA_DIR", ROOT.parent))
+CONFIG_FILE = DATA_DIR / "config.json"
 DB_FILE = DATA_DIR / "db.json"
 REWARDS_FILE = DATA_DIR / "rewards.txt"
-PROVISIONER = (DATA_DIR / "provisioner.txt").read_text().strip()
 
 # Database
 DB_VERSION = 2
@@ -40,22 +42,15 @@ GQL_GET_BLOCKS_ITEMS_COUNT = 10_000
 GQL_LAST_BLOCK = "query { block(height: -1) { header { height } } }"
 CONTRACT_STAKING = "0200000000000000000000000000000000000000000000000000000000000000"
 
-# Local web server
-HOST = getenv("HOST", "0.0.0.0")
-PORT = int(getenv("PORT", sum(ord(c) for c in "Dusk Node Monitoring")))  # Hint: one-thousand-twenty-three
-DEBUG = getenv("DEBUG", "1") != "0"
-CSS_FILES = list((STATIC / "css").glob("light-*.css"))
-
-# SSH command to get data from the node
-CMD_GET_NODE_SYNCED_BLOCK = ["ssh", getenv("DUSK_SSH_HOSTNAME", "dusk"), "ruskquery block-height"]
-
 # Shell command to get data from the rewards history file (1 hour of data)
 CMD_GET_LAST_REWARDS = ["tail", "-14", str(REWARDS_FILE)]
 
-# Bonus: play a sound on new block generated (only when PLAY_SOUND is True)
-PLAY_SOUND = getenv("PLAY_SOUND", "1") != "0"
-AUDIO_FILE = STATIC / "mixkit-melodic-gold-price-2000.wav"
+# Play a sound on new block generated (only when config.PLAY_SOUND is True)
+AUDIO_FILE = ROOT / "static" / "mixkit-melodic-gold-price-2000.wav"
 PLAY_SOUND_CMD = ["ffplay", "-nodisp", "-autoexit", "-loglevel", "quiet", str(AUDIO_FILE)]
 
 # Voter fraction rewards, in percent (estimation)
 VOTER_FRACTION_PERCENT = 1.13
+
+# Provisioner public key length
+PROVISIONER_KEY_LENGTH = 131

@@ -11,12 +11,31 @@
     --down: fuchsia;
 }
 
+@media (prefers-color-scheme: light) {
+    :root {
+        --text: #000;
+        --text-shadow: #fff;
+        --sub-text: #222;
+        --error: #f00000;
+        --btn-1: #bee6ce;
+        --btn-2: #bcffdb;
+        --btn-3: #8dffcd;
+        --btn-4: #68d89b;
+        --up: darkgreen;
+        --down: orangered;
+    }
+}
+
 @font-face {
     /* https://github.com/githubnext/monaspace/blob/v1.000/fonts/webfonts/MonaspaceArgonVarVF%5Bwght%2Cwdth%2Cslnt%5D.woff2 */
     font-family: "Monaspace Argon";
     src:
         local("Monaspace Argon Regular"),
         url("/static/monaspace-argon.woff2") format("woff2");
+}
+
+*:focus {
+    outline: none;
 }
 
 body {

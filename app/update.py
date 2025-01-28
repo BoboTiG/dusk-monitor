@@ -8,7 +8,7 @@ import json
 import subprocess
 import niquests
 
-from app import constants, db
+from app import config, constants, db
 
 
 def compute_rewards(blocks: set[int]) -> float:
@@ -49,7 +49,7 @@ def scan_the_blockchain(last_db_block: int, last_block: int) -> tuple[bool, int,
     blocks: set[int] = set()
     history: dict[str, tuple[int, str]] = {}
     status = True
-    provisioner = constants.PROVISIONER
+    provisioner = config.PROVISIONER
 
     if constants.DEBUG:
         print(f"DB last-block = {last_db_block:,}")
@@ -94,7 +94,8 @@ def scan_the_blockchain(last_db_block: int, last_block: int) -> tuple[bool, int,
 
 
 def get_current_block() -> int:
-    return int(subprocess.check_output(constants.CMD_GET_NODE_SYNCED_BLOCK, text=True).strip())
+    cmd = ["ssh", config.SSH_HOSTNAME, "ruskquery block-height"]
+    return int(subprocess.check_output(cmd, text=True).strip())
 
 
 def get_last_block() -> int:
@@ -106,11 +107,11 @@ def get_last_block() -> int:
 def get_provisioner_data() -> dict:
     with niquests.post(constants.URL_RUES_PROVISIONERS, headers=constants.HEADERS) as req:
         req.raise_for_status()
-        return next((prov for prov in req.json() if prov["key"] == constants.PROVISIONER), {})
+        return next((prov for prov in req.json() if prov["key"] == config.PROVISIONER), {})
 
 
 def play_sound_of_the_riches() -> None:
-    if constants.PLAY_SOUND:
+    if config.PLAY_SOUND:
         with suppress(Exception):
             subprocess.check_call(constants.PLAY_SOUND_CMD)
             if constants.DEBUG:
@@ -118,6 +119,10 @@ def play_sound_of_the_riches() -> None:
 
 
 def update() -> None:
+    if not config.PROVISIONER:
+        print("Config file not found, go to the dashboard /setup page.")
+        return
+
     data = db.load()
 
     # Force a full scan

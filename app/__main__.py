@@ -22,6 +22,6 @@ if __name__ == "__main__":
             finally:
                 LOCK_FILE.unlink()
     else:
-        from app import constants, server
+        from app import config, constants, server
 
-        server.app.run(port=constants.PORT, host=constants.HOST, debug=constants.DEBUG)
+        server.app.run(port=config.PORT, host=config.HOST, debug=constants.DEBUG)

@@ -3,19 +3,28 @@ This is part of the Dusk node Monitoring.
 Source: https://github.com/BoboTiG/dusk-monitor
 """
 
+from __future__ import annotations
+
 from datetime import datetime
 from random import choice
 from subprocess import check_output
+from typing import TYPE_CHECKING
 
 import flask
 
-from app import constants, db
+from app import config, constants, db
+
+if TYPE_CHECKING:
+    from werkzeug.wrappers.response import Response
 
 app = flask.Flask(__name__)
 
 
 @app.route("/")
-def index() -> str:
+def index() -> str | "Response":
+    if not config.PROVISIONER:
+        return flask.redirect("/setup")
+
     data = db.load()
     history = craft_history(data)
     return render(
@@ -25,6 +34,20 @@ def index() -> str:
         history=history,
         longest=len(max(history, key=lambda v: len(v[1]))[1]),
     )
+
+
+@app.route("/setup", methods=["GET", "POST"])
+def setup() -> str | "Response":
+    if flask.request.method == "GET":
+        return render("setup", config=config, constants=constants)
+
+    try:
+        config.save(dict(flask.request.form))
+    except Exception as exc:
+        print(f"Error while handling form data: {exc}")
+        return flask.redirect("/setup")
+
+    return flask.redirect("/")
 
 
 @app.template_filter()
@@ -76,9 +99,5 @@ def craft_history(data: db.DataBase) -> list[tuple[str, str]]:
     return sorted(res, reverse=True)  # type: ignore[arg-type]
 
 
-def get_random_style() -> str:
-    return choice(constants.CSS_FILES).name
-
-
 def render(template: str, **kwargs) -> str:
-    return flask.render_template(f"{template}.html", css=get_random_style(), **kwargs)
+    return flask.render_template(f"{template}.html", **kwargs)

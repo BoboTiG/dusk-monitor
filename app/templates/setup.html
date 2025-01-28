@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block page %}setup{% endblock %}
+{% block body %}
+    <form method="POST" action="/setup" onsubmit="return confirm('Are you sure the provisioner key is correct? If new or different from the old one, it will trigger a full blockchain scan at the next update.');">
+        <h2>📢 Mandatory</h2>
+
+        <label for="data_dir">📁 Data Folder</label>
+        <input type="text" readonly size="69" value="{{ constants.DATA_DIR }}" />
+
+        <label for="provisioner">🔑 Provisioner Public Key</label>
+        <input
+            name="provisioner"
+            id="provisioner"
+            type="text"
+            minlength="{{ constants.PROVISIONER_KEY_LENGTH }}"
+            maxlength="{{ constants.PROVISIONER_KEY_LENGTH }}"
+            size="69"
+            spellcheck="false"
+            value="{{ config.PROVISIONER }}"
+            required
+        />
+
+        <h2>⚙️ Options</h2>
+
+        <label for="host">🌐 Local Web Server Host & Port</label>
+        <input type="text" id="host" name="host" size="10" value="{{ config.HOST }}" required />
+        <input type="number" id="port" name="port" min="80" max="65536" value="{{ config.PORT }}" required />
+
+        <label for="ssh-hostname">📡 SSH Hostname to Contact the Node</label>
+        <input type="text" id="ssh-hostname" name="ssh-hostname" size="10" value="{{ config.SSH_HOSTNAME }}" required />
+
+        <label for="play-sound">🔔 Play a Sound on New Block Generated</label>
+        <div id="checkbox">
+            <input type="checkbox" id="play-sound" name="play-sound"{% if config.PLAY_SOUND %} checked{% endif %} />
+            <div class="knobs"></div>
+            <div class="layer"></div>
+        </div>
+
+        <div class="buttons">
+            <a class="button cancel" href="/">Cancel</a>
+            <input class="button" type="submit" value="Save"/>
+        </div>
+    </form>
+{% endblock %}
