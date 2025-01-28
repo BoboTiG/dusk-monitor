@@ -19,14 +19,14 @@ python -m pip install -r requirements.txt
 ## Run
 
 1. Start the local [web server](#web-server).
-1. Open the [dashboard](http://localhost:1923) for the setup (and for later updates, you can directly go to the [/setup](http://localhost:1923/setup) page).
+   - Open the [dashboard](http://localhost:1923) for the setup (and for later updates, you can directly go to the [/setup](http://localhost:1923/setup) page).
 1. Set up the [cron job](#update-data).
 1. That's it!
 
 ### Environment Variables
 
-- Set `DATA_DIR=path/to/folder` is the folder where node data will be stored, it's highly recommended using a custom folder outside the repository.
-- Set `DEBUG=1` to print more details.
+- `DATA_DIR=path/to/folder`: the folder where node data will be stored, it's highly recommended using a folder outside the repository.
+- `DEBUG=1`: print more details.
 
 ## Commands
 
