@@ -60,7 +60,7 @@ So far, we display:
 
 > [!NOTE]
 > Those screenshots might be outdated, but the essence of the dashboard is still relevant from those pictures.
-> Also, if you have any **design skills**, please take a look at #5 🙏
+> Also, if you have any **design skills**, please take a look at [#5](https://github.com/BoboTiG/dusk-monitor/issues/5) 🙏
 
 On desktop:
 
