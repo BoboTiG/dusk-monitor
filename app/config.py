@@ -54,7 +54,7 @@ def load(*, verbose: bool = True) -> dict[str, bool | int | str]:
     PROVISIONER = data.get("provisioner", "")
     SSH_HOSTNAME = sanitize(data.get("ssh-hostname", Defaults.ssh_hostname))
 
-    if verbose:
+    if verbose and constants.DEBUG:
         if PROVISIONER:
             print(f">>> Using config provisioner (truncated): {PROVISIONER[:16]!r}")
         if HOST != Defaults.host:
