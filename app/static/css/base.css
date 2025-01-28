@@ -25,9 +25,11 @@ body {
     display: flex;
     flex-flow: column wrap;
     cursor: pointer;
-    font-family: "Monaspace Argon";
     text-align: center;
     color: var(--text);
     text-shadow: 0 .2px .5px var(--text-shadow);
     user-select: none;
 }
+
+body,
+input { font-family: "Monaspace Argon" }

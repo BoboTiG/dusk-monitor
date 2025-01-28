@@ -44,7 +44,7 @@ CONTRACT_STAKING = "020000000000000000000000000000000000000000000000000000000000
 HOST = getenv("HOST", "0.0.0.0")
 PORT = int(getenv("PORT", sum(ord(c) for c in "Dusk Node Monitoring")))  # Hint: one-thousand-twenty-three
 DEBUG = getenv("DEBUG", "1") != "0"
-CSS_FILES = list(STATIC.glob("light-*.css"))
+CSS_FILES = list((STATIC / "css").glob("light-*.css"))
 
 # SSH command to get data from the node
 CMD_GET_NODE_SYNCED_BLOCK = ["ssh", getenv("DUSK_SSH_HOSTNAME", "dusk"), "ruskquery block-height"]
