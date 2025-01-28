@@ -88,7 +88,7 @@ def craft_history(data: db.DataBase) -> list[tuple[str, str]]:
             else:
                 res.append((when, format_float(diff), "go-down down"))
         else:
-            res.append((when, "±0.000", "go-nowhere"))
+            res.append((when, "±0.000", "go-nowhere empty"))
 
     # Actions
     first_date = res[-1][0]
@@ -97,18 +97,18 @@ def craft_history(data: db.DataBase) -> list[tuple[str, str]]:
             break
 
         fn_name, amount, _ = data.history[when]
-        action = fn_name.title()
+        css_cls = "empty"
 
-        if amount == 0:
-            css_cls = "go-nowhere"
-        else:
+        if amount != 0:
             value = format_float(amount / 10**9)
-            if fn_name != "convert" and amount:
-                value = f"+{value}"
-            action += f" {value}"
-            css_cls = "down" if amount < 0 else "up"
+            if fn_name != "convert":
+                if amount > 0:
+                    value = f"+{value}"
+                    css_cls = "up"
+                else:
+                    css_cls = "down"
 
-        res.append((when, action, f"{fn_name} {css_cls}"))
+        res.append((when, value, f"{fn_name} {css_cls}"))
 
     return sorted(res, reverse=True)  # type: ignore[arg-type]
 
