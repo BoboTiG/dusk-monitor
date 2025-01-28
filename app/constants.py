@@ -7,7 +7,7 @@ from os import getenv
 from pathlib import Path
 
 # Debug mode
-DEBUG = getenv("DEBUG", "0") == "1"
+DEBUG = getenv("DEBUG", "1") != "0"
 
 # Local files
 ROOT = Path(__file__).parent
