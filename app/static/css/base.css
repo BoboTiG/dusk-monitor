@@ -43,10 +43,12 @@ body {
     flex-flow: column wrap;
     cursor: pointer;
     text-align: center;
-    color: var(--text);
     text-shadow: 0 .2px .5px var(--text-shadow);
     user-select: none;
 }
 
 body,
-input { font-family: "Monaspace Argon" }
+input {
+    font-family: "Monaspace Argon";
+    color: var(--text);
+}

@@ -6,9 +6,15 @@ Source: https://github.com/BoboTiG/dusk-monitor
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass
 
 from app import constants
+
+
+def sanitize(value: str, *, pattern: re.Pattern[str] = re.compile(r"[^a-zAZ0-9\.\-_]+")) -> str:
+    """Regexp used to clean-up the SSH hostname."""
+    return pattern.sub("", value)
 
 
 @dataclass(slots=True, frozen=True)
@@ -46,7 +52,7 @@ def load(*, verbose: bool = True) -> dict[str, bool | int | str]:
     PORT = int(data.get("port", Defaults.port))
     PLAY_SOUND = bool(data.get("play-sound", Defaults.play_sound))
     PROVISIONER = data.get("provisioner", "")
-    SSH_HOSTNAME = data.get("ssh-hostname", Defaults.ssh_hostname)
+    SSH_HOSTNAME = sanitize(data.get("ssh-hostname", Defaults.ssh_hostname))
 
     if verbose:
         if PROVISIONER:
@@ -78,7 +84,7 @@ def save(form: dict) -> None:
         "port": int(form["port"]),
         "play-sound": "play-sound" in form,
         "provisioner": provisioner,
-        "ssh-hostname": form["ssh-hostname"],
+        "ssh-hostname": sanitize(form["ssh-hostname"]),
     }
 
     if new_data != load(verbose=False):

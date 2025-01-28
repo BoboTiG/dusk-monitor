@@ -1,8 +1,11 @@
 @import url("base.css");
 
-body { background-color: var(--btn-1) }
+body { background-color: var(--btn-4) }
 
-h2 { text-align: center }
+h2 {
+    text-align: center;
+    text-transform: uppercase;
+}
 
 form {
     flex: 1;
@@ -13,12 +16,18 @@ form {
 
 label {
     display: block;
-    /* font-variant: small-caps; */
+    font-variant: small-caps;
     font-size: 1.2em;
+    margin-bottom: .5em;
     cursor: pointer;
 }
 
-input { font-size: 1em }
+input {
+    font-size: 1em;
+    background-color: var(--btn-3);
+    border-color: var(--btn-2);
+    border-radius: 5px;
+}
 input[type=text],
 input[type=number] {
     padding: .4em .8em;
