@@ -8,21 +8,21 @@
     --btn-3: #393053;
     --btn-4: #18122b;
     --up: lime;
-    --down: fuchsia;
+    --down: #ff5252;
 }
 
 @media (prefers-color-scheme: light) {
     :root {
-        --text: #000;
-        --text-shadow: #fff;
+        --text: #222;
+        --text-shadow: #ddd;
         --sub-text: #222;
         --error: #f00000;
         --btn-1: #bee6ce;
         --btn-2: #bcffdb;
         --btn-3: #8dffcd;
         --btn-4: #68d89b;
-        --up: darkgreen;
-        --down: orangered;
+        --up: indigo;
+        --down: crimson;
     }
 }
 
@@ -34,9 +34,7 @@
         url("/static/monaspace-argon.woff2") format("woff2");
 }
 
-*:focus {
-    outline: none;
-}
+*:focus { outline: none }
 
 body {
     height: 100vh;

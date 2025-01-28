@@ -46,10 +46,7 @@ div.error::after { color: var(--error) }
     margin: 0;
     padding: .3em;
 }
-#history span {
-    font-size: 1.2em;
-    color: var(--text);
-}
+#history span { font-size: 1.2em }
 #history .go-down span { color: var(--down) }
 #history .go-down span::before,
 #history .unstake span::before { content: "📉 " }
