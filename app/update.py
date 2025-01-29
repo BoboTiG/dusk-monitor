@@ -153,7 +153,7 @@ def update() -> None:
 
     with suppress(Exception):
         provisioner_data = get_provisioner_data()
-        data.rewards = provisioner_data["reward"] / 10**9
+        data.current_rewards = provisioner_data["reward"] / 10**9
         data.slash_hard = provisioner_data["hard_faults"]
         data.slash_soft = provisioner_data["faults"]
 

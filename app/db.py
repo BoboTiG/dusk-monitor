@@ -22,9 +22,9 @@ if TYPE_CHECKING:
 class DataBase:
     blocks: set[int]
     current_block: int
+    current_rewards: float
     history: dict[str, tuple[str, int, int]]  # "timestamp": ("fn_name", amount, block)
     last_block: int
-    rewards: float
     slash_hard: int
     slash_soft: int
     total_rewards: float
@@ -47,7 +47,7 @@ def load() -> DataBase:
         current_block=int(data.get(constants.DB_KEY_CURRENT_BLOCK, 0)),
         history=data.get(constants.DB_KEY_HISTORY, {}),
         last_block=int(data.get(constants.DB_KEY_LAST_BLOCK, 0)),
-        rewards=float(data.get(constants.DB_KEY_REWARDS, 0.0)),
+        current_rewards=float(data.get(constants.DB_KEY_CURRENT_REWARDS, 0.0)),
         slash_hard=int(data.get(constants.DB_KEY_SLASH_HARD, 0)),
         slash_soft=int(data.get(constants.DB_KEY_SLASH_SOFT, 0)),
         total_rewards=float(data.get(constants.DB_KEY_TOTAL_REWARDS, 0.0)),
@@ -59,22 +59,22 @@ def save(data: DataBase) -> None:
     glue = ",\n        "
 
     constants.DB_FILE.write_text(f"""{{
-    "{constants.DB_KEY_BLOCKS}": [
-        {glue.join(batched(sorted(data.blocks), constants.DB_BLOCKS_PER_LINE))}
-    ],
     "{constants.DB_KEY_CURRENT_BLOCK}": {data.current_block},
+    "{constants.DB_KEY_LAST_BLOCK}": {data.last_block},
+    "{constants.DB_KEY_SLASH_SOFT}": {data.slash_soft},
+    "{constants.DB_KEY_SLASH_HARD}": {data.slash_hard},
+    "{constants.DB_KEY_CURRENT_REWARDS}": {data.current_rewards},
+    "{constants.DB_KEY_TOTAL_REWARDS}": {data.total_rewards},
+    "{constants.DB_KEY_VERSION}": {data.version},
     "{constants.DB_KEY_HISTORY}": {{
         {glue.join(f'"{timestamp}": ["{fn_name}", {amount}, {block}]' for timestamp, (fn_name, amount, block) in sorted(data.history.items()))}
     }},
-    "{constants.DB_KEY_LAST_BLOCK}": {data.last_block},
-    "{constants.DB_KEY_REWARDS}": {data.rewards},
-    "{constants.DB_KEY_SLASH_HARD}": {data.slash_hard},
-    "{constants.DB_KEY_SLASH_SOFT}": {data.slash_soft},
-    "{constants.DB_KEY_TOTAL_REWARDS}": {data.total_rewards},
-    "{constants.DB_KEY_VERSION}": {data.version}
+    "{constants.DB_KEY_BLOCKS}": [
+        {glue.join(batched(sorted(data.blocks), constants.DB_BLOCKS_PER_LINE))}
+    ]
 }}
 """)
 
     now = datetime.now(tz=UTC).replace(second=0, microsecond=0)
     with constants.REWARDS_FILE.open(mode="+at") as fh:
-        fh.write(f"{int(now.timestamp())}|{data.rewards}\n")
+        fh.write(f"{int(now.timestamp())}|{data.current_rewards}\n")
