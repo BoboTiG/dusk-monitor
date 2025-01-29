@@ -70,6 +70,13 @@ div.error::after { color: var(--error) }
     opacity: .8;
 }
 
+/* Flex items order. */
+#rewards { order: 1 }
+#history { order: 2 }
+#blocks-generated { order: 3 }
+#block-height { order: 4 }
+#slashes { order: 5 }
+
 @keyframes progress {
     100% {
         stroke-dashoffset: 1256.12939453125;
@@ -97,14 +104,7 @@ div.error::after { color: var(--error) }
 }
 
 @media (max-width: 499px) {
-    #rewards { order: 1 }
-    #history {
-        order: 2;
-        flex: 0 10%;
-    }
-    #blocks-generated { order: 3 }
-    #block-height { order: 4 }
-    #slashes { order: 5 }
+    #history { flex: 0 10% }
 
     #countdown {
         top: -1em;
