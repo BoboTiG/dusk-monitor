@@ -23,11 +23,11 @@ History = dict[str, tuple[str, int, int]]
 
 @dataclass(slots=True, kw_only=True)
 class DataBase:
+    rewards: int
     current_block: int
     last_block: int
     slash_hard: int
     slash_soft: int
-    rewards: int
     version: int
     history: History
     blocks: set[int]
