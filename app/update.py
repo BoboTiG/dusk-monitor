@@ -155,10 +155,6 @@ def update() -> None:
     with suppress(Exception):
         fill_empty_amounts(data.history)
 
-    data.total_rewards = data.current_rewards + sum(
-        amount for fn_name, amount, _ in data.history.values() if fn_name == "withdraw"
-    )
-
     if new_blocks := blocks - data.blocks:
         data.blocks |= new_blocks
         if constants.DEBUG:

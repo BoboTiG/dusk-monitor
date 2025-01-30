@@ -28,7 +28,6 @@ class DataBase:
     slash_hard: int
     slash_soft: int
     current_rewards: int
-    total_rewards: int
     version: int
     history: History
     blocks: set[int]
@@ -51,7 +50,6 @@ def load() -> DataBase:
         slash_hard=int(data.get(constants.DB_KEY_SLASH_HARD, 0)),
         slash_soft=int(data.get(constants.DB_KEY_SLASH_SOFT, 0)),
         current_rewards=int(data.get(constants.DB_KEY_CURRENT_REWARDS, 0)),
-        total_rewards=int(data.get(constants.DB_KEY_TOTAL_REWARDS, 0)),
         version=int(data.get(constants.DB_KEY_VERSION, 1)),
         history=data.get(constants.DB_KEY_HISTORY, {}),
         blocks=set(data.get(constants.DB_KEY_BLOCKS, [])),
@@ -71,7 +69,6 @@ def save(data: DataBase) -> None:
     "{constants.DB_KEY_SLASH_SOFT}": {data.slash_soft},
     "{constants.DB_KEY_SLASH_HARD}": {data.slash_hard},
     "{constants.DB_KEY_CURRENT_REWARDS}": {data.current_rewards},
-    "{constants.DB_KEY_TOTAL_REWARDS}": {data.total_rewards},
     "{constants.DB_KEY_VERSION}": {data.version},
     "{constants.DB_KEY_HISTORY}": {{
         {history}

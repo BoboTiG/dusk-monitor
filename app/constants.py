@@ -26,7 +26,6 @@ DB_KEY_HISTORY = "history"
 DB_KEY_LAST_BLOCK = "last-block"
 DB_KEY_SLASH_HARD = "slash-hard"
 DB_KEY_SLASH_SOFT = "slash-soft"
-DB_KEY_TOTAL_REWARDS = "total-rewards"
 DB_KEY_VERSION = "version"
 
 # Remote data
