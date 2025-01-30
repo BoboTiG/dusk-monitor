@@ -23,15 +23,15 @@ History = dict[str, tuple[str, int, int]]
 
 @dataclass(slots=True, kw_only=True)
 class DataBase:
-    blocks: set[int]
     current_block: int
-    current_rewards: float
-    history: History
     last_block: int
     slash_hard: int
     slash_soft: int
-    total_rewards: float
+    current_rewards: int
+    total_rewards: int
     version: int
+    history: History
+    blocks: set[int]
 
 
 def batched(iterable: list[int], n: int) -> Iterator[str]:
@@ -46,15 +46,15 @@ def load() -> DataBase:
         data = json.loads(constants.DB_FILE.read_text())
 
     return DataBase(
-        blocks=set(data.get(constants.DB_KEY_BLOCKS, [])),
         current_block=int(data.get(constants.DB_KEY_CURRENT_BLOCK, 0)),
-        history=data.get(constants.DB_KEY_HISTORY, {}),
         last_block=int(data.get(constants.DB_KEY_LAST_BLOCK, 0)),
-        current_rewards=float(data.get(constants.DB_KEY_CURRENT_REWARDS, 0.0)),
         slash_hard=int(data.get(constants.DB_KEY_SLASH_HARD, 0)),
         slash_soft=int(data.get(constants.DB_KEY_SLASH_SOFT, 0)),
-        total_rewards=float(data.get(constants.DB_KEY_TOTAL_REWARDS, 0.0)),
+        current_rewards=int(data.get(constants.DB_KEY_CURRENT_REWARDS, 0)),
+        total_rewards=int(data.get(constants.DB_KEY_TOTAL_REWARDS, 0)),
         version=int(data.get(constants.DB_KEY_VERSION, 1)),
+        history=data.get(constants.DB_KEY_HISTORY, {}),
+        blocks=set(data.get(constants.DB_KEY_BLOCKS, [])),
     )
 
 
@@ -84,4 +84,4 @@ def save(data: DataBase) -> None:
 
     now = datetime.now(tz=UTC).replace(second=0, microsecond=0)
     with constants.REWARDS_FILE.open(mode="+at") as fh:
-        fh.write(f"{int(now.timestamp())}|{data.current_rewards}\n")
+        fh.write(f"{int(now.timestamp())}|{data.current_rewards / 10**9}\n")

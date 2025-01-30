@@ -142,7 +142,7 @@ def update() -> None:
 
     with suppress(Exception):
         provisioner_data = get_provisioner_data()
-        data.current_rewards = provisioner_data["reward"] / 10**9
+        data.current_rewards = provisioner_data["reward"]
         data.slash_hard = provisioner_data["hard_faults"]
         data.slash_soft = provisioner_data["faults"]
 
@@ -155,9 +155,8 @@ def update() -> None:
     with suppress(Exception):
         fill_empty_amounts(data.history)
 
-    data.total_rewards = (
-        data.current_rewards
-        + sum(amount for fn_name, amount, _ in data.history.values() if fn_name == "withdraw") / 10**9
+    data.total_rewards = data.current_rewards + sum(
+        amount for fn_name, amount, _ in data.history.values() if fn_name == "withdraw"
     )
 
     if new_blocks := blocks - data.blocks:
