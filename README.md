@@ -5,8 +5,8 @@ A dashboard for your Dusk node.
 Interesting links:
 
 - 🇬🇧 [How to query your Dusk node?](https://www.tiger-222.fr/luma/en/blockchain/node-dusk-http-wss.html)
-- 🇫🇷 [Communiquer avec votre nœud Dusk](https://www.tiger-222.fr/luma/blockchain/node-dusk-http-wss.html).
-- 🇫🇷 [Comment déployer un nœud Dusk ?](https://www.tiger-222.fr/luma/blockchain/node-dusk.html).
+- 🇫🇷 [Communiquer avec votre nœud Dusk](https://www.tiger-222.fr/luma/blockchain/node-dusk-http-wss.html)
+- 🇫🇷 [Comment déployer un nœud Dusk ?](https://www.tiger-222.fr/luma/blockchain/node-dusk.html)
 
 > [!TIP]
 > Dusk wallet for tips:
