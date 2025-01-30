@@ -40,8 +40,7 @@ query() { blocks(range: [%d, %d]) {...BlockInfo} }
 """
 GQL_GET_BLOCKS_ITEMS_COUNT = 10_000
 GQL_LAST_BLOCK = "query { block(height: -1) { header { height } } }"
-CONTRACT_TRANSFER = "0100000000000000000000000000000000000000000000000000000000000000"
-CONTRACT_STAKING = "0200000000000000000000000000000000000000000000000000000000000000"
+GQL_FULL_HISTORY = 'query { fullMoonlightHistory(address: "%s") { json } }'
 
 # Shell command to get data from the rewards history file (1 hour of data)
 CMD_GET_LAST_REWARDS = ["tail", "-14", str(REWARDS_FILE)]
@@ -49,9 +48,6 @@ CMD_GET_LAST_REWARDS = ["tail", "-14", str(REWARDS_FILE)]
 # Play a sound on new block generated (only when config.PLAY_SOUND is True)
 AUDIO_FILE = ROOT / "static" / "mixkit-melodic-gold-price-2000.wav"
 PLAY_SOUND_CMD = ["ffplay", "-nodisp", "-autoexit", "-loglevel", "quiet", str(AUDIO_FILE)]
-
-# Voter fraction rewards, in percent (estimation)
-VOTER_FRACTION_PERCENT = 1.13
 
 # Provisioner public key length
 PROVISIONER_KEY_LENGTH = 131

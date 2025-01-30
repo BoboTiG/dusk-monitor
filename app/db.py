@@ -17,13 +17,16 @@ from app import constants
 if TYPE_CHECKING:
     from typing import Iterator
 
+# "timestamp": ("fn_name", amount, block)
+History = dict[str, tuple[str, int, int]]
+
 
 @dataclass(slots=True, kw_only=True)
 class DataBase:
     blocks: set[int]
     current_block: int
     current_rewards: float
-    history: dict[str, tuple[str, int, int]]  # "timestamp": ("fn_name", amount, block)
+    history: History
     last_block: int
     slash_hard: int
     slash_soft: int

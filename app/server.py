@@ -30,7 +30,6 @@ def index() -> str | "Response":
     return render(
         "dashboard",
         data=data,
-        estimated_rewards=data.total_rewards * constants.VOTER_FRACTION_PERCENT,
         history=history,
         longest=len(max(history, key=lambda v: len(v[1]))[1]),
     )

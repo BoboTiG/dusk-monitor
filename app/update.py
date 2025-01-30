@@ -11,43 +11,9 @@ import niquests
 from app import config, constants, db
 
 
-def compute_rewards(blocks: set[int]) -> float:
-    """
-    Block generators get 70% + voting fractions (not computed here).
-    Source: https://github.com/dusk-network/rusk/blob/rusk-1.0.0/rusk/src/lib/node.rs#L132-L157
-    Source: https://github.com/dusk-network/audits/blob/main/core-audits/2024-09_economic-protocol-design_pol-finance.pdf
-    """
-    amount = 0.0
-    for block in blocks:
-        if block == 113_529_597:  # Last mint
-            dusk = 0.05428
-        elif block >= 100_915_201:  # Period 9
-            dusk = 0.07757
-        elif block >= 88_300_801:  # Period 8
-            dusk = 0.15514
-        elif block >= 75_686_401:  # Period 7
-            dusk = 0.31027
-        elif block >= 63_072_001:  # Period 6
-            dusk = 0.62054
-        elif block >= 50_457_601:  # Period 5
-            dusk = 1.24109
-        elif block >= 37_843_201:  # Period 4
-            dusk = 2.48218
-        elif block >= 25_228_801:  # Period 3
-            dusk = 4.96435
-        elif block >= 12_614_401:  # Period 2
-            dusk = 9.9287
-        elif block >= 1:  # Period 1
-            dusk = 19.8574
-        else:  # Genesis
-            dusk = 0.0
-        amount += dusk * 0.7
-    return amount
-
-
 def scan_the_blockchain(last_block_db: int, last_block_bc: int) -> tuple[bool, int, set[int], dict]:
     blocks: set[int] = set()
-    history: dict[str, tuple[str, int, int]] = {}
+    history: db.History = {}
     status = True
     provisioner = config.PROVISIONER
 
@@ -73,17 +39,15 @@ def scan_the_blockchain(last_block_db: int, last_block_bc: int) -> tuple[bool, i
             status = False
             break
 
-        contracts = {constants.CONTRACT_STAKING, constants.CONTRACT_TRANSFER}
-
         for block in res["blocks"]:
             # New generated block
             if block["header"]["generatorBlsPubkey"] == provisioner:
                 blocks.add(block["header"]["height"])
 
+            # Provisioner action
             for transaction in block["transactions"]:
                 tx_data = json.loads(transaction["tx"]["json"])
 
-                # Provisioner action
                 if tx_data["type"] == "moonlight" and (
                     tx_data["sender"] == provisioner or tx_data["receiver"] == provisioner
                 ):
@@ -97,12 +61,37 @@ def scan_the_blockchain(last_block_db: int, last_block_bc: int) -> tuple[bool, i
                     else:
                         # stake/unstake, convert (from public to shielded), withdraw
                         amount = int(tx_data["deposit"])
-                        if fn_name == "unstake":
+                        if amount and fn_name == "unstake":
                             amount *= -1
 
                     history[str(block["header"]["timestamp"])] = fn_name, amount, int(block["header"]["height"])
 
     return status, last_block_bc, blocks, history
+
+
+def fill_empty_amounts(history: db.History) -> None:
+    """This function is useful to get unstake/withdraw amounts."""
+    if all(amount != 0 for _, amount, _ in history.values()):
+        return
+
+    query = constants.GQL_FULL_HISTORY % config.PROVISIONER
+    with niquests.post(constants.URL_RUES_GQL, headers=constants.HEADERS, data=query) as req:
+        req.raise_for_status()
+        full_history = req.json()["fullMoonlightHistory"]["json"]
+
+    for timestamp, (fn_name, amount, block) in history.copy().items():
+        if amount != 0:
+            continue
+
+        for item in full_history:
+            if item["block_height"] != block:
+                continue
+
+            amount = item["events"][0]["data"]["value"]
+            if fn_name == "unstake":
+                amount *= -1
+            history[timestamp] = (fn_name, amount, block)
+            break
 
 
 def get_current_block() -> int:
@@ -142,7 +131,6 @@ def update() -> None:
         data.blocks = set()
         data.history = {}
         data.last_block = 0
-        data.total_rewards = 0
 
     try:
         status, last_block, blocks, history = scan_the_blockchain(data.last_block, get_last_block())
@@ -163,16 +151,18 @@ def update() -> None:
     if history:
         data.history.update(history)
 
+    with suppress(Exception):
+        fill_empty_amounts(data.history)
+
+    data.total_rewards = (
+        data.current_rewards
+        + sum(amount for fn_name, amount, _ in data.history.values() if fn_name == "withdraw") / 10**9
+    )
+
     if new_blocks := blocks - data.blocks:
         data.blocks |= new_blocks
-        if data.total_rewards:
-            data.total_rewards += compute_rewards(new_blocks)
-        else:
-            data.total_rewards = compute_rewards(data.blocks)
-
         if constants.DEBUG:
             print(f"New blocks persisted: {', '.join(str(b) for b in sorted(new_blocks))}")
-
         play_sound_of_the_riches()
 
     data.last_block = last_block
