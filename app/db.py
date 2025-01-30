@@ -27,7 +27,7 @@ class DataBase:
     last_block: int
     slash_hard: int
     slash_soft: int
-    current_rewards: int
+    rewards: int
     version: int
     history: History
     blocks: set[int]
@@ -45,14 +45,14 @@ def load() -> DataBase:
         data = json.loads(constants.DB_FILE.read_text())
 
     return DataBase(
+        rewards=int(data.get(constants.DB_KEY_REWARDS, 0)),
         current_block=int(data.get(constants.DB_KEY_CURRENT_BLOCK, 0)),
         last_block=int(data.get(constants.DB_KEY_LAST_BLOCK, 0)),
-        slash_hard=int(data.get(constants.DB_KEY_SLASH_HARD, 0)),
         slash_soft=int(data.get(constants.DB_KEY_SLASH_SOFT, 0)),
-        current_rewards=int(data.get(constants.DB_KEY_CURRENT_REWARDS, 0)),
-        version=int(data.get(constants.DB_KEY_VERSION, 1)),
+        slash_hard=int(data.get(constants.DB_KEY_SLASH_HARD, 0)),
         history=data.get(constants.DB_KEY_HISTORY, {}),
         blocks=set(data.get(constants.DB_KEY_BLOCKS, [])),
+        version=int(data.get(constants.DB_KEY_VERSION, 1)),
     )
 
 
@@ -62,23 +62,24 @@ def save(data: DataBase) -> None:
         f'"{timestamp}": ["{fn_name}", {amount}, {block}]'
         for timestamp, (fn_name, amount, block) in sorted(data.history.items())
     )
+    blocks = glue.join(batched(sorted(data.blocks), constants.DB_BLOCKS_PER_LINE))
 
     constants.DB_FILE.write_text(f"""{{
+    "{constants.DB_KEY_REWARDS}": {data.rewards},
     "{constants.DB_KEY_CURRENT_BLOCK}": {data.current_block},
     "{constants.DB_KEY_LAST_BLOCK}": {data.last_block},
     "{constants.DB_KEY_SLASH_SOFT}": {data.slash_soft},
     "{constants.DB_KEY_SLASH_HARD}": {data.slash_hard},
-    "{constants.DB_KEY_CURRENT_REWARDS}": {data.current_rewards},
-    "{constants.DB_KEY_VERSION}": {data.version},
     "{constants.DB_KEY_HISTORY}": {{
         {history}
     }},
     "{constants.DB_KEY_BLOCKS}": [
-        {glue.join(batched(sorted(data.blocks), constants.DB_BLOCKS_PER_LINE))}
-    ]
+        {blocks}
+    ],
+    "{constants.DB_KEY_VERSION}": {data.version}
 }}
 """)
 
     now = datetime.now(tz=UTC).replace(second=0, microsecond=0)
     with constants.REWARDS_FILE.open(mode="+at") as fh:
-        fh.write(f"{int(now.timestamp())}|{data.current_rewards / 10**9}\n")
+        fh.write(f"{int(now.timestamp())}|{data.rewards / 10**9}\n")

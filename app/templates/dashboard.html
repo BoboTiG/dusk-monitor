@@ -13,9 +13,9 @@
     {%- else %}
     <div id="slashes">{{ data.slash_soft + data.slash_hard }}<span>｢slashes｣</span></div>
     {%- endif %} 
-    <div id="rewards" tooltip data-tooltip="Current: {{ (data.current_rewards / 10**9) | format_int }} | Total: {{ (total_rewards / 10**9) | format_int }}">
+    <div id="rewards" tooltip data-tooltip="Current: {{ (data.rewards / 10**9) | format_int }} | Total: {{ (total_rewards / 10**9) | format_int }}">
         <span id="countdown" data-duration="300" data-transition="linear" data-color="yellow" data-size="24"></span>
-        {{ (data.current_rewards / 10**9)| format_float }}<span>｢rewards｣</span>
+        {{ (data.rewards / 10**9)| format_float }}<span>｢rewards｣</span>
     </div>
     <div id="history">
         {%- for when, what, action in history %}

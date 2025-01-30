@@ -142,7 +142,7 @@ def update() -> None:
 
     with suppress(Exception):
         provisioner_data = get_provisioner_data()
-        data.current_rewards = provisioner_data["reward"]
+        data.rewards = provisioner_data["reward"]
         data.slash_hard = provisioner_data["hard_faults"]
         data.slash_soft = provisioner_data["faults"]
 

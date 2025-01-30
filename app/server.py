@@ -33,7 +33,7 @@ def index() -> str | Response:
         history=history,
         longest=len(max(history, key=lambda v: len(v[1]))[1]),
         total_rewards=(
-            data.current_rewards + sum(amount for fn_name, amount, _ in data.history.values() if fn_name == "withdraw")
+            data.rewards + sum(amount for fn_name, amount, _ in data.history.values() if fn_name == "withdraw")
         ),
     )
 
