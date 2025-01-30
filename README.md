@@ -1,6 +1,12 @@
 # Dusk Node Monitoring
 
-A minimalist dashboard for your Dusk node (go to the [preview](#preview), and check [similar projects](#similar-projects)). Here is [how to set up a node, in French](https://www.tiger-222.fr/luma/blockchain/node-dusk.html).
+A dashboard for your Dusk node.
+
+Interesting links:
+
+- 🇬🇧 [How to query your Dusk node?](https://www.tiger-222.fr/luma/en/blockchain/node-dusk-http-wss.html)
+- 🇫🇷 [Communiquer avec votre nœud Dusk](https://www.tiger-222.fr/luma/blockchain/node-dusk-http-wss.html).
+- 🇫🇷 [Comment déployer un nœud Dusk ?](https://www.tiger-222.fr/luma/blockchain/node-dusk.html).
 
 > [!TIP]
 > Dusk wallet for tips:
