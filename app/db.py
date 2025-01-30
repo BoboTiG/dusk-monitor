@@ -60,7 +60,7 @@ def save(data: DataBase) -> None:
     glue = ",\n        "
     history = glue.join(
         f'"{timestamp}": ["{fn_name}", {amount}, {block}]'
-        for timestamp, (fn_name, amount, block) in sorted(data.history.items())
+        for timestamp, (fn_name, amount, block) in sorted(data.history.items(), reverse=True)
     )
     blocks = glue.join(batched(sorted(data.blocks), constants.DB_BLOCKS_PER_LINE))
 

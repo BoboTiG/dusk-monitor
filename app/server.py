@@ -94,7 +94,7 @@ def craft_history(data: db.DataBase) -> list[tuple[str, str]]:
 
     # Actions
     first_date = res[-1][0]
-    for when in reversed(data.history.keys()):
+    for when in data.history:
         if when < first_date:
             break
 
