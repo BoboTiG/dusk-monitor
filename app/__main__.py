@@ -5,7 +5,6 @@ Source: https://github.com/BoboTiG/dusk-monitor
 
 from pathlib import Path
 
-
 LOCK_FILE = Path("/tmp/dusk-monitor.lock")
 
 

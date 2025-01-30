@@ -3,9 +3,10 @@ This is part of the Dusk node Monitoring.
 Source: https://github.com/BoboTiG/dusk-monitor
 """
 
-from contextlib import suppress
 import json
 import subprocess
+from contextlib import suppress
+
 import niquests
 
 from app import config, constants, db
@@ -87,10 +88,10 @@ def fill_empty_amounts(history: db.History) -> None:
             if item["block_height"] != block:
                 continue
 
-            amount = item["events"][0]["data"]["value"]
+            correct_amount = item["events"][0]["data"]["value"]
             if fn_name == "unstake":
-                amount *= -1
-            history[timestamp] = (fn_name, amount, block)
+                correct_amount *= -1
+            history[timestamp] = (fn_name, correct_amount, block)
             break
 
 

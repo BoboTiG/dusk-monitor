@@ -1,0 +1,51 @@
+[tool.mypy]
+# Ensure we know what we do
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_unused_configs = true
+
+# Imports management
+ignore_missing_imports = true
+follow_imports = "skip"
+
+# Ensure full coverage
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+disallow_untyped_calls = true
+
+# Restrict dynamic typing (a little)
+# e.g. `x: List[Any]` or x: List`
+# disallow_any_generics = true
+
+strict_equality = true
+
+[tool.ruff]
+line-length = 120
+indent-width = 4
+target-version = "py311"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.ruff.lint]
+extend-select = ["ALL"]
+ignore = [
+  "ANN401",   # allow Any for *constants
+  "BLE001",   # bare exception
+  "C901",     # too complex
+  "COM812",   # conflict
+  "D",        # TODO
+  "DTZ006",   # `datetime.datetime.fromtimestamp()` called without a `tz` argument (on purpose)
+  "ISC001",   # conflict
+  "PLR0912",  # too many branches
+  "PLR2004",  # magic values
+  "PLW0603",  # globals
+  "S104",     # binding to all interfaces
+  "S108",     # usage of temporary file 
+  "S603",     # `subprocess` check for execution of untrusted input
+  "T201",     # print()
+]
+fixable = ["ALL"]

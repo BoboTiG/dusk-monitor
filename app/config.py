@@ -57,13 +57,13 @@ def load(*, verbose: bool = True) -> dict[str, bool | int | str]:
     if verbose and constants.DEBUG:
         if PROVISIONER:
             print(f">>> Using config provisioner (truncated): {PROVISIONER[:16]!r}")
-        if HOST != Defaults.host:
+        if Defaults.host != HOST:
             print(f">>> Using config host: {HOST!r}")
-        if PORT != Defaults.port:
+        if Defaults.port != PORT:
             print(f">>> Using config port: {PORT!r}")
         if PLAY_SOUND is not Defaults.play_sound:
             print(f">>> Using config play-sound: {PLAY_SOUND!r}")
-        if SSH_HOSTNAME != Defaults.ssh_hostname:
+        if Defaults.ssh_hostname != SSH_HOSTNAME:
             print(f">>> Using config ssh-hostname: {SSH_HOSTNAME!r}")
 
     return {
@@ -76,8 +76,9 @@ def load(*, verbose: bool = True) -> dict[str, bool | int | str]:
 
 
 def save(form: dict) -> None:
-    if len((provisioner := form["provisioner"].strip())) != constants.PROVISIONER_KEY_LENGTH:
-        raise ValueError("the provisioner key length is incorrect.")
+    if len(provisioner := form["provisioner"].strip()) != constants.PROVISIONER_KEY_LENGTH:
+        msg = "the provisioner key length is incorrect."
+        raise ValueError(msg)
 
     new_data = {
         "host": form["host"],

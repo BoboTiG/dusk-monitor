@@ -5,10 +5,10 @@ Source: https://github.com/BoboTiG/dusk-monitor
 
 from __future__ import annotations
 
+import itertools
 from datetime import datetime
-from random import choice
 from subprocess import check_output
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import flask
 
@@ -21,7 +21,7 @@ app = flask.Flask(__name__)
 
 
 @app.route("/")
-def index() -> str | "Response":
+def index() -> str | Response:
     if not config.PROVISIONER:
         return flask.redirect("/setup")
 
@@ -36,7 +36,7 @@ def index() -> str | "Response":
 
 
 @app.route("/setup", methods=["GET", "POST"])
-def setup() -> str | "Response":
+def setup() -> str | Response:
     if flask.request.method == "GET":
         return render("setup", config=config, constants=constants)
 
@@ -59,7 +59,7 @@ def format_float(value: float) -> str:
 
 
 @app.template_filter()
-def format_int(value: int | float) -> str:
+def format_int(value: float) -> str:
     return f"{int(value):,}"
 
 
@@ -78,7 +78,7 @@ def craft_history(data: db.DataBase) -> list[tuple[str, str]]:
     rewards_history = sorted(check_output(constants.CMD_GET_LAST_REWARDS, text=True).strip().splitlines(), reverse=True)
 
     # Rewards
-    for line1, line2 in zip(rewards_history, rewards_history[1:], strict=False):
+    for line1, line2 in itertools.pairwise(rewards_history):
         when, rewards1 = line1.strip().split("|", 1)
         _, rewards2 = line2.strip().split("|", 1)
         if (diff := float(rewards1) - float(rewards2)) != 0.0:
@@ -112,5 +112,5 @@ def craft_history(data: db.DataBase) -> list[tuple[str, str]]:
     return sorted(res, reverse=True)  # type: ignore[arg-type]
 
 
-def render(template: str, **kwargs) -> str:
+def render(template: str, **kwargs: Any) -> str:
     return flask.render_template(f"{template}.html", **kwargs)

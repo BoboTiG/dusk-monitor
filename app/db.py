@@ -6,16 +6,16 @@ Source: https://github.com/BoboTiG/dusk-monitor
 from __future__ import annotations
 
 import json
-from dataclasses import dataclass
-from itertools import islice
 from contextlib import suppress
+from dataclasses import dataclass
 from datetime import UTC, datetime
+from itertools import islice
 from typing import TYPE_CHECKING
 
 from app import constants
 
 if TYPE_CHECKING:
-    from typing import Iterator
+    from collections.abc import Iterator
 
 # "timestamp": ("fn_name", amount, block)
 History = dict[str, tuple[str, int, int]]
@@ -60,6 +60,10 @@ def load() -> DataBase:
 
 def save(data: DataBase) -> None:
     glue = ",\n        "
+    history = glue.join(
+        f'"{timestamp}": ["{fn_name}", {amount}, {block}]'
+        for timestamp, (fn_name, amount, block) in sorted(data.history.items())
+    )
 
     constants.DB_FILE.write_text(f"""{{
     "{constants.DB_KEY_CURRENT_BLOCK}": {data.current_block},
@@ -70,7 +74,7 @@ def save(data: DataBase) -> None:
     "{constants.DB_KEY_TOTAL_REWARDS}": {data.total_rewards},
     "{constants.DB_KEY_VERSION}": {data.version},
     "{constants.DB_KEY_HISTORY}": {{
-        {glue.join(f'"{timestamp}": ["{fn_name}", {amount}, {block}]' for timestamp, (fn_name, amount, block) in sorted(data.history.items()))}
+        {history}
     }},
     "{constants.DB_KEY_BLOCKS}": [
         {glue.join(batched(sorted(data.blocks), constants.DB_BLOCKS_PER_LINE))}
