@@ -50,7 +50,11 @@ div.error::after { color: var(--error) }
 
 #history .down span { color: var(--down) }
 #history .up span { color: var(--up) }
-#history .empty span { color: var(--sub-text) }
+#history .empty span,
+#history .convert span,
+#history .stake span,
+#history .unstake span,
+#history .transfer span { color: var(--sub-text) }
 
 #history .convert span::before { content: "🛡️ " }
 #history .go-down span::before { content: "📉 " }
@@ -61,10 +65,6 @@ div.error::after { color: var(--error) }
 #history .withdraw span::before { content: "💰 " }
 #history .transfer.down span::before { content: "📤 " }
 #history .transfer.up span::before { content: "📥 " }
-#history .convert span,
-#history .stake span,
-#history .unstake span,
-#history .transfer span { color: var(--sub-text) }
 
 #countdown {
     float: right;
