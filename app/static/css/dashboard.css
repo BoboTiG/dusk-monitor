@@ -66,17 +66,18 @@ div.error::after { color: var(--error) }
 #history .transfer.down span::before { content: "📤 " }
 #history .transfer.up span::before { content: "📥 " }
 
-#countdown {
-    float: right;
-    top: -2em;
-    right: .6em;
-    text-shadow: 0 .2px .5px var(--text-shadow);
+#refresh-time-bar {
+    height: 2px;
+    width: 100%;
+    position: absolute;
     opacity: .8;
+    animation: roundtime calc(var(--duration) * 1s) linear forwards;
+    transform-origin: left right center;
+    background: linear-gradient(to bottom, #64b5f6, #1565c0);
 }
-
-@keyframes progress {
-    100% {
-        stroke-dashoffset: 1256.12939453125;
+@keyframes roundtime {
+    to {
+        transform: scaleX(0);
     }
 }
 
@@ -90,21 +91,11 @@ div.error::after { color: var(--error) }
 
     #block-height,
     #slashes,
-    #blocks-generated { flex: 1 33% }
+    #blocks-generated,
     #rewards { flex: 1 33% }
     #history { flex: 1 66% }
-
-    #countdown {
-        top: -2em;
-        right: .6em;
-    }
 }
 
 @media (max-width: 499px) {
     #history { flex: 0 10% }
-
-    #countdown {
-        top: -1em;
-        right: .6em;
-    }
 }

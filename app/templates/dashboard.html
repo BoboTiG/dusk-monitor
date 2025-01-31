@@ -2,10 +2,8 @@
 
 {% block page %}dashboard{% endblock %}
 {% block body %}
-    <div id="rewards" tooltip data-tooltip="Current: {{ (data.rewards / 10**9) | format_int }}">
-        <span id="countdown" data-duration="300" data-transition="linear" data-color="yellow" data-size="24"></span>
-        {{ (total_rewards / 10**9)| format_float }}<span>｢rewards｣</span>
-    </div>
+    <span id="refresh-time-bar" style="--duration: 300;"></span>
+    <div id="rewards" tooltip data-tooltip="Current: {{ (data.rewards / 10**9) | format_int }}">{{ (total_rewards / 10**9)| format_float }}<span>｢rewards｣</span></div>
     <div id="history">
         {%- for when, what, css_cls, action in history %}
         <p class="{{ css_cls }}">{{ when | to_hour }} <span title="{{ action }}">{{ what | pad(longest) }}</span></p>
