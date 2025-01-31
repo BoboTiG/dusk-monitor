@@ -22,7 +22,7 @@ class Defaults:
     # Local web server
     host = "0.0.0.0"
     port = sum(ord(c) for c in "Dusk Node Monitoring")  # Hint: one-thousand-twenty-three
-    # How many hours of rewards history data to display (min: 0, max: 12)
+    # Hours of rewards history data to display (min: 0 [disabled], max: 24)
     rewards_history_hours = 3
     # Play a sound on new block generated
     play_sound = True
@@ -55,7 +55,7 @@ def load(*, verbose: bool = True) -> dict[str, bool | int | str]:
     PORT = int(data.get("port", Defaults.port))
     PLAY_SOUND = bool(data.get("play-sound", Defaults.play_sound))
     PROVISIONER = data.get("provisioner", "")
-    REWARDS_HISTORY_HOURS = min(max(0, int(data.get("rewards-history-hours", Defaults.rewards_history_hours))), 12)
+    REWARDS_HISTORY_HOURS = min(max(0, int(data.get("rewards-history-hours", Defaults.rewards_history_hours))), 24)
     SSH_HOSTNAME = sanitize(data.get("ssh-hostname", Defaults.ssh_hostname))
 
     if verbose and constants.DEBUG:
@@ -92,7 +92,7 @@ def save(form: dict) -> None:
         "port": int(form["port"]),
         "play-sound": "play-sound" in form,
         "provisioner": provisioner,
-        "rewards-history-hours": min(max(0, int(form["rewards-history-hours"])), 12),
+        "rewards-history-hours": min(max(0, int(form["rewards-history-hours"])), 24),
         "ssh-hostname": sanitize(form["ssh-hostname"]),
     }
 

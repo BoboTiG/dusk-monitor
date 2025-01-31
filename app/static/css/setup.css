@@ -49,6 +49,12 @@ input[readonly]:focus {
     border: none;
     user-select: none;
 }
+input[type="range"] {
+    width: 400px;
+}
+output {
+    font-size: 1.1em;
+}
 
 .buttons {
     margin-top: 2em;

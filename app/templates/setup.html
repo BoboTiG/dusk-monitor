@@ -41,7 +41,17 @@
 
         <br/>
         <label for="rewards-history-hours">🕰️ Hours of Rewards History Data to Display</label>
-        <input type="number" id="rewards-history-hours" name="rewards-history-hours" min="0" max="12" value="{{ config.REWARDS_HISTORY_HOURS }}" required />
+        <input type="range" id="rewards-history-hours" name="rewards-history-hours" min="0" max="24" step="1" list="values" value="{{ config.REWARDS_HISTORY_HOURS }}" required oninput="this.nextElementSibling.value = this.value > 0 ? `${this.value}h` : 'Disabled'" />
+        <output>{{ "{}h".format(config.REWARDS_HISTORY_HOURS) if config.REWARDS_HISTORY_HOURS else 'Disabled' }}</output>
+        <datalist id="values">
+            {%- for hours in range(24 + 1) -%}
+            {%- if hours == config.REWARDS_HISTORY_HOURS %}
+            <option value="{{ hours }}" label="{{ hours }}" selected></option>
+            {%- else %}
+            <option value="{{ hours }}" label="{{ hours }}"></option>
+            {%- endif -%}
+            {%- endfor %}
+        </datalist>
 
         <div class="buttons">
             <a class="button cancel" href="/">Cancel</a>
