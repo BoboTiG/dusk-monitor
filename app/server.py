@@ -8,6 +8,7 @@ from __future__ import annotations
 import itertools
 from datetime import datetime
 from subprocess import check_output
+from time import monotonic
 from typing import TYPE_CHECKING, Any
 
 import flask
@@ -25,16 +26,22 @@ def index() -> str | Response:
     if not config.PROVISIONER:
         return flask.redirect("/setup")
 
+    start = monotonic()
     data = db.load()
     history = craft_history(data)
+    longest = len(max(history, key=lambda v: len(v[1]))[1])
+    total_rewards = data.rewards + sum(amount for fn_name, amount, _ in data.history.values() if fn_name == "withdraw")
+    served_time = monotonic() - start
+
+    # Note: as of 2025-01-31, served_time = 0.001 sec (rounded in the template).
+
     return render(
         "dashboard",
         data=data,
         history=history,
-        longest=len(max(history, key=lambda v: len(v[1]))[1]),
-        total_rewards=(
-            data.rewards + sum(amount for fn_name, amount, _ in data.history.values() if fn_name == "withdraw")
-        ),
+        longest=longest,
+        served_time=served_time,
+        total_rewards=total_rewards,
     )
 
 
