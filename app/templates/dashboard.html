@@ -7,8 +7,8 @@
         {{ (total_rewards / 10**9)| format_float }}<span>｢rewards｣</span>
     </div>
     <div id="history">
-        {%- for when, what, action in history %}
-        <p class="{{ action }}">{{ when | to_hour }} <span>{{ what | pad(longest) }}</span></p>
+        {%- for when, what, css_cls, action in history %}
+        <p class="{{ css_cls }}">{{ when | to_hour }} <span title="{{ action }}">{{ what | pad(longest) }}</span></p>
         {%- endfor %}
     </div>
     <div id="blocks-generated" tooltip data-tooltip="Latest: {{ data.blocks | max | format_int }}">{{ data.blocks | length | format_int }}<span>｢blocks generated｣</span></div>

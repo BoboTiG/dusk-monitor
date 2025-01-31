@@ -83,11 +83,11 @@ def to_hour(value: str) -> str:
     return datetime.fromtimestamp(float(value)).strftime("%H:%M")
 
 
-def craft_history(data: db.DataBase) -> list[tuple[str, str]]:
+def craft_history(data: db.DataBase) -> list[tuple[str, str, str, str]]:
     if not config.REWARDS_HISTORY_HOURS:
         return []
 
-    res: list[tuple[str, str, str]] = []
+    res: list[tuple[str, str, str, str]] = []
 
     cmd = ["tail", f"-{config.REWARDS_HISTORY_HOURS * 12 + 2}", str(constants.REWARDS_FILE)]
     rewards_history = sorted(check_output(cmd, text=True).strip().splitlines(), reverse=True)
@@ -98,11 +98,11 @@ def craft_history(data: db.DataBase) -> list[tuple[str, str]]:
         _, rewards2 = line2.strip().split("|", 1)
         if (diff := float(rewards1) - float(rewards2)) != 0.0:
             if diff:
-                res.append((when, f"+{format_float(diff)}", "go-up up"))
+                res.append((when, f"+{format_float(diff)}", "go-up up", ""))
             else:
-                res.append((when, format_float(diff), "go-down down"))
+                res.append((when, format_float(diff), "go-down down", ""))
         else:
-            res.append((when, "±0.000", "go-nowhere empty"))
+            res.append((when, "±0.000", "go-nowhere empty", "Wen rewards?"))
 
     # Actions
     first_date = res[-1][0]
@@ -115,16 +115,15 @@ def craft_history(data: db.DataBase) -> list[tuple[str, str]]:
 
         if amount != 0:
             value = format_float(amount / 10**9)
-            if fn_name != "convert":
-                if amount > 0:
-                    value = f"+{value}"
-                    css_cls = "up"
-                else:
-                    css_cls = "down"
+            if amount > 0:
+                value = f"+{value}"
+                css_cls = "up"
+            else:
+                css_cls = "down"
 
-        res.append((when, value, f"{fn_name} {css_cls}"))
+        res.append((when, value, f"{fn_name} {css_cls}", fn_name.title()))
 
-    return sorted(res, reverse=True)  # type: ignore[arg-type]
+    return sorted(res, reverse=True)
 
 
 def render(template: str, **kwargs: Any) -> str:
