@@ -29,7 +29,7 @@ def index() -> str | Response:
     start = monotonic()
     data = db.load()
     history = craft_history(data)
-    longest = len(max(history, key=lambda v: len(v[1]))[1])
+    longest = len(max(history, key=lambda v: len(v[1]))[1]) if history else 0
     total_rewards = data.rewards + sum(amount for fn_name, amount, _ in data.history.values() if fn_name == "withdraw")
     served_time = monotonic() - start
 
@@ -84,8 +84,13 @@ def to_hour(value: str) -> str:
 
 
 def craft_history(data: db.DataBase) -> list[tuple[str, str]]:
+    if not config.REWARDS_HISTORY_HOURS:
+        return []
+
     res: list[tuple[str, str, str]] = []
-    rewards_history = sorted(check_output(constants.CMD_GET_LAST_REWARDS, text=True).strip().splitlines(), reverse=True)
+
+    cmd = ["tail", f"-{config.REWARDS_HISTORY_HOURS * 12 + 2}", str(constants.REWARDS_FILE)]
+    rewards_history = sorted(check_output(cmd, text=True).strip().splitlines(), reverse=True)
 
     # Rewards
     for line1, line2 in itertools.pairwise(rewards_history):

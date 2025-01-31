@@ -41,10 +41,6 @@ GQL_GET_BLOCKS_ITEMS_COUNT = 10_000
 GQL_LAST_BLOCK = "query { block(height: -1) { header { height } } }"
 GQL_FULL_HISTORY = 'query { fullMoonlightHistory(address: "%s") { json } }'
 
-# Shell command to get data from the rewards history file (2h of data)
-REWARDS_HISTORY_HOURS = 2
-CMD_GET_LAST_REWARDS = ["tail", f"-{REWARDS_HISTORY_HOURS * 12 + 2}", str(REWARDS_FILE)]
-
 # Play a sound on new block generated (only when config.PLAY_SOUND is True)
 AUDIO_FILE = ROOT / "static" / "mixkit-melodic-gold-price-2000.wav"
 PLAY_SOUND_CMD = ["ffplay", "-nodisp", "-autoexit", "-loglevel", "quiet", str(AUDIO_FILE)]

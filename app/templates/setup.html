@@ -39,6 +39,10 @@
             <div class="layer"></div>
         </div>
 
+        <br/>
+        <label for="rewards-history-hours">🌐 How Many Hours of Rewards History Data</label>
+        <input type="number" id="rewards-history-hours" name="rewards-history-hours" min="0" max="12" value="{{ config.REWARDS_HISTORY_HOURS }}" required />
+
         <div class="buttons">
             <a class="button cancel" href="/">Cancel</a>
             <input class="button" type="submit" value="Save"/>
