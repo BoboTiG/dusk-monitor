@@ -67,7 +67,7 @@ div.error::after { color: var(--error) }
 #history .transfer.up span::before { content: "📥 " }
 
 #refresh-time-bar {
-    height: 2px;
+    height: 3px;
     width: 100%;
     position: absolute;
     animation: roundtime calc(var(--duration) * 1s) linear forwards;
