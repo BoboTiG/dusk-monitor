@@ -70,7 +70,6 @@ div.error::after { color: var(--error) }
     height: 2px;
     width: 100%;
     position: absolute;
-    opacity: .8;
     animation: roundtime calc(var(--duration) * 1s) linear forwards;
     transform-origin: left right center;
     background: linear-gradient(to bottom, #64b5f6, #1565c0);
