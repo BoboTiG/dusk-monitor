@@ -71,8 +71,7 @@ def load(*, verbose: bool = True) -> dict[str, bool | int | str]:
 
 def save(form: dict) -> None:
     if len(provisioner := form["provisioner"].strip()) != constants.PROVISIONER_KEY_LENGTH:
-        msg = "the provisioner key length is incorrect."
-        raise ValueError(msg)
+        provisioner = ""
 
     new_data = {
         "host": form["host"],
@@ -85,6 +84,10 @@ def save(form: dict) -> None:
     if new_data != load(verbose=False):
         constants.CONFIG_FILE.write_text(json.dumps(new_data, indent=4, sort_keys=True))
         load()
+
+    if not provisioner:
+        msg = "the provisioner key length is incorrect."
+        raise ValueError(msg)
 
 
 load()
