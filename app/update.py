@@ -62,8 +62,6 @@ def scan_the_blockchain(last_block_db: int, last_block_bc: int) -> tuple[bool, i
                     else:
                         # stake/unstake, convert (from public to shielded), withdraw
                         amount = int(tx_data["deposit"])
-                        if amount > 0 and fn_name in {"convert", "unstake"}:
-                            amount *= -1
 
                     history[str(block["header"]["timestamp"])] = fn_name, amount, int(block["header"]["height"])
 
@@ -73,11 +71,6 @@ def scan_the_blockchain(last_block_db: int, last_block_bc: int) -> tuple[bool, i
 def fill_empty_amounts(history: db.History) -> None:
     """This function is useful to get unstake/withdraw amounts."""
     if all(amount != 0 for _, amount, _ in history.values()):
-        # Potentially fix `convert` amounts
-        for timestamp, (fn_name, amount, block) in history.copy().items():
-            if fn_name == "convert" and amount > 0:
-                correct_amount = amount * -1
-                history[timestamp] = (fn_name, correct_amount, block)
         return
 
     query = constants.GQL_FULL_HISTORY % config.PROVISIONER
@@ -86,18 +79,12 @@ def fill_empty_amounts(history: db.History) -> None:
         full_history = req.json()["fullMoonlightHistory"]["json"]
 
     for timestamp, (fn_name, amount, block) in history.copy().items():
-        if amount != 0:
-            continue
-
-        for item in full_history:
-            if item["block_height"] != block:
-                continue
-
-            correct_amount = item["events"][0]["data"]["value"]
-            if fn_name in {"convert", "unstake"}:
-                correct_amount *= -1
-            history[timestamp] = (fn_name, correct_amount, block)
-            break
+        if amount == 0:
+            for item in full_history:
+                if item["block_height"] == block:
+                    correct_amount = item["events"][0]["data"]["value"]
+                    history[timestamp] = (fn_name, correct_amount, block)
+                    break
 
 
 def get_last_block() -> int:

@@ -49,19 +49,19 @@ div.error::after { color: var(--error) }
 #history span { font-size: 1.2em }
 
 #history .down span { color: var(--down) }
+#history .empty span { color: var(--sub-text) }
 #history .up span { color: var(--up) }
-#history .empty span,
 #history .convert span,
 #history .stake span,
 #history .unstake span,
-#history .transfer span { color: var(--sub-text) }
+#history .transfer span { color: var(--text) }
 
 #history .convert span::before { content: "🛡️ " }
 #history .go-down span::before { content: "📉 " }
 #history .go-up span::before { content: "📈 " }
 #history .go-nowhere span::before { content: "🔜 " }
 #history .stake span::before { content: "📈 " }
-#history .unstake span::before { content: "📈 " }
+#history .unstake span::before { content: "📉 " }
 #history .withdraw span::before { content: "💰 " }
 #history .transfer.down span::before { content: "📤 " }
 #history .transfer.up span::before { content: "📥 " }

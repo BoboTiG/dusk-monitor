@@ -118,11 +118,9 @@ def craft_history(data: db.DataBase) -> list[tuple[str, str, str, str]]:
 
         if amount != 0:
             value = format_float(amount / 10**9)
-            if amount > 0:
+            css_cls = "up" if amount > 0 else "down"
+            if fn_name == "withdraw":
                 value = f"+{value}"
-                css_cls = "up"
-            else:
-                css_cls = "down"
 
         res.append((when, value, f"{fn_name} {css_cls}", fn_name.title()))
 
