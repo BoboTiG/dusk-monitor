@@ -29,9 +29,6 @@
         <input type="text" id="host" name="host" size="10" value="{{ config.HOST }}" required />
         <input type="number" id="port" name="port" min="80" max="65536" value="{{ config.PORT }}" required />
 
-        <label for="ssh-hostname">📡 SSH Hostname/IP to Contact the Node</label>
-        <input type="text" id="ssh-hostname" name="ssh-hostname" size="10" value="{{ config.SSH_HOSTNAME }}" required />
-
         <label for="play-sound">🔔 Play a Sound on New Block Generated</label>
         <div id="checkbox">
             <input type="checkbox" id="play-sound" name="play-sound"{% if config.PLAY_SOUND %} checked{% endif %} />

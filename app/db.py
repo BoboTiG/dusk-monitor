@@ -24,7 +24,6 @@ History = dict[str, tuple[str, int, int]]
 @dataclass(slots=True, kw_only=True)
 class DataBase:
     rewards: int
-    current_block: int
     last_block: int
     slash_hard: int
     slash_soft: int
@@ -46,7 +45,6 @@ def load() -> DataBase:
 
     return DataBase(
         rewards=int(data.get(constants.DB_KEY_REWARDS, 0)),
-        current_block=int(data.get(constants.DB_KEY_CURRENT_BLOCK, 0)),
         last_block=int(data.get(constants.DB_KEY_LAST_BLOCK, 0)),
         slash_soft=int(data.get(constants.DB_KEY_SLASH_SOFT, 0)),
         slash_hard=int(data.get(constants.DB_KEY_SLASH_HARD, 0)),
@@ -66,7 +64,6 @@ def save(data: DataBase) -> None:
 
     constants.DB_FILE.write_text(f"""{{
     "{constants.DB_KEY_REWARDS}": {data.rewards},
-    "{constants.DB_KEY_CURRENT_BLOCK}": {data.current_block},
     "{constants.DB_KEY_LAST_BLOCK}": {data.last_block},
     "{constants.DB_KEY_SLASH_SOFT}": {data.slash_soft},
     "{constants.DB_KEY_SLASH_HARD}": {data.slash_hard},

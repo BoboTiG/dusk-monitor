@@ -6,15 +6,9 @@ Source: https://github.com/BoboTiG/dusk-monitor
 from __future__ import annotations
 
 import json
-import re
 from dataclasses import dataclass
 
 from app import constants
-
-
-def sanitize(value: str, *, pattern: re.Pattern[str] = re.compile(r"[^a-zAZ0-9\.\-_]+")) -> str:
-    """Regexp used to clean-up the SSH hostname."""
-    return pattern.sub("", value)
 
 
 @dataclass(slots=True, frozen=True)
@@ -26,15 +20,12 @@ class Defaults:
     rewards_history_hours = 3
     # Play a sound on new block generated
     play_sound = True
-    # SSH hostname to contact the node
-    ssh_hostname = "dusk"
 
 
 HOST = Defaults.host
 PORT = Defaults.port
 PLAY_SOUND = Defaults.play_sound
 REWARDS_HISTORY_HOURS = Defaults.rewards_history_hours
-SSH_HOSTNAME = Defaults.ssh_hostname
 PROVISIONER = ""  # Provisioner public key
 
 
@@ -49,14 +40,13 @@ def load(*, verbose: bool = True) -> dict[str, bool | int | str]:
         print(f">>> Config file error, go to the dashboard /setup page, or fix it: {exc}")
         return data
 
-    global HOST, PORT, PLAY_SOUND, PROVISIONER, REWARDS_HISTORY_HOURS, SSH_HOSTNAME
+    global HOST, PORT, PLAY_SOUND, PROVISIONER, REWARDS_HISTORY_HOURS
 
     HOST = data.get("host", Defaults.host)
     PORT = int(data.get("port", Defaults.port))
     PLAY_SOUND = bool(data.get("play-sound", Defaults.play_sound))
     PROVISIONER = data.get("provisioner", "")
     REWARDS_HISTORY_HOURS = min(max(0, int(data.get("rewards-history-hours", Defaults.rewards_history_hours))), 24)
-    SSH_HOSTNAME = sanitize(data.get("ssh-hostname", Defaults.ssh_hostname))
 
     if verbose and constants.DEBUG:
         if PROVISIONER:
@@ -69,8 +59,6 @@ def load(*, verbose: bool = True) -> dict[str, bool | int | str]:
             print(f">>> Using config play-sound: {PLAY_SOUND!r}")
         if Defaults.rewards_history_hours != REWARDS_HISTORY_HOURS:
             print(f">>> Using config rewards-history-hours: {REWARDS_HISTORY_HOURS!r}")
-        if Defaults.ssh_hostname != SSH_HOSTNAME:
-            print(f">>> Using config ssh-hostname: {SSH_HOSTNAME!r}")
 
     return {
         "host": HOST,
@@ -78,7 +66,6 @@ def load(*, verbose: bool = True) -> dict[str, bool | int | str]:
         "play-sound": PLAY_SOUND,
         "provisioner": PROVISIONER,
         "rewards-history-hours": REWARDS_HISTORY_HOURS,
-        "ssh-hostname": SSH_HOSTNAME,
     }
 
 
@@ -93,7 +80,6 @@ def save(form: dict) -> None:
         "play-sound": "play-sound" in form,
         "provisioner": provisioner,
         "rewards-history-hours": min(max(0, int(form["rewards-history-hours"])), 24),
-        "ssh-hostname": sanitize(form["ssh-hostname"]),
     }
 
     if new_data != load(verbose=False):

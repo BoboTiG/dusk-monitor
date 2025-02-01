@@ -20,7 +20,6 @@ REWARDS_FILE = DATA_DIR / "rewards.txt"
 DB_VERSION = 4
 DB_BLOCKS_PER_LINE = 50
 DB_KEY_BLOCKS = "blocks"
-DB_KEY_CURRENT_BLOCK = "current-block"
 DB_KEY_HISTORY = "history"
 DB_KEY_LAST_BLOCK = "last-block"
 DB_KEY_REWARDS = "rewards"

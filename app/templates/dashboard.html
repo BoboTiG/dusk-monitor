@@ -14,11 +14,7 @@
     {%- else %}
     <div id="blocks-generated">0<span>｢blocks generated｣</span></div>
     {%- endif %}
-    {%- if data.current_block < (data.last_block - 1) %}
-    <div id="block-height" tooltip data-tooltip="Latest: {{ data.last_block | format_int }}" class="error">{{ data.current_block | format_int }}<span>｢⚠️ current block｣</span></div>
-    {%- else %}
-    <div id="block-height">{{ data.current_block | format_int }}<span>｢current block｣</span></div>
-    {%- endif %} 
+    <div id="block-height">{{ data.last_block | format_int }}<span>｢current block｣</span></div>
     {%- if data.slash_soft + data.slash_hard %}
     <div id="slashes" tooltip data-tooltip="Soft: {{ data.slash_soft }} | Hard: {{ data.slash_hard }}" class="error">{{ data.slash_soft + data.slash_hard }}<span>｢{{ "🚨" if data.slash_hard else "⚠️" }} slashes｣</span></div>
     {%- else %}

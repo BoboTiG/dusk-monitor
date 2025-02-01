@@ -100,11 +100,6 @@ def fill_empty_amounts(history: db.History) -> None:
             break
 
 
-def get_current_block() -> int:
-    cmd = ["ssh", config.SSH_HOSTNAME, "ruskquery block-height"]
-    return int(subprocess.check_output(cmd, text=True).strip())
-
-
 def get_last_block() -> int:
     with niquests.post(constants.URL_RUES_GQL, headers=constants.HEADERS, data=constants.GQL_LAST_BLOCK) as req:
         req.raise_for_status()
@@ -150,9 +145,6 @@ def update() -> None:
         data.rewards = provisioner_data["reward"]
         data.slash_hard = provisioner_data["hard_faults"]
         data.slash_soft = provisioner_data["faults"]
-
-    with suppress(Exception):
-        data.current_block = get_current_block()
 
     if history:
         data.history.update(history)
