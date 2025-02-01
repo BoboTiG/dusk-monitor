@@ -2,7 +2,7 @@
 
 {% block page %}setup{% endblock %}
 {% block body %}
-    <form method="POST" action="/setup" onsubmit="return confirm('Are you sure the provisioner key is correct? If new or different from the old one, it will trigger a full blockchain scan at the next update.');">
+    <form method="POST" action="/setup" onsubmit="return onSubmitCallback();">
         <h2>📢 Mandatory</h2>
 
         <label for="data_dir">📁 Data Folder</label>
@@ -55,4 +55,12 @@
             <input class="button" type="submit" value="Save"/>
         </div>
     </form>
+    <script>
+        function onSubmitCallback() {
+            if (document.getElementById('provisioner').value != '{{ config.PROVISIONER }}') {
+                return confirm('Are you sure the provisioner key is correct? A full blockchain scan at the next update will be triggered.');
+            }
+            return true;
+        }
+    </script>
 {% endblock %}

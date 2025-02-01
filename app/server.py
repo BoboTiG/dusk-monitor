@@ -105,7 +105,7 @@ def craft_history(data: db.DataBase) -> list[tuple[str, str, str, str]]:
                 else:
                     res.append((when, format_float(diff), "go-down down", ""))
             else:
-                res.append((when, "±0.000", "go-nowhere empty", "Wen rewards?"))
+                res.append((when, "±0.000", "go-nowhere empty", ""))
 
     # Actions
     first_date = res[-1][0] if res else "0"

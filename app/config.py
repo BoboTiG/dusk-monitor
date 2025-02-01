@@ -16,17 +16,16 @@ class Defaults:
     # Local web server
     host = "0.0.0.0"
     port = sum(ord(c) for c in "Dusk Node Monitoring")  # Hint: one-thousand-twenty-three
-    # Hours of rewards history data to display (min: 0 [disabled], max: 24)
-    rewards_history_hours = 3
     # Play a sound on new block generated
     play_sound = True
+    # Hours of rewards history data to display (min: 0 [disabled], max: 24)
+    rewards_history_hours = 3
 
 
-HOST = Defaults.host
-PORT = Defaults.port
+HOST, PORT = Defaults.host, Defaults.port
 PLAY_SOUND = Defaults.play_sound
-REWARDS_HISTORY_HOURS = Defaults.rewards_history_hours
 PROVISIONER = ""  # Provisioner public key
+REWARDS_HISTORY_HOURS = Defaults.rewards_history_hours
 
 
 def load(*, verbose: bool = True) -> dict[str, bool | int | str]:

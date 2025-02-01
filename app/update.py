@@ -62,7 +62,7 @@ def scan_the_blockchain(last_block_db: int, last_block_bc: int) -> tuple[bool, i
                     else:
                         # stake/unstake, convert (from public to shielded), withdraw
                         amount = int(tx_data["deposit"])
-                        if amount and fn_name in {"convert", "unstake"}:
+                        if amount > 0 and fn_name in {"convert", "unstake"}:
                             amount *= -1
 
                     history[str(block["header"]["timestamp"])] = fn_name, amount, int(block["header"]["height"])
@@ -75,7 +75,7 @@ def fill_empty_amounts(history: db.History) -> None:
     if all(amount != 0 for _, amount, _ in history.values()):
         # Potentially fix `convert` amounts
         for timestamp, (fn_name, amount, block) in history.copy().items():
-            if fn_name == "convert" and amount:
+            if fn_name == "convert" and amount > 0:
                 correct_amount = amount * -1
                 history[timestamp] = (fn_name, correct_amount, block)
         return
@@ -94,7 +94,7 @@ def fill_empty_amounts(history: db.History) -> None:
                 continue
 
             correct_amount = item["events"][0]["data"]["value"]
-            if fn_name == "unstake":
+            if fn_name in {"convert", "unstake"}:
                 correct_amount *= -1
             history[timestamp] = (fn_name, correct_amount, block)
             break
@@ -115,7 +115,7 @@ def get_provisioner_data() -> dict:
 def play_sound_of_the_riches() -> None:
     if config.PLAY_SOUND:
         with suppress(Exception):
-            subprocess.check_call(constants.PLAY_SOUND_CMD)
+            subprocess.check_call(constants.PLAY_SOUND_CMD, stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL)
             if constants.DEBUG:
                 print("🔔")
 
