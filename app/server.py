@@ -87,25 +87,28 @@ def craft_history(data: db.DataBase) -> list[tuple[str, str, str, str]]:
     if not config.REWARDS_HISTORY_HOURS:
         return []
 
+    cmd = ["tail", f"-{config.REWARDS_HISTORY_HOURS * 12 + 2}", str(constants.REWARDS_FILE)]
     res: list[tuple[str, str, str, str]] = []
 
-    cmd = ["tail", f"-{config.REWARDS_HISTORY_HOURS * 12 + 2}", str(constants.REWARDS_FILE)]
-    rewards_history = sorted(check_output(cmd, text=True).strip().splitlines(), reverse=True)
-
     # Rewards
-    for line1, line2 in itertools.pairwise(rewards_history):
-        when, rewards1 = line1.strip().split("|", 1)
-        _, rewards2 = line2.strip().split("|", 1)
-        if (diff := float(rewards1) - float(rewards2)) != 0.0:
-            if diff:
-                res.append((when, f"+{format_float(diff)}", "go-up up", ""))
+    try:
+        rewards_history = sorted(check_output(cmd, text=True).strip().splitlines(), reverse=True)
+    except Exception:
+        return []
+    else:
+        for line1, line2 in itertools.pairwise(rewards_history):
+            when, rewards1 = line1.strip().split("|", 1)
+            _, rewards2 = line2.strip().split("|", 1)
+            if (diff := float(rewards1) - float(rewards2)) != 0.0:
+                if diff:
+                    res.append((when, f"+{format_float(diff)}", "go-up up", ""))
+                else:
+                    res.append((when, format_float(diff), "go-down down", ""))
             else:
-                res.append((when, format_float(diff), "go-down down", ""))
-        else:
-            res.append((when, "±0.000", "go-nowhere empty", "Wen rewards?"))
+                res.append((when, "±0.000", "go-nowhere empty", "Wen rewards?"))
 
     # Actions
-    first_date = res[-1][0]
+    first_date = res[-1][0] if res else "0"
     for when in data.history:
         if when < first_date:
             break

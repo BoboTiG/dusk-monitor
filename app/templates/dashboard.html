@@ -9,7 +9,11 @@
         <p class="{{ css_cls }}">{{ when | to_hour }} <span title="{{ action }}">{{ what | pad(longest) }}</span></p>
         {%- endfor %}
     </div>
+    {%- if data.blocks %}
     <div id="blocks-generated" tooltip data-tooltip="Latest: {{ data.blocks | max | format_int }}">{{ data.blocks | length | format_int }}<span>｢blocks generated｣</span></div>
+    {%- else %}
+    <div id="blocks-generated">0<span>｢blocks generated｣</span></div>
+    {%- endif %}
     {%- if data.current_block < (data.last_block - 1) %}
     <div id="block-height" tooltip data-tooltip="Latest: {{ data.last_block | format_int }}" class="error">{{ data.current_block | format_int }}<span>｢⚠️ current block｣</span></div>
     {%- else %}
