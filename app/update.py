@@ -3,10 +3,10 @@ This is part of the Dusk node Monitoring.
 Source: https://github.com/BoboTiG/dusk-monitor
 """
 
-import json
 import subprocess
 
 import niquests
+import rapidjson
 
 from app import config, constants, db
 
@@ -20,6 +20,8 @@ def scan_the_blockchain(last_block_db: int, last_block_bc: int) -> tuple[bool, i
     if constants.DEBUG:
         print(f"DB last-block = {last_block_db:,}")
         print(f"BC last-block = {last_block_bc:,}")
+
+    json_loads = rapidjson.loads
 
     for from_block in range(last_block_db, last_block_bc, constants.GQL_GET_BLOCKS_ITEMS_COUNT):
         to_block = from_block + constants.GQL_GET_BLOCKS_ITEMS_COUNT
@@ -45,7 +47,7 @@ def scan_the_blockchain(last_block_db: int, last_block_bc: int) -> tuple[bool, i
 
             # Provisioner action
             for transaction in block["transactions"]:
-                tx_data = json.loads(transaction["tx"]["json"])
+                tx_data = json_loads(transaction["tx"]["json"])
 
                 if tx_data["type"] != "moonlight" or (
                     tx_data["sender"] != provisioner and tx_data["receiver"] != provisioner
