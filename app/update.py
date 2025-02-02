@@ -52,16 +52,15 @@ def scan_the_blockchain(last_block_db: int, last_block_bc: int) -> tuple[bool, i
                 if tx_data["type"] == "moonlight" and (
                     tx_data["sender"] == provisioner or tx_data["receiver"] == provisioner
                 ):
-                    fn_name = str(tx_data["call"]["fn_name"]) if tx_data["call"] else "transfer"
-                    amount = 0
-
-                    if fn_name == "transfer":
+                    if tx_data["call"]:
+                        # stake/unstake, convert (from public to shielded), withdraw
+                        fn_name = str(tx_data["call"]["fn_name"])
+                        amount = int(tx_data["deposit"])
+                    else:
+                        fn_name = "transfer"
                         amount = int(tx_data["value"])
                         if tx_data["sender"] == provisioner:
                             amount *= -1
-                    else:
-                        # stake/unstake, convert (from public to shielded), withdraw
-                        amount = int(tx_data["deposit"])
 
                     history[str(block["header"]["timestamp"])] = fn_name, amount, int(block["header"]["height"])
 

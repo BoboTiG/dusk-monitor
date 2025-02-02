@@ -37,7 +37,7 @@
         </div>
 
         <br/>
-        <label for="rewards-history-hours">🕰️ Rewards History to Display</label>
+        <label for="rewards-history-hours">🕰️ History Data to Display</label>
         <input type="range" id="rewards-history-hours" name="rewards-history-hours" min="0" max="24" step="1" list="values" value="{{ config.REWARDS_HISTORY_HOURS }}" required oninput="this.nextElementSibling.value = this.value > 0 ? `${this.value}h` : 'Disabled'" />
         <output>{{ "{}h".format(config.REWARDS_HISTORY_HOURS) if config.REWARDS_HISTORY_HOURS else 'Disabled' }}</output>
         <datalist id="values">

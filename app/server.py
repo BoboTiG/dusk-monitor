@@ -118,11 +118,17 @@ def craft_history(data: db.DataBase) -> list[tuple[str, str, str, str]]:
 
         if amount != 0:
             value = format_float(amount / 10**9)
-            css_cls = "up" if amount > 0 else "down"
-            if fn_name == "withdraw":
-                value = f"+{value}"
+            # Wallet actions, we do not really care about them
+            if fn_name in {"convert", "transfer"}:
+                css_cls = "up" if amount > 0 else "down"
+            # Staking actions, we do care about them
+            elif fn_name in {"stake", "withdraw"}:
+                css_cls = "up"
+            elif fn_name in {"unstake"}:
+                css_cls = "down"
+                value = f"-{value}"
 
-        res.append((when, value, f"{fn_name} {css_cls}", fn_name.title()))
+        res.append((when, value, f"action {fn_name} {css_cls}", fn_name.title()))
 
     return sorted(res, reverse=True)
 
