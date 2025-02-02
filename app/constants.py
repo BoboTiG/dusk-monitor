@@ -36,7 +36,7 @@ fragment TransactionInfo on SpentTransaction { tx { json } }
 fragment BlockInfo on Block { header { generatorBlsPubkey, height, timestamp }, transactions {...TransactionInfo} }
 query() { blocks(range: [%d, %d]) {...BlockInfo} }
 """
-GQL_GET_BLOCKS_ITEMS_COUNT = 10_000
+GQL_GET_BLOCKS_ITEMS_COUNT = 20_000
 GQL_LAST_BLOCK = "query { block(height: -1) { header { height } } }"
 GQL_FULL_HISTORY = 'query { fullMoonlightHistory(address: "%s") { json } }'
 
