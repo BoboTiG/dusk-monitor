@@ -5,7 +5,6 @@ Source: https://github.com/BoboTiG/dusk-monitor
 
 import json
 import subprocess
-from contextlib import suppress
 
 import niquests
 
@@ -34,8 +33,7 @@ def scan_the_blockchain(last_block_db: int, last_block_bc: int) -> tuple[bool, i
                 req.raise_for_status()
                 res = req.json()
         except Exception as exc:
-            if constants.DEBUG:
-                print(f"Error in scan_the_blockchain(): {exc}")
+            print(f"Error in scan_the_blockchain(): {exc}")
             last_block_bc = from_block
             status = False
             break
@@ -49,20 +47,22 @@ def scan_the_blockchain(last_block_db: int, last_block_bc: int) -> tuple[bool, i
             for transaction in block["transactions"]:
                 tx_data = json.loads(transaction["tx"]["json"])
 
-                if tx_data["type"] == "moonlight" and (
-                    tx_data["sender"] == provisioner or tx_data["receiver"] == provisioner
+                if tx_data["type"] != "moonlight" or (
+                    tx_data["sender"] != provisioner and tx_data["receiver"] != provisioner
                 ):
-                    if tx_data["call"]:
-                        # stake/unstake, convert (from public to shielded), withdraw
-                        fn_name = str(tx_data["call"]["fn_name"])
-                        amount = int(tx_data["deposit"])
-                    else:
-                        fn_name = "transfer"
-                        amount = int(tx_data["value"])
-                        if tx_data["sender"] == provisioner:
-                            amount *= -1
+                    continue
 
-                    history[str(block["header"]["timestamp"])] = fn_name, amount, int(block["header"]["height"])
+                if tx_data["call"]:
+                    # stake/unstake, convert (from public to shielded), withdraw
+                    fn_name = str(tx_data["call"]["fn_name"])
+                    amount = int(tx_data["deposit"])
+                else:
+                    fn_name = "transfer"
+                    amount = int(tx_data["value"])
+                    if tx_data["sender"] == provisioner:
+                        amount *= -1
+
+                history[str(block["header"]["timestamp"])] = fn_name, amount, int(block["header"]["height"])
 
     return status, last_block_bc, blocks, history
 
@@ -78,12 +78,16 @@ def fill_empty_amounts(history: db.History) -> None:
         full_history = req.json()["fullMoonlightHistory"]["json"]
 
     for timestamp, (fn_name, amount, block) in history.copy().items():
-        if amount == 0:
-            for item in full_history:
-                if item["block_height"] == block:
-                    correct_amount = item["events"][0]["data"]["value"]
-                    history[timestamp] = (fn_name, correct_amount, block)
-                    break
+        if amount != 0:
+            continue
+
+        for item in full_history:
+            if item["block_height"] != block:
+                continue
+
+            correct_amount = item["events"][0]["data"]["value"]
+            history[timestamp] = (fn_name, correct_amount, block)
+            break
 
 
 def get_last_block() -> int:
@@ -99,11 +103,12 @@ def get_provisioner_data() -> dict:
 
 
 def play_sound_of_the_riches() -> None:
-    if config.PLAY_SOUND:
-        with suppress(Exception):
-            subprocess.check_call(constants.PLAY_SOUND_CMD, stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL)
-            if constants.DEBUG:
-                print("🔔")
+    if not config.PLAY_SOUND:
+        return
+
+    subprocess.check_call(constants.PLAY_SOUND_CMD, stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL)
+    if constants.DEBUG:
+        print("🔔")
 
 
 def update() -> None:
@@ -122,27 +127,34 @@ def update() -> None:
     try:
         status, last_block, blocks, history = scan_the_blockchain(data.last_block, get_last_block())
     except Exception as exc:
-        if constants.DEBUG:
-            print(f"Error in update(): {exc}")
+        print(f"Error in update(): {exc}")
         return
 
-    with suppress(Exception):
+    try:
         provisioner_data = get_provisioner_data()
         data.rewards = provisioner_data["reward"]
         data.slash_hard = provisioner_data["hard_faults"]
         data.slash_soft = provisioner_data["faults"]
+    except Exception as exc:
+        print(f"Error in get_provisioner_data(): {exc}")
 
     if history:
         data.history.update(history)
 
-    with suppress(Exception):
+    try:
         fill_empty_amounts(data.history)
+    except Exception as exc:
+        print(f"Error in fill_empty_amounts(): {exc}")
 
     if new_blocks := blocks - data.blocks:
         data.blocks |= new_blocks
         if constants.DEBUG:
             print(f"New blocks persisted: {', '.join(str(b) for b in sorted(new_blocks))}")
-        play_sound_of_the_riches()
+
+        try:
+            play_sound_of_the_riches()
+        except Exception as exc:
+            print(f"Error in play_sound_of_the_riches(): {exc}")
 
     data.last_block = last_block
 
