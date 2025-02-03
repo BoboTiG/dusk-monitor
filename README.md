@@ -13,6 +13,8 @@ Dusk wallet for tips:
 VKZpBrNtEeTobMgYkkdcGiZn8fK2Ve2yez429yRXrH4nUUDTuvr7Tv74xFA2DKNVegtF6jaom2uacZMm8Z2Lg2J
 ```
 
+---
+
 ## Install
 
 ```bash
