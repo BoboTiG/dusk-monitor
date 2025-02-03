@@ -1,6 +1,7 @@
 # Files
+config.json
 db.json
-provisioner.txt
+rewards.txt
 
 # Folders
 __pycache__/
