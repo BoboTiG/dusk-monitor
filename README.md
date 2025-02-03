@@ -8,11 +8,10 @@ Interesting links:
 - 🇫🇷 [Communiquer avec votre nœud Dusk](https://www.tiger-222.fr/luma/blockchain/node-dusk-http-wss.html)
 - 🇫🇷 [Comment déployer un nœud Dusk ?](https://www.tiger-222.fr/luma/blockchain/node-dusk.html)
 
-> [!TIP]
-> Dusk wallet for tips:
-> ```
-> VKZpBrNtEeTobMgYkkdcGiZn8fK2Ve2yez429yRXrH4nUUDTuvr7Tv74xFA2DKNVegtF6jaom2uacZMm8Z2Lg2J
-> ```
+Dusk wallet for tips:
+```
+VKZpBrNtEeTobMgYkkdcGiZn8fK2Ve2yez429yRXrH4nUUDTuvr7Tv74xFA2DKNVegtF6jaom2uacZMm8Z2Lg2J
+```
 
 ## Install
 
