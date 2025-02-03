@@ -1,5 +1,5 @@
 """
-This is part of the Dusk node Monitoring.
+This is part of the Dusk Node Monitoring project.
 Source: https://github.com/BoboTiG/dusk-monitor
 """
 
