@@ -2,6 +2,8 @@
 
 A dashboard for your Dusk node.
 
+This is __safe__: it works outside the node, no need to install anything on the node.
+
 Interesting links:
 
 - 🇬🇧 [How to query your Dusk node?](https://www.tiger-222.fr/luma/en/blockchain/node-dusk-http-wss.html)
