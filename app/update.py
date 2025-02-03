@@ -6,7 +6,7 @@ Source: https://github.com/BoboTiG/dusk-monitor
 import json
 import subprocess
 
-import niquests
+import requests
 
 from app import config, constants, db
 
@@ -29,7 +29,7 @@ def scan_the_blockchain(last_block_db: int, last_block_bc: int) -> tuple[bool, i
             print(f"POST {constants.URL_RUES_GQL!r} [{from_block:,}, {to_block:,}]")
 
         try:
-            with niquests.post(constants.URL_RUES_GQL, headers=constants.HEADERS, data=query) as req:
+            with requests.post(constants.URL_RUES_GQL, headers=constants.HEADERS, data=query) as req:
                 req.raise_for_status()
                 res = req.json()
         except Exception as exc:
@@ -73,7 +73,7 @@ def fill_empty_amounts(history: db.History) -> None:
         return
 
     query = constants.GQL_FULL_HISTORY % config.PROVISIONER
-    with niquests.post(constants.URL_RUES_GQL, headers=constants.HEADERS, data=query) as req:
+    with requests.post(constants.URL_RUES_GQL, headers=constants.HEADERS, data=query) as req:
         req.raise_for_status()
         full_history = req.json()["fullMoonlightHistory"]["json"]
 
@@ -91,13 +91,13 @@ def fill_empty_amounts(history: db.History) -> None:
 
 
 def get_last_block() -> int:
-    with niquests.post(constants.URL_RUES_GQL, headers=constants.HEADERS, data=constants.GQL_LAST_BLOCK) as req:
+    with requests.post(constants.URL_RUES_GQL, headers=constants.HEADERS, data=constants.GQL_LAST_BLOCK) as req:
         req.raise_for_status()
         return req.json()["block"]["header"]["height"]
 
 
 def get_provisioner_data() -> dict:
-    with niquests.post(constants.URL_RUES_PROVISIONERS, headers=constants.HEADERS) as req:
+    with requests.post(constants.URL_RUES_PROVISIONERS, headers=constants.HEADERS) as req:
         req.raise_for_status()
         return next((prov for prov in req.json() if prov["key"] == config.PROVISIONER), {})
 
