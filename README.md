@@ -32,16 +32,6 @@ python -m pip install -r requirements.txt
 1. Set up the [cron job](#update-data).
 1. That's it!
 
-### Endpoints
-
-- [/](http://localhost:1923/): the dashboard.
-- [/setup](http://localhost:1923/setup): where you can tweak options, and set the provisoner public key.
-- [/rewards](http://localhost:1923/rewards): redirects to the daily rewards chart.
-- [/rewards/hour](http://localhost:1923/rewards/hour): hourly rewards chart.
-- [/rewards/day](http://localhost:1923/rewards/day): daily rewards chart.
-- [/rewards/month](http://localhost:1923/rewards/month): monthly rewards chart.
-- [/rewards/year](http://localhost:1923/rewards/year): yearly rewards chart.
-
 ### Environment Variables
 
 - `DATA_DIR=path/to/folder`: the folder where node data will be stored, it's highly recommended using a folder outside the repository.
@@ -66,6 +56,16 @@ Start the local web server at [http://localhost:1923](http://localhost:1923):
 ```bash
 DATA_DIR=../dusk-monitor-data/node-1 python -m app
 ```
+
+#### Endpoints
+
+- [/](http://localhost:1923/): the dashboard.
+- [/setup](http://localhost:1923/setup): where you can tweak options, and set the provisoner public key.
+- [/rewards](http://localhost:1923/rewards): redirects to the daily rewards chart.
+- [/rewards/hour](http://localhost:1923/rewards/hour): hourly rewards chart.
+- [/rewards/day](http://localhost:1923/rewards/day): daily rewards chart.
+- [/rewards/month](http://localhost:1923/rewards/month): monthly rewards chart.
+- [/rewards/year](http://localhost:1923/rewards/year): yearly rewards chart.
 
 ## Preview
 
