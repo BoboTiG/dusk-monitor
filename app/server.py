@@ -6,7 +6,7 @@ Source: https://github.com/BoboTiG/dusk-monitor
 from __future__ import annotations
 
 import itertools
-from datetime import datetime
+from datetime import UTC, datetime
 from subprocess import check_output
 from time import monotonic
 from typing import TYPE_CHECKING, Any
@@ -42,6 +42,29 @@ def index() -> str | Response:
         longest=longest,
         served_time=served_time,
         total_rewards=total_rewards,
+    )
+
+
+@app.route("/rewards")
+def rewards() -> Response:
+    return flask.redirect("/rewards/day")
+
+
+@app.route("/rewards/<interval>")
+def rewards_interval(interval: str) -> str | Response:
+    if interval not in {"hour", "day", "month", "year"}:
+        print(f"Unknown {interval=}. Choices are: hour, day, month, or year.")
+        return flask.redirect("/rewards")
+
+    start = monotonic()
+    data = generate_history_chart_data(interval)
+    served_time = monotonic() - start
+
+    return render(
+        "rewards",
+        data=data,
+        interval=interval,
+        served_time=served_time,
     )
 
 
@@ -131,6 +154,50 @@ def craft_history(data: db.DataBase) -> list[tuple[str, str, str, str]]:
         res.append((when, value, f"action {fn_name} {css_cls}", fn_name.title()))
 
     return sorted(res, reverse=True)
+
+
+def generate_history_chart_data(interval: str) -> list[tuple[str, float]]:
+    def to_chart_date(date: datetime) -> str:
+        match interval:
+            case "hour":
+                return date.strftime("[%d/%m] %-Hh")
+            case "day":
+                return date.strftime("%Y-%m-%d")
+            case "month":
+                return date.strftime("%Y-%m")
+        return date.strftime("%Y")
+
+    rewards_history = constants.REWARDS_FILE.read_text().splitlines()
+    data: list[tuple[str, float]] = []
+    current_date = None
+    current_rewards = 0.0
+
+    for line1, line2 in itertools.pairwise(rewards_history):
+        when, rewards1 = line1.strip().split("|", 1)
+        _, rewards2 = line2.strip().split("|", 1)
+
+        diff = float(rewards2) - float(rewards1)
+        if interval == "hour" and diff > 1.0:
+            continue
+
+        if current_date is None:
+            current_date = datetime.fromtimestamp(float(when), tz=UTC)
+            current_rewards = diff
+            continue
+
+        this_date = datetime.fromtimestamp(float(when), tz=UTC)
+        if getattr(this_date, interval) == getattr(current_date, interval):
+            current_rewards += diff
+            continue
+
+        data.append((to_chart_date(current_date), current_rewards))
+        current_date = this_date
+        current_rewards = 0.0
+
+    if current_rewards and current_date:
+        data.append((to_chart_date(current_date), current_rewards))
+
+    return data
 
 
 def render(template: str, **kwargs: Any) -> str:

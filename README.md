@@ -32,6 +32,16 @@ python -m pip install -r requirements.txt
 1. Set up the [cron job](#update-data).
 1. That's it!
 
+### Endpoints
+
+- [/](http://localhost:1923/): the dashboard.
+- [/setup](http://localhost:1923/setup): where you can tweak options, and set the provisoner public key.
+- [/rewards](http://localhost:1923/rewards): redirects to the daily chart.
+- [/rewards/hour](http://localhost:1923/rewards/hour): chart with rewards per hour.
+- [/rewards/day](http://localhost:1923/rewards/day): chart with rewards per day.
+- [/rewards/month](http://localhost:1923/rewards/month): chart with rewards per month.
+- [/rewards/year](http://localhost:1923/rewards/year): chart with rewards per year.
+
 ### Environment Variables
 
 - `DATA_DIR=path/to/folder`: the folder where node data will be stored, it's highly recommended using a folder outside the repository.

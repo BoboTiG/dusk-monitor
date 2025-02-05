@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block page %}setup{% endblock %}
+{% set page = "setup" %}
 {% block body %}
     <form method="POST" action="/setup" onsubmit="return onSubmitCallback();">
         <h2>📢 Mandatory</h2>

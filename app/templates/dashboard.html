@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block page %}dashboard{% endblock %}
+{% set page = "dashboard" %}
 {% block body %}
     <span id="refresh-time-bar" style="--duration: 300;"></span>
     <div id="rewards" tooltip data-tooltip="Current: {{ (data.rewards / 10**9) | format_int }}">{{ (total_rewards / 10**9)| format_float }}<span>｢rewards｣</span></div>

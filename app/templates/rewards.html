@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% set page = "rewards" %}
+{% block body %}
+    <canvas id="chart"></canvas>
+    <!-- Served in {{ served_time | format_float }} seconds -->
+    <script src="/static/js/chart.js"></script>
+    <script>
+        window.onload = function() {
+            const data = [
+                {%- for date, amount in data %}
+                { date: '{{ date }}', amount: {{ amount }} },
+                {%- endfor -%}
+            ];
+
+            new Chart(
+                document.getElementById('chart'),
+                {
+                    type: 'line',
+                    data: {
+                        labels: data.map(row => row.date),
+                        datasets: [{
+                            label: 'Rewards by {{ interval }}',
+                            data: data.map(row => row.amount),
+                        }]
+                    },
+                    options: {
+                        borderWidth: 1,
+                        fill: true,
+                        interaction: {
+                            intersect: false,
+                            mode: 'nearest',
+                        },
+                        pointHoverBackgroundColor: 'orange',
+                    }
+                }
+            );
+        };
+    </script>
+{% endblock %}
