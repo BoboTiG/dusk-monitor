@@ -1,6 +1,6 @@
 @import url("base.css");
 
 body {
-    background-color: white;
+    background-color: var(--text-shadow);
     align-items: center;
 }
