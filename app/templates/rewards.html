@@ -13,7 +13,7 @@
             {%- endfor %}
         ];
 
-        const annotation = {
+        const average = {
             type: 'line',
             borderWidth: 0.5,
             borderDash: [5, 5],
@@ -26,6 +26,10 @@
             },
             value: {{ average }},
         };
+
+        const annotations = {
+            average,
+        }
 
         const config = {
             type: 'line',
@@ -54,9 +58,7 @@
                 },
                 plugins: {
                     annotation: {
-                        annotations: {
-                            annotation
-                        }
+                        annotations: annotations
                     }
                 }
             }
