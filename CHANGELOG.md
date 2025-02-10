@@ -57,4 +57,4 @@ Release date: `2025-01-20`
 ## Features
 
 - Public version.
-- First commit from `2025-01-06`.
+- First commit from `2025-01-05`.
