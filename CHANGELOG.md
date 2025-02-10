@@ -4,7 +4,7 @@ Release date: `2025-xx-xx`
 
 ## Features
 
-- 
+- Display an average line on charts.
 
 ## Features
 

@@ -58,10 +58,12 @@ def rewards_interval(interval: str) -> str | Response:
 
     start = monotonic()
     data = generate_history_chart_data(interval)
+    average = sum(amount for _, amount in data) / len(data)
     served_time = monotonic() - start
 
     return render(
         "rewards",
+        average=average,
         data=data,
         interval=interval,
         served_time=served_time,
