@@ -10,7 +10,7 @@
             const data = [
                 {%- for date, amount in data %}
                 { date: '{{ date }}', amount: {{ amount }} },
-                {%- endfor -%}
+                {%- endfor %}
             ];
 
             new Chart(
