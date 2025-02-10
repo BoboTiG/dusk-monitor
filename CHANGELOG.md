@@ -2,13 +2,13 @@
 
 Release date: `2025-xx-xx`
 
+## Bug Fixes
+
+-
+
 ## Features
 
 - Display an average line on charts.
-
-## Features
-
--
 
 ## Technical Changes
 
