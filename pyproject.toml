@@ -44,7 +44,7 @@ ignore = [
   "PLR2004",  # magic values
   "PLW0603",  # globals
   "S104",     # binding to all interfaces
-  "S108",     # usage of temporary file 
+  "S108",     # usage of temporary file
   "S113",     # use of `requests` call without timeout
   "S603",     # `subprocess` check for execution of untrusted input
   "T201",     # print()
