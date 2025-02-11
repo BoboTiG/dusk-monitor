@@ -4,7 +4,7 @@ Release date: `2025-xx-xx`
 
 ## Bug Fixes
 
--
+- Redirect `/rewards/` to `/reward` instead of ending on a HTTP 404 error.
 
 ## Features
 

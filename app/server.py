@@ -46,6 +46,7 @@ def index() -> str | Response:
 
 
 @app.route("/rewards")
+@app.route("/rewards/")
 def rewards() -> Response:
     return flask.redirect("/rewards/day")
 
