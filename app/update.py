@@ -135,6 +135,10 @@ def update() -> None:
         data.rewards = provisioner_data["reward"]
         data.slash_hard = provisioner_data["hard_faults"]
         data.slash_soft = provisioner_data["faults"]
+        if data.slash_hard:
+            print(f"Hard slash: {data.slash_hard}!")
+        if data.slash_soft:
+            print(f"Soft slash: {data.slash_soft}!")
     except Exception as exc:
         print(f"Error in get_provisioner_data(): {exc}")
 
