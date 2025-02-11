@@ -6,6 +6,7 @@
     <!-- Served in {{ served_time | format_float }} seconds -->
     <script src="/static/js/chart.js"></script>
     <script src="/static/js/chartjs-plugin-annotation.js"></script>
+    <script src="/static/js/chartjs-plugin-gradient.js"></script>
     <script>
         const data = [
             {%- for date, amount in data %}
@@ -31,6 +32,26 @@
             average,
         }
 
+        const average_gradient = {
+            backgroundColor: {
+                axis: 'y',
+                colors: {
+                    {{ "{:.3f}".format(average) }}: Chart.helpers.color("#f4a000").alpha(0.2),
+                    {{ "{:.3f}".format(average + 0.001) }}: Chart.helpers.color("#00cfa8").alpha(0.2),
+                }
+            },
+            borderColor: {
+                axis: 'y',
+                colors: {
+                    {{ "{:.3f}".format(average) }}: Chart.helpers.color("#f4a000"),
+                    {{ "{:.3f}".format(average + 0.001) }}: Chart.helpers.color("#00cfa8")
+                }
+            }
+        };
+
+        const gradient = window['chartjs-plugin-gradient'];
+        Chart.register(gradient);
+
         const config = {
             type: 'line',
             data: {
@@ -39,27 +60,24 @@
                     {
                         label: 'Rewards by {{ interval }}',
                         data: data.map(row => row.amount),
+                        gradient: average_gradient,
                     }
                 ]
             },
             options: {
-                borderWidth: 1,
+                borderWidth: 1.5,
                 fill: true,
+                stepped: 'middle',
                 interaction: {
                     intersect: false,
                     mode: 'nearest',
                 },
-                pointHoverBackgroundColor: 'orange',
-                tension: 0.1,
-                scales: {
-                    y: {
-                        stacked: true
-                    }
-                },
+                pointStyle: 'triangle',
+                pointHoverBackgroundColor: 'blue',
                 plugins: {
                     annotation: {
                         annotations: annotations
-                    }
+                    },
                 }
             }
         };

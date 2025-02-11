@@ -58,8 +58,7 @@ def rewards_interval(interval: str) -> str | Response:
         return flask.redirect("/rewards")
 
     start = monotonic()
-    data = generate_history_chart_data(interval)
-    average = sum(amount for _, amount in data) / len(data)
+    data, average = generate_history_chart_data(interval)
     served_time = monotonic() - start
 
     return render(
@@ -159,7 +158,7 @@ def craft_history(data: db.DataBase) -> list[tuple[str, str, str, str]]:
     return sorted(res, reverse=True)
 
 
-def generate_history_chart_data(interval: str) -> list[tuple[str, float]]:
+def generate_history_chart_data(interval: str) -> tuple[list[tuple[str, float]], float]:
     def to_chart_date(date: datetime) -> str:
         match interval:
             case "hour":
@@ -200,7 +199,14 @@ def generate_history_chart_data(interval: str) -> list[tuple[str, float]]:
     if current_rewards and current_date:
         data.append((to_chart_date(current_date), current_rewards))
 
-    return data
+    average = (
+        # Skip first, and last, as they are likely incomplete
+        sum(amount for _, amount in data[1:-1]) / (len(data) - 2)
+        if interval in {"hour", "day"}
+        else sum(amount for _, amount in data) / len(data)
+    )
+
+    return data, average
 
 
 def render(template: str, **kwargs: Any) -> str:

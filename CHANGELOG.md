@@ -8,7 +8,7 @@ Release date: `2025-xx-xx`
 
 ## Features
 
-- Display an average line on charts.
+- Display an average line on charts, and use a two-colors scheme.
 
 ## Technical Changes
 
