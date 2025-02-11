@@ -5,6 +5,7 @@ Release date: `2025-xx-xx`
 ## Bug Fixes
 
 - Redirect `/rewards/` to `/rewards` instead of ending on a HTTP 404 error.
+- Skip negative rewards amount in chart data: they are useful to track node efficiency, not to show the full history.
 
 ## Features
 
