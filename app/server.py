@@ -199,12 +199,18 @@ def generate_history_chart_data(interval: str) -> tuple[list[tuple[str, float]],
     if current_rewards and current_date:
         data.append((to_chart_date(current_date), current_rewards))
 
-    average = (
-        # Skip first, and last, as they are likely incomplete
-        sum(amount for _, amount in data[1:-1]) / (len(data) - 2)
-        if interval in {"hour", "day"}
-        else sum(amount for _, amount in data) / len(data)
-    )
+    start, end = rewards_history[0].split("|", 1)[0], rewards_history[-1].split("|", 1)[0]
+    elasped_time = datetime.fromtimestamp(float(end)) - datetime.fromtimestamp(float(start))
+    match interval:
+        case "hour":
+            elapsed = elasped_time.total_seconds() / 60 / 60
+        case "day":
+            elapsed = elasped_time.total_seconds() / 60 / 60 / 24
+        case "month":
+            elapsed = elasped_time.total_seconds() / 60 / 60 / 24 / (365.25 / 12)
+        case "year":
+            elapsed = elasped_time.total_seconds() / 60 / 60 / 24 / 365.25
+    average = sum(amount for _, amount in data) / (elapsed if elapsed >= 1.0 else len(data))
 
     return data, average
 
