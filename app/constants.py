@@ -27,6 +27,13 @@ DB_KEY_SLASH_HARD = "slash-hard"
 DB_KEY_SLASH_SOFT = "slash-soft"
 DB_KEY_VERSION = "version"
 
+# Config
+CONF_KEY_HOST = "host"
+CONF_KEY_PORT = "port"
+CONF_KEY_PLAY_SOUND = "play-sound"
+CONF_KEY_PROVISIONER = "provisioner"
+CONF_KEY_REWARDS_HISTORY_HOURS = "rewards-history-hours"
+
 # Remote data
 HEADERS = {"User-Agent": "https://github.com/BoboTiG/dusk-monitor"}
 URL_RUES_GQL = "https://nodes.dusk.network/on/graphql/query"

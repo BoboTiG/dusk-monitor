@@ -41,43 +41,46 @@ def load(*, verbose: bool = True) -> dict[str, bool | int | str]:
 
     global HOST, PORT, PLAY_SOUND, PROVISIONER, REWARDS_HISTORY_HOURS
 
-    HOST = data.get("host", Defaults.host)
-    PORT = int(data.get("port", Defaults.port))
-    PLAY_SOUND = bool(data.get("play-sound", Defaults.play_sound))
-    PROVISIONER = data.get("provisioner", "")
-    REWARDS_HISTORY_HOURS = min(max(0, int(data.get("rewards-history-hours", Defaults.rewards_history_hours))), 24)
+    HOST = data.get(constants.CONF_KEY_HOST, Defaults.host)
+    PORT = int(data.get(constants.CONF_KEY_PORT, Defaults.port))
+    PLAY_SOUND = bool(data.get(constants.CONF_KEY_PLAY_SOUND, Defaults.play_sound))
+    PROVISIONER = data.get(constants.CONF_KEY_PROVISIONER, "")
+    REWARDS_HISTORY_HOURS = min(
+        max(0, int(data.get(constants.CONF_KEY_REWARDS_HISTORY_HOURS, Defaults.rewards_history_hours))),
+        24,
+    )
 
     if verbose and constants.DEBUG:
         if PROVISIONER:
-            print(f">>> Using config provisioner (truncated): {PROVISIONER[:16]!r}")
+            print(f">>> Using config {constants.CONF_KEY_PROVISIONER} (truncated): {PROVISIONER[:16]!r}")
         if Defaults.host != HOST:
-            print(f">>> Using config host: {HOST!r}")
+            print(f">>> Using config {constants.CONF_KEY_HOST}: {HOST!r}")
         if Defaults.port != PORT:
-            print(f">>> Using config port: {PORT!r}")
+            print(f">>> Using config {constants.CONF_KEY_PORT}: {PORT!r}")
         if Defaults.play_sound is not PLAY_SOUND:
-            print(f">>> Using config play-sound: {PLAY_SOUND!r}")
+            print(f">>> Using config {constants.CONF_KEY_PLAY_SOUND}: {PLAY_SOUND!r}")
         if Defaults.rewards_history_hours != REWARDS_HISTORY_HOURS:
-            print(f">>> Using config rewards-history-hours: {REWARDS_HISTORY_HOURS!r}")
+            print(f">>> Using config {constants.CONF_KEY_REWARDS_HISTORY_HOURS}: {REWARDS_HISTORY_HOURS!r}")
 
     return {
-        "host": HOST,
-        "port": PORT,
-        "play-sound": PLAY_SOUND,
-        "provisioner": PROVISIONER,
-        "rewards-history-hours": REWARDS_HISTORY_HOURS,
+        constants.CONF_KEY_HOST: HOST,
+        constants.CONF_KEY_PORT: PORT,
+        constants.CONF_KEY_PLAY_SOUND: PLAY_SOUND,
+        constants.CONF_KEY_PROVISIONER: PROVISIONER,
+        constants.CONF_KEY_REWARDS_HISTORY_HOURS: REWARDS_HISTORY_HOURS,
     }
 
 
 def save(form: dict) -> None:
-    if len(provisioner := form["provisioner"].strip()) != constants.PROVISIONER_KEY_LENGTH:
+    if len(provisioner := form[constants.CONF_KEY_PROVISIONER].strip()) != constants.PROVISIONER_KEY_LENGTH:
         provisioner = ""
 
     new_data = {
-        "host": form["host"],
-        "port": int(form["port"]),
-        "play-sound": "play-sound" in form,
-        "provisioner": provisioner,
-        "rewards-history-hours": min(max(0, int(form["rewards-history-hours"])), 24),
+        constants.CONF_KEY_HOST: form[constants.CONF_KEY_HOST],
+        constants.CONF_KEY_PORT: int(form[constants.CONF_KEY_PORT]),
+        constants.CONF_KEY_PLAY_SOUND: constants.CONF_KEY_PLAY_SOUND in form,
+        constants.CONF_KEY_PROVISIONER: provisioner,
+        constants.CONF_KEY_REWARDS_HISTORY_HOURS: min(max(0, int(form[constants.CONF_KEY_REWARDS_HISTORY_HOURS])), 24),
     }
 
     if new_data != load(verbose=False):

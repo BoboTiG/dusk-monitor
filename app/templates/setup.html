@@ -8,10 +8,10 @@
         <label for="data_dir">📁 Data Folder</label>
         <input type="text" readonly size="69" value="{{ constants.DATA_DIR }}" />
 
-        <label for="provisioner">🔑 Provisioner Public Key</label>
+        <label for="{{ constants.CONF_KEY_PROVISIONER }}">🔑 Provisioner Public Key</label>
         <input
-            name="provisioner"
-            id="provisioner"
+            name="{{ constants.CONF_KEY_PROVISIONER }}"
+            id="{{ constants.CONF_KEY_PROVISIONER }}"
             type="text"
             minlength="{{ constants.PROVISIONER_KEY_LENGTH }}"
             maxlength="{{ constants.PROVISIONER_KEY_LENGTH }}"
@@ -25,20 +25,20 @@
 
         <h2>⚙️ Options</h2>
 
-        <label for="host">🌐 Local Web Server Host & Port</label>
-        <input type="text" id="host" name="host" size="10" value="{{ config.HOST }}" required />
-        <input type="number" id="port" name="port" min="80" max="65536" value="{{ config.PORT }}" required />
+        <label for="{{ constants.CONF_KEY_HOST }}">🌐 Local Web Server Host & Port</label>
+        <input type="text" id="{{ constants.CONF_KEY_HOST }}" name="{{ constants.CONF_KEY_HOST }}" size="10" value="{{ config.HOST }}" required />
+        <input type="number" id="{{ constants.CONF_KEY_PORT }}" name="{{ constants.CONF_KEY_PORT }}" min="80" max="65536" value="{{ config.PORT }}" required />
 
-        <label for="play-sound">🔔 Play a Sound on New Block Generated</label>
+        <label for="{{ constants.CONF_KEY_PLAY_SOUND }}">🔔 Play a Sound on New Block Generated</label>
         <div id="checkbox">
-            <input type="checkbox" id="play-sound" name="play-sound"{% if config.PLAY_SOUND %} checked{% endif %} />
+            <input type="checkbox" id="{{ constants.CONF_KEY_PLAY_SOUND }}" name="{{ constants.CONF_KEY_PLAY_SOUND }}"{% if config.PLAY_SOUND %} checked{% endif %} />
             <div class="knobs"></div>
             <div class="layer"></div>
         </div>
 
         <br/>
-        <label for="rewards-history-hours">🕰️ History Data to Display</label>
-        <input type="range" id="rewards-history-hours" name="rewards-history-hours" min="0" max="24" step="1" list="values" value="{{ config.REWARDS_HISTORY_HOURS }}" required oninput="this.nextElementSibling.value = this.value > 0 ? `${this.value}h` : 'Disabled'" />
+        <label for="r{{ constants.CONF_KEY_REWARDS_HISTORY_HOURS }}">🕰️ History Data to Display</label>
+        <input type="range" id="r{{ constants.CONF_KEY_REWARDS_HISTORY_HOURS }}" name="{{ constants.CONF_KEY_REWARDS_HISTORY_HOURS }}" min="0" max="24" step="1" list="values" value="{{ config.REWARDS_HISTORY_HOURS }}" required oninput="this.nextElementSibling.value = this.value > 0 ? `${this.value}h` : 'Disabled'" />
         <output>{{ "{}h".format(config.REWARDS_HISTORY_HOURS) if config.REWARDS_HISTORY_HOURS else 'Disabled' }}</output>
         <datalist id="values">
             {%- for hours in range(24 + 1) -%}
@@ -57,7 +57,7 @@
     </form>
     <script>
         function onSubmitCallback() {
-            if (document.getElementById('provisioner').value != '{{ config.PROVISIONER }}') {
+            if (document.getElementById('{{ constants.CONF_KEY_PROVISIONER }}').value != '{{ config.PROVISIONER }}') {
                 return confirm('Are you sure the provisioner key is correct? A full blockchain scan at the next update will be triggered.');
             }
             return true;
