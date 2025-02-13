@@ -30,7 +30,7 @@ def scan_the_blockchain(
         query = constants.GQL_GET_BLOCKS % (from_block, to_block)
 
         if constants.DEBUG:
-            print(f"POST {constants.URL_RUES_GQL!r} [{from_block:,}, {to_block:,}]")
+            print(f"POST {constants.URL_RUES_GQL!r} range: [{from_block:,}, {to_block:,}]")
 
         try:
             with session.post(constants.URL_RUES_GQL, data=query) as req:
