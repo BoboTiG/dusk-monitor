@@ -9,13 +9,16 @@ import itertools
 from datetime import UTC, datetime
 from subprocess import check_output
 from time import monotonic
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
 import flask
 
 from app import config, constants, db
 
 if TYPE_CHECKING:
+    from collections.abc import Iterator
+    from typing import Any
+
     from werkzeug.wrappers.response import Response
 
 app = flask.Flask(__name__)
@@ -108,37 +111,45 @@ def to_hour(value: str) -> str:
     return datetime.fromtimestamp(float(value)).strftime("%H:%M")
 
 
-def craft_history(data: db.DataBase) -> list[tuple[str, str, str, str]]:
+def parsed(rewards_history: list[str]) -> Iterator[tuple[float, float, float, float]]:
+    for line1, line2 in itertools.pairwise(rewards_history):
+        start, rewards1 = [float(v) for v in line1.split("|", 1)]
+        end, rewards2 = [float(v) for v in line2.split("|", 1)]
+        yield start, end, rewards1, rewards2
+
+
+def craft_history(data: db.DataBase) -> list[tuple[float, str, str, str]]:
     if not config.REWARDS_HISTORY_HOURS:
         return []
 
     cmd = ["tail", f"-{config.REWARDS_HISTORY_HOURS * 12 + 2}", str(constants.REWARDS_FILE)]
-    res: list[tuple[str, str, str, str]] = []
+    res: list[tuple[float, str, str, str]] = []
+    first_date = "0"
 
     # Rewards
     try:
         rewards_history = sorted(check_output(cmd, text=True).strip().splitlines(), reverse=True)
     except Exception:
         return []
-    else:
-        for line1, line2 in itertools.pairwise(rewards_history):
-            when, rewards1 = line1.strip().split("|", 1)
-            _, rewards2 = line2.strip().split("|", 1)
-            if (diff := float(rewards1) - float(rewards2)) != 0.0:
-                if diff > 0.0:
-                    res.append((when, f"+{format_float(diff)}", "go-up up", ""))
-                else:
-                    res.append((when, format_float(diff), "go-down down", ""))
+
+    for when, _, rewards1, rewards2 in parsed(rewards_history):
+        if first_date == "0":
+            first_date = str(int(when))
+
+        if (diff := rewards1 - rewards2) != 0.0:
+            if diff > 0.0:
+                res.append((when, f"+{format_float(diff)}", "go-up up", ""))
             else:
-                res.append((when, "±0.000", "go-nowhere empty", ""))
+                res.append((when, format_float(diff), "go-down down", ""))
+        else:
+            res.append((when, "±0.000", "go-nowhere empty", ""))
 
     # Actions
-    first_date = res[-1][0] if res else "0"
-    for when in data.history:
-        if when < first_date:
+    for date in data.history:
+        if date < first_date:
             break
 
-        fn_name, amount, _ = data.history[when]
+        fn_name, amount, _ = data.history[date]
         css_cls = "empty"
 
         if amount != 0:
@@ -153,7 +164,7 @@ def craft_history(data: db.DataBase) -> list[tuple[str, str, str, str]]:
                 css_cls = "down"
                 value = f"-{value}"
 
-        res.append((when, value, f"action {fn_name} {css_cls}", fn_name.title()))
+        res.append((float(date), value, f"action {fn_name} {css_cls}", fn_name.title()))
 
     return sorted(res, reverse=True)
 
@@ -173,21 +184,21 @@ def generate_history_chart_data(interval: str) -> tuple[list[tuple[str, float]],
     data: list[tuple[str, float]] = []
     current_date = None
     current_rewards = 0.0
+    history_start = 0.0
 
-    for line1, line2 in itertools.pairwise(rewards_history):
-        when, rewards1 = line1.strip().split("|", 1)
-        _, rewards2 = line2.strip().split("|", 1)
+    for start, history_end, rewards1, rewards2 in parsed(rewards_history):  # noqa: B007
+        if history_start == 0.0:
+            history_start = start
 
-        diff = float(rewards2) - float(rewards1)
-        if diff < 0.0 or (interval == "hour" and diff > 1.0):
+        if (diff := rewards2 - rewards1) < 0.0 or (interval == "hour" and diff > 1.0):
             continue
 
         if current_date is None:
-            current_date = datetime.fromtimestamp(float(when), tz=UTC)
+            current_date = datetime.fromtimestamp(start, tz=UTC)
             current_rewards = diff
             continue
 
-        this_date = datetime.fromtimestamp(float(when), tz=UTC)
+        this_date = datetime.fromtimestamp(start, tz=UTC)
         if getattr(this_date, interval) == getattr(current_date, interval):
             current_rewards += diff
             continue
@@ -199,8 +210,7 @@ def generate_history_chart_data(interval: str) -> tuple[list[tuple[str, float]],
     if current_rewards and current_date:
         data.append((to_chart_date(current_date), current_rewards))
 
-    start, end = rewards_history[0].split("|", 1)[0], rewards_history[-1].split("|", 1)[0]
-    elasped_time = datetime.fromtimestamp(float(end)) - datetime.fromtimestamp(float(start))
+    elasped_time = datetime.fromtimestamp(history_end) - datetime.fromtimestamp(history_start)
     match interval:
         case "hour":
             elapsed = elasped_time.total_seconds() / 60 / 60
