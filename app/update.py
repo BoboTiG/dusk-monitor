@@ -11,7 +11,11 @@ import requests
 from app import config, constants, db
 
 
-def scan_the_blockchain(last_block_db: int, last_block_bc: int) -> tuple[bool, int, set[int], dict]:
+def scan_the_blockchain(
+    session: requests.Session,
+    last_block_db: int,
+    last_block_bc: int,
+) -> tuple[bool, int, set[int], dict]:
     blocks: set[int] = set()
     history: db.History = {}
     status = True
@@ -29,7 +33,7 @@ def scan_the_blockchain(last_block_db: int, last_block_bc: int) -> tuple[bool, i
             print(f"POST {constants.URL_RUES_GQL!r} [{from_block:,}, {to_block:,}]")
 
         try:
-            with requests.post(constants.URL_RUES_GQL, headers=constants.HEADERS, data=query) as req:
+            with session.post(constants.URL_RUES_GQL, data=query) as req:
                 req.raise_for_status()
                 res = req.json()
         except Exception as exc:
@@ -67,13 +71,13 @@ def scan_the_blockchain(last_block_db: int, last_block_bc: int) -> tuple[bool, i
     return status, last_block_bc, blocks, history
 
 
-def fill_empty_amounts(history: db.History) -> None:
+def fill_empty_amounts(session: requests.Session, history: db.History) -> None:
     """This function is useful to get unstake/withdraw amounts."""
     if all(amount != 0 for _, amount, _ in history.values()):
         return
 
     query = constants.GQL_FULL_HISTORY % config.PROVISIONER
-    with requests.post(constants.URL_RUES_GQL, headers=constants.HEADERS, data=query) as req:
+    with session.post(constants.URL_RUES_GQL, data=query) as req:
         req.raise_for_status()
         full_history = req.json()["fullMoonlightHistory"]["json"]
 
@@ -90,14 +94,14 @@ def fill_empty_amounts(history: db.History) -> None:
             break
 
 
-def get_last_block() -> int:
-    with requests.post(constants.URL_RUES_GQL, headers=constants.HEADERS, data=constants.GQL_LAST_BLOCK) as req:
+def get_last_block(session: requests.Session) -> int:
+    with session.post(constants.URL_RUES_GQL, data=constants.GQL_LAST_BLOCK) as req:
         req.raise_for_status()
         return req.json()["block"]["header"]["height"]
 
 
-def get_provisioner_data() -> dict:
-    with requests.post(constants.URL_RUES_PROVISIONERS, headers=constants.HEADERS) as req:
+def get_provisioner_data(session: requests.Session) -> dict:
+    with session.post(constants.URL_RUES_PROVISIONERS) as req:
         req.raise_for_status()
         return next((prov for prov in req.json() if prov["key"] == config.PROVISIONER), {})
 
@@ -117,6 +121,8 @@ def update() -> None:
         return
 
     data = db.load()
+    session = requests.Session()
+    session.headers.update(constants.HEADERS)
 
     # Force a full scan
     if data.version < constants.DB_VERSION:
@@ -125,13 +131,13 @@ def update() -> None:
         data.last_block = 0
 
     try:
-        status, last_block, blocks, history = scan_the_blockchain(data.last_block, get_last_block())
+        status, last_block, blocks, history = scan_the_blockchain(session, data.last_block, get_last_block(session))
     except Exception as exc:
         print(f"Error in update(): {exc}")
         return
 
     try:
-        provisioner_data = get_provisioner_data()
+        provisioner_data = get_provisioner_data(session)
         data.rewards = provisioner_data["reward"]
         data.slash_hard = provisioner_data["hard_faults"]
         data.slash_soft = provisioner_data["faults"]
@@ -146,7 +152,7 @@ def update() -> None:
         data.history.update(history)
 
     try:
-        fill_empty_amounts(data.history)
+        fill_empty_amounts(session, data.history)
     except Exception as exc:
         print(f"Error in fill_empty_amounts(): {exc}")
 

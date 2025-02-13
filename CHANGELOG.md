@@ -14,7 +14,7 @@ Release date: `2025-xx-xx`
 
 ## Technical Changes
 
--
+- More efficient HTTP requests by using connections pooling. 
 
 # 1.0.1
 
