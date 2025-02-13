@@ -1,3 +1,19 @@
+# 1.1.1-dev
+
+Release date: `2025-xx-xx`
+
+## Bug Fixes
+
+- 
+
+## Features
+
+- 
+
+## Technical Changes
+
+- 
+
 # 1.1.0
 
 Release date: `2025-02-13`
