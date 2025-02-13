@@ -36,15 +36,15 @@
             backgroundColor: {
                 axis: 'y',
                 colors: {
-                    {{ "{:.3f}".format(average) }}: Chart.helpers.color("#f4a000").alpha(0.2),
-                    {{ "{:.3f}".format(average + 0.001) }}: Chart.helpers.color("#00cfa8").alpha(0.2),
+                    0: Chart.helpers.color("#f4a000").alpha(0.3),
+                    {{ "{:.3f}".format(average) }}: Chart.helpers.color("#00cfa8").alpha(0.3),
                 }
             },
             borderColor: {
                 axis: 'y',
                 colors: {
-                    {{ "{:.3f}".format(average) }}: Chart.helpers.color("#f4a000"),
-                    {{ "{:.3f}".format(average + 0.001) }}: Chart.helpers.color("#00cfa8")
+                    0: Chart.helpers.color("#f4a000"),
+                    {{ "{:.3f}".format(average) }}: Chart.helpers.color("#00cfa8")
                 }
             }
         };
@@ -53,7 +53,7 @@
         Chart.register(gradient);
 
         const config = {
-            type: 'line',
+            type: 'bar',
             data: {
                 labels: data.map(row => row.date),
                 datasets: [
@@ -65,15 +65,7 @@
                 ]
             },
             options: {
-                borderWidth: 1.5,
-                fill: true,
-                stepped: 'middle',
-                interaction: {
-                    intersect: false,
-                    mode: 'nearest',
-                },
-                pointStyle: 'triangle',
-                pointHoverBackgroundColor: 'blue',
+                borderWidth: 2,
                 plugins: {
                     annotation: {
                         annotations: annotations
