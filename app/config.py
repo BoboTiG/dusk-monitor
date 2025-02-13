@@ -54,7 +54,7 @@ def load(*, verbose: bool = True) -> dict[str, bool | int | str]:
             print(f">>> Using config host: {HOST!r}")
         if Defaults.port != PORT:
             print(f">>> Using config port: {PORT!r}")
-        if PLAY_SOUND is not Defaults.play_sound:
+        if Defaults.play_sound is not PLAY_SOUND:
             print(f">>> Using config play-sound: {PLAY_SOUND!r}")
         if Defaults.rewards_history_hours != REWARDS_HISTORY_HOURS:
             print(f">>> Using config rewards-history-hours: {REWARDS_HISTORY_HOURS!r}")
