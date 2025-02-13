@@ -15,7 +15,7 @@ def scan_the_blockchain(
     session: requests.Session,
     last_block_db: int,
     last_block_bc: int,
-) -> tuple[bool, int, set[int], dict]:
+) -> tuple[bool, int, set[int], db.History]:
     blocks: set[int] = set()
     history: db.History = {}
     status = True
