@@ -3,7 +3,7 @@ This is part of the Dusk Node Monitoring project.
 Source: https://github.com/BoboTiG/dusk-monitor
 """
 
-__version__ = "1.0.2-dev"
+__version__ = "1.1.0"
 __author__ = "Mickaël Schoentgen"
 __copyright__ = f"""
 Copyright (c) 2025, {__author__}

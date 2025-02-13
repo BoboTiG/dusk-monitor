@@ -1,6 +1,6 @@
-# 1.0.2-dev
+# 1.1.0
 
-Release date: `2025-xx-xx`
+Release date: `2025-02-13`
 
 ## Bug Fixes
 
