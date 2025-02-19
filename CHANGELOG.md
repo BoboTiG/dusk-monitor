@@ -12,7 +12,7 @@ Release date: `2025-xx-xx`
 
 ## Technical Changes
 
-- 
+- Higher hourly diff threshold (`1.0` → `5.0`).
 
 # 1.1.0
 

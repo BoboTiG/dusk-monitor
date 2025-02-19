@@ -187,7 +187,7 @@ def generate_history_chart_data(interval: str) -> tuple[list[tuple[str, float]],
         if history_start == 0.0:
             history_start = start
 
-        if (diff := rewards2 - rewards1) < 0.0 or (interval == "hour" and diff > 1.0):
+        if (diff := rewards2 - rewards1) < 0.0 or (interval == "hour" and diff > 5.0):
             continue
 
         if current_date is None:
