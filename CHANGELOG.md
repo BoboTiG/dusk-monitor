@@ -4,7 +4,7 @@ Release date: `2025-xx-xx`
 
 ## Bug Fixes
 
-- 
+- History actions being skipped.
 
 ## Features
 

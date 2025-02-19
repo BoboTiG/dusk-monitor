@@ -124,7 +124,6 @@ def craft_history(data: db.DataBase) -> list[tuple[float, str, str, str]]:
 
     cmd = ["tail", f"-{config.REWARDS_HISTORY_HOURS * 12 + 2}", str(constants.REWARDS_FILE)]
     res: list[tuple[float, str, str, str]] = []
-    first_date = "0"
 
     # Rewards
     try:
@@ -133,9 +132,6 @@ def craft_history(data: db.DataBase) -> list[tuple[float, str, str, str]]:
         return []
 
     for when, _, rewards1, rewards2 in parsed(rewards_history):
-        if first_date == "0":
-            first_date = str(int(when))
-
         if (diff := rewards1 - rewards2) != 0.0:
             if diff > 0.0:
                 res.append((when, f"+{format_float(diff)}", "go-up up", ""))
@@ -145,6 +141,7 @@ def craft_history(data: db.DataBase) -> list[tuple[float, str, str, str]]:
             res.append((when, "±0.000", "go-nowhere empty", ""))
 
     # Actions
+    first_date = str(int(when))
     for date in data.history:
         if date < first_date:
             break
