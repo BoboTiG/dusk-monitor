@@ -1,14 +1,10 @@
-# 1.1.1-dev
+# 1.1.1
 
-Release date: `2025-xx-xx`
+Release date: `2025-02-20`
 
 ## Bug Fixes
 
 - History actions being skipped.
-
-## Features
-
-- 
 
 ## Technical Changes
 
