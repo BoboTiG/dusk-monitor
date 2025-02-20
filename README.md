@@ -34,8 +34,8 @@ python -m pip install -r requirements.txt
 
 ### Environment Variables
 
-- `DATA_DIR=path/to/folder`: the folder where node data will be stored, it's highly recommended using a folder outside the repository.
-- `DEBUG=0`: disable all `print()`.
+- `DATA_DIR=path/to/folder`: the folder where node data will be stored, it's recommended using a folder outside the repository.
+- `DEBUG=0`: disable all `print()` statements.
 
 ## Commands
 
