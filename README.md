@@ -1,5 +1,7 @@
 # Dusk Node Monitoring
 
+[![Patreon](https://img.shields.io/badge/Patreon-F96854?style=for-the-badge&logo=patreon&logoColor=white)](https://www.patreon.com/mschoentgen)
+
 A dashboard for your Dusk node.
 
 This is __safe__: it works outside the node, no need to install anything on the node.
