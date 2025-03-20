@@ -134,11 +134,11 @@ def craft_history(data: db.DataBase) -> list[tuple[float, str, str, str]]:
     for when, _, rewards1, rewards2 in parsed(rewards_history):
         if (diff := rewards1 - rewards2) != 0.0:
             if diff > 0.0:
-                res.append((when, f"+{format_float(diff)}", "go-up up", ""))
+                res.append((when, f"+{format_float(diff)}", "go-up up", f"Rewards {diff:,}"))
             else:
-                res.append((when, format_float(diff), "go-down down", ""))
+                res.append((when, format_float(diff), "go-down down", f"Rewards {diff:,}"))
         else:
-            res.append((when, "±0.000", "go-nowhere empty", ""))
+            res.append((when, "±0.000", "go-nowhere empty", "No rewards"))
 
     # Actions
     first_date = str(int(when))
@@ -161,7 +161,7 @@ def craft_history(data: db.DataBase) -> list[tuple[float, str, str, str]]:
                 css_cls = "down"
                 value = f"-{value}"
 
-        res.append((float(date), value, f"action {fn_name} {css_cls}", fn_name.title()))
+        res.append((float(date), value, f"action {fn_name} {css_cls}", f"{fn_name.title()} {amount / 10**9:,}"))
 
     return sorted(res, reverse=True)
 

@@ -8,7 +8,7 @@ Release date: `2025-xx-xx`
 
 ## Features
 
-- 
+- Set a usefull title to history entries on the dashboard (when hovering with the cursor).
 
 ## Technical Changes
 
