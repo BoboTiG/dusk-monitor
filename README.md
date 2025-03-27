@@ -1,6 +1,9 @@
 # Dusk Node Monitoring
 
-[![Patreon](https://img.shields.io/badge/Patreon-F96854?style=for-the-badge&logo=patreon&logoColor=white)](https://www.patreon.com/mschoentgen)
+> [!TIP]
+> Become **my boss** to help me work on this awesome software, and make the world better:
+> 
+> [![Patreon](https://img.shields.io/badge/Patreon-F96854?style=for-the-badge&logo=patreon&logoColor=white)](https://www.patreon.com/mschoentgen)
 
 A dashboard for your Dusk node.
 
