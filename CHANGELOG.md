@@ -1,18 +1,10 @@
-# 1.1.2-dev
+# 1.1.2
 
-Release date: `2025-xx-xx`
-
-## Bug Fixes
-
-- 
+Release date: `2025-03-25`
 
 ## Features
 
 - Set a usefull title to history entries on the dashboard (when hovering with the cursor).
-
-## Technical Changes
-
-- 
 
 # 1.1.1
 
