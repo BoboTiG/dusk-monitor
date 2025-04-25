@@ -5,32 +5,14 @@
     <canvas id="chart"></canvas>
     <!-- Served in {{ served_time | format_float }} seconds -->
     <script src="/static/js/chart.js"></script>
-    <script src="/static/js/chartjs-plugin-annotation.js"></script>
     <script src="/static/js/chartjs-plugin-gradient.js"></script>
+    <script src="/static/js/chartjs-plugin-trendline.js"></script>
     <script>
         const data = [
             {%- for date, amount in data %}
             { date: '{{ date }}', amount: {{ amount }} },
             {%- endfor %}
         ];
-
-        const average = {
-            type: 'line',
-            borderWidth: 0.5,
-            borderDash: [5, 5],
-            borderDashOffset: 0,
-            scaleID: 'y',
-            label: {
-                display: true,
-                content: 'Average: {{ average | format_float }}',
-                position: 'start',
-            },
-            value: {{ average }},
-        };
-
-        const annotations = {
-            average,
-        }
 
         const average_gradient = {
             backgroundColor: {
@@ -61,16 +43,16 @@
                         label: 'Rewards by {{ interval }}',
                         data: data.map(row => row.amount),
                         gradient: average_gradient,
+                         trendlineLinear: {
+                            colorMin: '#666',
+                            lineStyle: "dashed",
+                            width: 1,
+                        }
                     }
                 ]
             },
             options: {
                 borderWidth: 2,
-                plugins: {
-                    annotation: {
-                        annotations: annotations
-                    },
-                }
             }
         };
 
