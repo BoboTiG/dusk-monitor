@@ -1,10 +1,10 @@
 # 1.1.3-dev
 
-Release date: `2025-xx-xx`
+Release date: `2026-xx-xx`
 
 ## Bug Fixes
 
-- 
+- Use a lock file to protect against concurrent read/write mess with the database file.
 
 ## Features
 

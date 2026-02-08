@@ -5,17 +5,20 @@ Source: https://github.com/BoboTiG/dusk-monitor
 
 from __future__ import annotations
 
+import fcntl
+import functools
 import json
 from contextlib import suppress
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from itertools import islice
-from typing import TYPE_CHECKING
+from pathlib import Path
+from typing import TYPE_CHECKING, Any
 
 from app import constants
 
 if TYPE_CHECKING:
-    from collections.abc import Iterator
+    from collections.abc import Callable, Iterator
 
 # "timestamp": ("fn_name", amount, block)
 History = dict[str, tuple[str, int, int]]
@@ -54,6 +57,29 @@ def load() -> DataBase:
     )
 
 
+def locker(kind: str) -> Callable:
+    """File locking mechanism to protect against concurrent read/write mess."""
+
+    def decorator(function: Callable) -> Callable:
+        @functools.wraps(function)
+        def wrapper(*args: Any, **kwargs: Any) -> Callable:
+            lock_file = Path(f"/tmp/{kind}.lock")
+            try:
+                with lock_file.open(mode="w") as fh:
+                    fcntl.flock(fh, fcntl.LOCK_EX)
+                    try:
+                        return function(*args, **kwargs)
+                    finally:
+                        fcntl.flock(fh, fcntl.LOCK_UN)
+            finally:
+                lock_file.unlink(missing_ok=True)
+
+        return wrapper
+
+    return decorator
+
+
+@locker(constants.DB_FILE.name)
 def save(data: DataBase) -> None:
     glue = ",\n        "
     history = glue.join(
