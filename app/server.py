@@ -157,7 +157,7 @@ def craft_history(data: db.DataBase) -> list[tuple[float, str, str, str]]:
             # Staking actions, we do care about them
             elif fn_name in {"stake", "withdraw"}:
                 css_cls = "up"
-            elif fn_name in {"unstake"}:
+            elif fn_name == "unstake":
                 css_cls = "down"
                 value = f"-{value}"
 
