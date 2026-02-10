@@ -64,16 +64,12 @@ def locker(kind: str) -> Callable:
         @functools.wraps(function)
         def wrapper(*args: Any, **kwargs: Any) -> Callable:
             lock_file = Path(f"/tmp/{kind}.lock")
-            try:
-                with lock_file.open(mode="w") as fh:
-                    fcntl.flock(fh, fcntl.LOCK_EX)
-                    try:
-                        return function(*args, **kwargs)
-                    finally:
-                        fcntl.flock(fh, fcntl.LOCK_UN)
-            finally:
-                lock_file.unlink(missing_ok=True)
-
+            with lock_file.open(mode="w") as fh:
+                fcntl.flock(fh, fcntl.LOCK_EX)
+                try:
+                    return function(*args, **kwargs)
+                finally:
+                    fcntl.flock(fh, fcntl.LOCK_UN)
         return wrapper
 
     return decorator
