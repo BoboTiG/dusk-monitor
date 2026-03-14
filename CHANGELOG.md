@@ -5,6 +5,7 @@ Release date: `2026-xx-xx`
 ## Bug Fixes
 
 - Use a lock file to protect against concurrent read/write mess with the database file.
+- Reduce the number of GraphQL items to query when scanning the blockchain (20,000 -> 200).
 
 ## Features
 
