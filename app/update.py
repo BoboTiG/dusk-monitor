@@ -110,7 +110,7 @@ def play_sound_of_the_riches() -> None:
     if not config.PLAY_SOUND:
         return
 
-    subprocess.check_call(constants.PLAY_SOUND_CMD, stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL)
+    subprocess.check_call(constants.PLAY_SOUND_CMD, stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL, timeout=5)
     if constants.DEBUG:
         print("🔔")
 

@@ -6,6 +6,7 @@ Release date: `2026-xx-xx`
 
 - Use a lock file to protect against concurrent read/write mess with the database file.
 - Reduce the number of GraphQL items to query when scanning the blockchain (20,000 -> 200).
+- Use a timeout when playing the sound to prevent blocking the update in case of defunct subprocess.
 
 ## Features
 

@@ -70,6 +70,7 @@ def locker(kind: str) -> Callable:
                     return function(*args, **kwargs)
                 finally:
                     fcntl.flock(fh, fcntl.LOCK_UN)
+
         return wrapper
 
     return decorator
